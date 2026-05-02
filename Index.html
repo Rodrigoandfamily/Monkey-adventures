@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MonkeyAdventure - Campervan Rentals</title>
+    <title>MonkeyAdventure - Campervan Rentals Chile & Argentina</title>
     <link href="https://cdn.jsdelivr.net/npm/fontsource-poppins@5.0.18/index.css" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
@@ -81,14 +81,17 @@
 
         @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-        /* BOOKING */
+        /* BOOKING FORM */
         .booking-section{padding:0 20px;margin-top:-50px;position:relative;z-index:20}
-        .booking-form{max-width:1100px;margin:0 auto;background:#fff;border-radius:24px;padding:28px;box-shadow:0 15px 50px rgba(0,0,0,.15);display:grid;grid-template-columns:repeat(5,1fr) auto;gap:14px;align-items:end}
+        .booking-form{max-width:1100px;margin:0 auto;background:#fff;border-radius:24px;padding:28px;box-shadow:0 15px 50px rgba(0,0,0,.15);display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;align-items:end}
         .fg label{display:block;font-size:11px;font-weight:600;color:#8E8E93;margin-bottom:5px;text-transform:uppercase;letter-spacing:1px}
         .fg input,.fg select{width:100%;padding:11px 12px;border:2px solid #F2F2F7;border-radius:16px;font-size:13px;font-family:'Poppins',sans-serif;transition:border-color .3s;background:#F2F2F7}
         .fg input:focus,.fg select:focus{outline:none;border-color:#FF6B35;background:#fff}
-        .booking-btn{padding:11px 24px;background:linear-gradient(135deg,#FF6B35,#FCBF49);border:none;border-radius:16px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;transition:all .3s;white-space:nowrap;font-family:'Poppins',sans-serif}
+        .btn-group{grid-column:1/-1;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+        .booking-btn{padding:12px 24px;background:linear-gradient(135deg,#FF6B35,#FCBF49);border:none;border-radius:16px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;transition:all .3s;white-space:nowrap;font-family:'Poppins',sans-serif;flex:1;min-width:160px}
         .booking-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,107,53,.4)}
+        .booking-btn.whatsapp{background:#25D366}
+        .booking-btn.whatsapp:hover{box-shadow:0 10px 30px rgba(37,211,102,.4)}
 
         section{padding:80px 40px}
         .section-header{text-align:center;max-width:700px;margin:0 auto 50px}
@@ -182,12 +185,12 @@
         .social-link{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;transition:all .3s;cursor:pointer;font-size:14px}
         .social-link:hover{background:#FF6B35;transform:translateY(-2px)}
 
-        .wa-btn{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:999;cursor:pointer;box-shadow:0 8px 25px rgba(37,211,102,.4);transition:all .3s;text-decoration:none}
-        .wa-btn:hover{transform:scale(1.15);box-shadow:0 12px 35px rgba(37,211,102,.6)}
-        .wa-btn svg{width:28px;height:28px;fill:#fff}
+        .wa-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:999;cursor:pointer;box-shadow:0 8px 25px rgba(37,211,102,.4);transition:all .3s;text-decoration:none}
+        .wa-float:hover{transform:scale(1.15);box-shadow:0 12px 35px rgba(37,211,102,.6)}
+        .wa-float svg{width:28px;height:28px;fill:#fff}
         .wa-tooltip{position:absolute;right:70px;background:#fff;color:#1C1C1E;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.12);opacity:0;transform:translateX(10px);transition:all .3s;pointer-events:none}
         .wa-tooltip::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left:5px solid #fff}
-        .wa-btn:hover .wa-tooltip{opacity:1;transform:translateX(0)}
+        .wa-float:hover .wa-tooltip{opacity:1;transform:translateX(0)}
         .wa-pulse{position:absolute;width:100%;height:100%;border-radius:50%;background:#25D366;animation:waPulse 2s ease-in-out infinite;z-index:-1}
         @keyframes waPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.8);opacity:0}}
 
@@ -195,7 +198,6 @@
         .reveal.visible{opacity:1;transform:translateY(0)}
 
         @media(max-width:1024px){
-            .booking-form{grid-template-columns:repeat(3,1fr);gap:12px;padding:24px}
             .fleet-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
             .footer-grid{grid-template-columns:repeat(2,1fr)}
         }
@@ -219,6 +221,7 @@
             .stat-divider{display:none}
             .booking-section{padding:0 12px;margin-top:-40px}
             .booking-form{grid-template-columns:1fr;gap:10px;padding:20px}
+            .btn-group{flex-direction:column}
             section{padding:50px 18px}
             .fleet-grid{grid-template-columns:1fr}
             .features-grid{grid-template-columns:repeat(2,1fr);gap:12px}
@@ -228,8 +231,8 @@
             .footer{padding:40px 18px 20px}
             .footer-grid{grid-template-columns:1fr;gap:24px}
             .footer-bottom{flex-direction:column;text-align:center}
-            .wa-btn{width:50px;height:50px;bottom:16px;right:16px}
-            .wa-btn svg{width:24px;height:24px}
+            .wa-float{width:50px;height:50px;bottom:16px;right:16px}
+            .wa-float svg{width:24px;height:24px}
             .wa-tooltip{display:none}
         }
         @media(max-width:480px){
@@ -345,11 +348,22 @@
     </div>
 </section>
 
+<!-- DUAL LEAD CAPTURE: NAME + PHONE (AUTO-FORMAT) + PRICING/ CALLBACK -->
 <div class="booking-section" id="booking">
-    <form class="booking-form reveal" onsubmit="handleBooking(event)">
+    <form class="booking-form reveal" name="booking-form" method="POST" data-netlify="true" netlify>
+        <input type="hidden" name="form-name" value="booking-form">
+        
+        <div class="fg">
+            <label data-i18n="form.name">Full Name</label>
+            <input type="text" name="customer-name" placeholder="John Doe" required>
+        </div>
+        <div class="fg">
+            <label data-i18n="form.phone">Phone Number</label>
+            <input type="tel" name="customer-phone" placeholder="+56 9 1234 5678" required oninput="formatPhone(this)">
+        </div>
         <div class="fg">
             <label data-i18n="form.pickup">Pickup Location</label>
-            <select required>
+            <select name="pickup-location" required>
                 <option value="" data-i18n="form.select">Select...</option>
                 <option>Santiago, Chile</option>
                 <option>San Pedro de Atacama</option>
@@ -360,30 +374,34 @@
         </div>
         <div class="fg">
             <label data-i18n="form.pdate">Pickup Date</label>
-            <input type="date" required>
+            <input type="date" name="pickup-date" required>
         </div>
         <div class="fg">
             <label data-i18n="form.rdate">Return Date</label>
-            <input type="date" required>
+            <input type="date" name="return-date" required>
         </div>
         <div class="fg">
             <label data-i18n="form.travelers">Travelers</label>
-            <select>
-                <option data-i18n="form.t1">1-2 Travelers</option>
-                <option data-i18n="form.t2">3-4 Travelers</option>
-                <option data-i18n="form.t3">5-6 Travelers</option>
+            <select name="travelers">
+                <option>1-2 Travelers</option>
+                <option>3-4 Travelers</option>
+                <option>5-6 Travelers</option>
             </select>
         </div>
         <div class="fg">
             <label data-i18n="form.type">Van Type</label>
-            <select>
-                <option data-i18n="form.all">All Types</option>
-                <option data-i18n="form.budget">Budget Van</option>
-                <option data-i18n="form.standard">Standard 4WD</option>
-                <option data-i18n="form.premium">Premium Camper</option>
+            <select name="van-type">
+                <option>All Types</option>
+                <option>Budget Van</option>
+                <option>Standard 4WD</option>
+                <option>Premium Camper</option>
             </select>
         </div>
-        <button type="submit" class="booking-btn" data-i18n="form.search">Search Vans 🔍</button>
+        
+        <div class="btn-group">
+            <button type="submit" class="booking-btn" data-i18n="form.search">Submit Request 🔍</button>
+            <button type="button" class="booking-btn whatsapp" onclick="sendToWhatsApp()">Request Callback & Price 💬</button>
+        </div>
     </form>
 </div>
 
@@ -568,13 +586,24 @@
     </div>
 </footer>
 
-<a href="https://wa.me/56990423560?text=Hello!%20I'm%20interested%20in%20renting%20a%20campervan!" target="_blank" class="wa-btn" onclick="openWhatsApp()">
+<a href="https://wa.me/56990423560?text=Hello!%20I'm%20interested%20in%20renting%20a%20campervan!" target="_blank" class="wa-float" onclick="openWhatsApp()">
     <div class="wa-pulse"></div>
     <span class="wa-tooltip" data-i18n="wa.tooltip">Chat with us on WhatsApp</span>
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
 </a>
 
 <script>
+// PHONE AUTO-FORMAT: +XX X XXXX XXXX
+function formatPhone(input) {
+    let val = input.value.replace(/\D/g, '');
+    if (val.length > 12) val = val.slice(0, 12);
+    let formatted = '+' + val;
+    if (val.length > 2) formatted = '+' + val.slice(0, 2) + ' ' + val.slice(2);
+    if (val.length > 3) formatted = '+' + val.slice(0, 2) + ' ' + val.slice(2, 3) + ' ' + val.slice(3);
+    if (val.length > 7) formatted = '+' + val.slice(0, 2) + ' ' + val.slice(2, 3) + ' ' + val.slice(3, 7) + ' ' + val.slice(7);
+    input.value = formatted;
+}
+
 var translations={
 en:{
 "nav.home":"Home","nav.fleet":"Our Vans","nav.features":"Why Us","nav.destinations":"Destinations","nav.reviews":"Reviews","nav.contact":"Contact","nav.book":"Book Now",
@@ -583,10 +612,10 @@ en:{
 "hero.desc":"Budget-friendly campervan and 4WD camper rentals. Drive from the Atacama Desert to Patagonia glaciers. Your unforgettable adventure starts here.",
 "hero.cta1":"View Our Fleet 🚐","hero.cta2":"Explore Routes 🗺️",
 "stats.travelers":"Happy Travelers","stats.vans":"Vans Available","stats.locations":"Locations","stats.rating":"Google Rating",
-"form.pickup":"Pickup Location","form.select":"Select...","form.pdate":"Pickup Date","form.rdate":"Return Date","form.travelers":"Travelers",
+"form.name":"Full Name","form.phone":"Phone Number","form.pickup":"Pickup Location","form.select":"Select...","form.pdate":"Pickup Date","form.rdate":"Return Date","form.travelers":"Travelers",
 "form.t1":"1-2 Travelers","form.t2":"3-4 Travelers","form.t3":"5-6 Travelers",
 "form.type":"Van Type","form.all":"All Types","form.budget":"Budget Van","form.standard":"Standard 4WD","form.premium":"Premium Camper",
-"form.search":"Search Vans 🔍",
+"form.search":"Submit Request 🔍",
 "fleet.tag":"🚐 Our Fleet","fleet.title":"Choose Your <span class=\"hl\">Adventure Van</span>","fleet.desc":"From budget-friendly options to premium 4WD campers, we have the perfect vehicle for your journey.",
 "fleet.b1":"Best Value","fleet.b2":"Popular","fleet.b3":"Premium",
 "fleet.n1":"Budget Explorer","fleet.n2":"Standard 4WD","fleet.n3":"Premium Camper",
@@ -625,15 +654,15 @@ en:{
 },
 es:{
 "nav.home":"Inicio","nav.fleet":"Nuestras Vans","nav.features":"Por Qué Elegirnos","nav.destinations":"Destinos","nav.reviews":"Reseñas","nav.contact":"Contacto","nav.book":"Reservar",
-"hero.badge":"🇨🇱 Alquiler de Campervans Chile y Argentina",
+"hero.badge":"🇨 Alquiler de Campervans Chile y Argentina",
 "hero.title":"Explora Sudamérica con<br><span class=\"hl\">Monkey Adventure</span>",
 "hero.desc":"Alquiler de campervans y campers 4WD económicos. Viaja desde el Desierto de Atacama hasta los glaciares de la Patagonia. Tu aventura inolvidable comienza aquí.",
 "hero.cta1":"Ver Nuestras Vans 🚐","hero.cta2":"Explorar Rutas 🗺️",
 "stats.travelers":"Viajeros Felices","stats.vans":"Vans Disponibles","stats.locations":"Ubicaciones","stats.rating":"Calificación Google",
-"form.pickup":"Lugar de Recogida","form.select":"Seleccionar...","form.pdate":"Fecha de Recogida","form.rdate":"Fecha de Devolución","form.travelers":"Viajeros",
+"form.name":"Nombre Completo","form.phone":"Número de Teléfono","form.pickup":"Lugar de Recogida","form.select":"Seleccionar...","form.pdate":"Fecha de Recogida","form.rdate":"Fecha de Devolución","form.travelers":"Viajeros",
 "form.t1":"1-2 Viajeros","form.t2":"3-4 Viajeros","form.t3":"5-6 Viajeros",
 "form.type":"Tipo de Van","form.all":"Todos los Tipos","form.budget":"Van Económica","form.standard":"Estándar 4WD","form.premium":"Camper Premium",
-"form.search":"Buscar Vans 🔍",
+"form.search":"Enviar Solicitud 🔍",
 "fleet.tag":"🚐 Nuestra Flota","fleet.title":"Elige tu <span class=\"hl\">Van de Aventura</span>","fleet.desc":"Desde opciones económicas hasta campers 4WD premium, tenemos el vehículo perfecto para tu viaje.",
 "fleet.b1":"Mejor Valor","fleet.b2":"Popular","fleet.b3":"Premium",
 "fleet.n1":"Explorador Económico","fleet.n2":"Estándar 4WD","fleet.n3":"Camper Premium",
@@ -719,7 +748,41 @@ function openWhatsApp(){
     var msg=currentLang==='es'?encodeURIComponent("Hola! Me interesa alquilar una campervan con Monkey Adventure."):encodeURIComponent("Hello! I'm interested in renting a campervan with Monkey Adventure!");
     window.open('https://wa.me/56990423560?text='+msg,'_blank');
 }
-function handleBooking(e){e.preventDefault();openWhatsApp();}
+
+// WHATSAPP PRICE & CALLBACK REQUEST
+function sendToWhatsApp(){
+    var name = document.querySelector('[name="customer-name"]').value || "Not provided";
+    var phone = document.querySelector('[name="customer-phone"]').value || "Not provided";
+    var location = document.querySelector('[name="pickup-location"]').value || "Not specified";
+    var pickupDate = document.querySelector('[name="pickup-date"]').value || "Not specified";
+    var returnDate = document.querySelector('[name="return-date"]').value || "Not specified";
+    var travelers = document.querySelector('[name="travelers"]').value || "Not specified";
+    var vanType = document.querySelector('[name="van-type"]').value || "Not specified";
+
+    var message;
+    if(currentLang === 'es') {
+        message = `🚐 *Solicitud de Cotización y Llamada - Monkey Adventure*\n\n` +
+                  `👤 Nombre: ${name}\n` +
+                  `📱 Teléfono: ${phone}\n` +
+                  `📍 Lugar de Recogida: ${location}\n` +
+                  `📅 Fecha Inicio: ${pickupDate}\n` +
+                  `📅 Fecha Devolución: ${returnDate}\n` +
+                  `👥 Viajeros: ${travelers}\n` +
+                  `🚐 Tipo de Van: ${vanType}\n\n` +
+                  `Me gustaría recibir una cotización de precio y que me llamen para confirmar disponibilidad. ¡Gracias!`;
+    } else {
+        message = `🚐 *Price Quote & Callback Request - Monkey Adventure*\n\n` +
+                  `👤 Name: ${name}\n` +
+                  `📱 Phone: ${phone}\n` +
+                  `📍 Pickup Location: ${location}\n` +
+                  `📅 Pickup Date: ${pickupDate}\n` +
+                  `📅 Return Date: ${returnDate}\n` +
+                  `👥 Travelers: ${travelers}\n` +
+                  `🚐 Van Type: ${vanType}\n\n` +
+                  `I'd like to receive a price quote and a callback to confirm availability. Thank you!`;
+    }
+    window.open('https://wa.me/56990423560?text=' + encodeURIComponent(message), '_blank');
+}
 
 function animateStats(){
     var s=[
@@ -794,4 +857,3 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
 </script>
 </body>
 </html>
-
