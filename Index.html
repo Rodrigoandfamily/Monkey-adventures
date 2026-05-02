@@ -169,8 +169,8 @@
         .cta-btn{padding:14px 36px;background:linear-gradient(135deg,#FF6B35,#FCBF49);border:none;border-radius:60px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:8px;font-family:'Poppins',sans-serif}
         .cta-btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(255,107,53,.5)}
 
-        /* FAQ SECTION */
-        .faq-section{background:#fff}
+        /* FAQ SECTION - Hidden by default, accessible via chatbot */
+        .faq-section{background:#fff;display:none}
         .faq-container{max-width:900px;margin:0 auto}
         .faq-item{margin-bottom:16px;border:2px solid #F2F2F7;border-radius:16px;overflow:hidden;transition:all .3s}
         .faq-item:hover{border-color:#FF6B35;box-shadow:0 4px 12px rgba(255,107,53,.1)}
@@ -183,6 +183,18 @@
         .faq-answer-content{padding:20px 24px;color:#555;line-height:1.7;font-size:15px}
         .faq-answer-content ul{margin-left:20px;margin-top:10px}
         .faq-answer-content li{margin-bottom:8px}
+
+        /* TERMS & CONDITIONS MODAL */
+        .tc-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
+        .tc-modal.active{display:flex}
+        .tc-content{background:#fff;border-radius:24px;max-width:800px;width:100%;max-height:90vh;overflow-y:auto;padding:30px;position:relative}
+        .tc-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:28px;cursor:pointer;color:#1C1C1E}
+        .tc-title{font-size:24px;font-weight:800;margin-bottom:20px;color:#004E89}
+        .tc-section{margin-bottom:24px}
+        .tc-section h3{font-size:18px;font-weight:700;margin-bottom:12px;color:#FF6B35}
+        .tc-section p{color:#555;line-height:1.7;margin-bottom:10px}
+        .tc-section ul{margin-left:20px;margin-bottom:10px}
+        .tc-section li{margin-bottom:6px;color:#555}
 
         /* CHATBOT */
         .chatbot-toggle{position:fixed;bottom:100px;right:24px;width:56px;height:56px;background:#FF6B35;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 25px rgba(255,107,53,.4);transition:all .3s;z-index:998}
@@ -208,6 +220,8 @@
         .chatbot-quick-questions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
         .chatbot-quick-btn{padding:8px 16px;background:#fff;border:2px solid #F2F2F7;border-radius:20px;font-size:12px;cursor:pointer;transition:all .3s;font-family:'Poppins',sans-serif}
         .chatbot-quick-btn:hover{border-color:#FF6B35;color:#FF6B35}
+        .chatbot-tc-link{display:block;text-align:center;margin-top:12px;font-size:12px;color:#FF6B35;text-decoration:none;cursor:pointer}
+        .chatbot-tc-link:hover{text-decoration:underline}
 
         .footer{background:#1C1C1E;color:#fff;padding:50px 40px 24px}
         .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:30px;max-width:1200px;margin:0 auto;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,.1)}
@@ -241,6 +255,7 @@
             .fleet-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
             .footer-grid{grid-template-columns:repeat(2,1fr)}
             .chatbot-window{width:340px;height:450px}
+            .tc-content{max-width:95%;padding:24px}
         }
         @media(max-width:768px){
             .navbar{padding:10px 16px}
@@ -277,14 +292,14 @@
             .wa-tooltip{display:none}
             .chatbot-toggle{bottom:86px;right:16px;width:50px;height:50px}
             .chatbot-window{bottom:150px;right:16px;width:calc(100% - 32px);max-width:none;height:400px}
+            .tc-modal{padding:10px}
+            .tc-content{padding:20px}
         }
         @media(max-width:480px){
             .hero-content{padding:75px 14px 50px}
             .hero-title{font-size:24px}
             .hero-stats{flex-direction:column;gap:14px}
             .features-grid{grid-template-columns:1fr}
-            .faq-question{font-size:15px;padding:16px 18px}
-            .faq-answer-content{padding:16px 18px;font-size:14px}
         }
         ::-webkit-scrollbar{width:8px}
         ::-webkit-scrollbar-track{background:#F2F2F7}
@@ -303,7 +318,6 @@
     <a href="#fleet" onclick="closeMenu()" data-i18n="nav.fleet">Our Vans</a>
     <a href="#features" onclick="closeMenu()" data-i18n="nav.features">Why Us</a>
     <a href="#destinations" onclick="closeMenu()" data-i18n="nav.destinations">Destinations</a>
-    <a href="#faq" onclick="closeMenu()" data-i18n="nav.faq">FAQ</a>
     <a href="#reviews" onclick="closeMenu()" data-i18n="nav.reviews">Reviews</a>
     <button class="nav-cta" onclick="openWhatsApp();closeMenu()" data-i18n="nav.book">Book Now</button>
     <div class="mobile-lang">
@@ -324,7 +338,6 @@
             <li><a href="#fleet" data-i18n="nav.fleet">Our Vans</a></li>
             <li><a href="#features" data-i18n="nav.features">Why Us</a></li>
             <li><a href="#destinations" data-i18n="nav.destinations">Destinations</a></li>
-            <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
             <li><a href="#reviews" data-i18n="nav.reviews">Reviews</a></li>
         </ul>
         <div class="lang-switch">
@@ -439,9 +452,8 @@
             <label data-i18n="form.type">Van Type</label>
             <select name="van-type">
                 <option>All Types</option>
-                <option>Budget Van</option>
-                <option>Standard 4WD</option>
-                <option>Premium Camper</option>
+                <option>Chimpanzee 2WD</option>
+                <option>Gorilla 2WD</option>
             </select>
         </div>
         
@@ -452,441 +464,46 @@
     </form>
 </div>
 
-<!-- FAQ SECTION -->
-<section class="faq-section" id="faq">
-    <div class="section-header reveal">
-        <span class="section-tag">❓ FAQ</span>
-        <h2 class="section-title" data-i18n="faq.title">Frequently Asked <span class="hl">Questions</span></h2>
-        <p class="section-desc" data-i18n="faq.desc">Find answers to common questions about our campervan rentals. Can't find what you're looking for? Chat with us!</p>
-    </div>
-    <div class="faq-container">
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q1">What living and cooking equipment is included with the vehicles?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a1">
-                    The Monkey campervans are equipped with basic cooking equipment which includes cutlery, crockery, pots and pans, gas kettle, cooler box, sink, manual water pump and a little more. A Linen Pack can be purchased for $xxxx and includes a queen duvet, queen sheet, 2 towels, 2 pillow cases and a tea towel. Please note that if no Linen Pack is selected the vehicle comes with a duvet inner (or a sleeping bag) and 2 pillows complementary. If the sleeping bag is used it must be returned clean.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q2">Are the campervans automatic or manual?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a2">
-                    The Chimpanzee campervan have automatic transmissions making it easier to drive around Chile and the Gorilla 4X4 campervan are mechanic transmission.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q3">How much water do I have on board?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a3">
-                    The Monkey campervans has a 5 liters water tank. The fresh water tank can be easily refilled whenever you want at holiday parks and often a service station when you refuel the vehicle or any other tap.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q4">Can I Freedom Camp in Chile?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a4">
-                    In Chile you can camp for free in almost everywhere, because till there is not rule about it (just in a couple of beaches). Even camping in a Caravan Park is usually not that expensive (except for a few of the very remote communities!). Many of the beaches, mountains, lakes, desert in Chile allow camping, meaning you can follow the geography around Chile whilst saving your money and waking up each morning to the best view in the world!
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q5">How and when should I make my bookings?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a5">
-                    We always suggest as soon as you know the dates you wish to have your holiday – go online and book. To confirm we need 50% deposit and then the balance is due on pick up of your campervan. Very easy. The best way to submit your credit card details are though the secure server bookings page on our website.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q6">What do you mean by calendar days when we book?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a6">
-                    The campervan operators charge by the day, not per 24 hour period. So regardless of the time of collection and return, you will be charged for the day you collect and the day you drop your vehicle off. This is somewhat like a hotel and a rental car company all in one as you can drive and sleep in your vehicle.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q7">Is additional equipment available?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a7">
-                    Book your car, all you need is a credit or debit card. When you pick the car up, you'll need:
-                    <ul>
-                        <li>Your rentalcars.com voucher / eVoucher, to show that you've paid for the car</li>
-                        <li>The main driver's credit / debit card, with enough available funds for the car's security deposit</li>
-                        <li>Each driver's full, valid driving licence, which they've held for at least 12 months (often 24)</li>
-                        <li>Your passport and any other ID the car hire company needs to see</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q8">I have submitted my booking form and credit card – what happens now?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a8">
-                    Your request will be processed within 24 hours of receiving your booking or we will get in contact with you. If a vehicle is available for the dates you specified, your booking will be finalised and your credit card will be charged a 50% deposit. If a vehicle is not available, we will contact you with a suitable alternative and no payment will be incurred.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q9">Why do I have to include my credit card number?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a9">
-                    We require a credit card for the 50% deposit to secure you booking. Your credit card information is strictly confidential and this is a faster method for securing your booking compared with Cash or Cheque.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q10">Which credit card types do you accept?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a10">
-                    We accept Visa, Master Card, and American Express. Please note that have an additional fee of 3%. There is no extra charge for paying in cash.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q11">What currency will my Credit Card be charged?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a11">
-                    All credit card transactions will be processed in Chilean pesos (CLP). This applies to all bookings made through our website.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q12">How can I amend or cancel my booking?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a12">
-                    If you wish to amend or cancel your existing booking, please contact us as soon as possible. This is so we can make sure any extensions are available for you and to reduce the cost to you for cancellations. Simply go to the contact page and make an enquiry, or email info@monkey-adventures.com. Please ensure you quote your confirmation number.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q13">Is there a refund if I shorten my hire while on holiday?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a13">
-                    No, there is no refund if you return your campervan earlier than the reserved period. However your travel insurance may in some circumstances cover the unused portion.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q14">Do I need a special drivers license to drive a campervan in Chile?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a14">
-                    No, our campervans can be driven with a standard full car license. We recommend a Spanish translation or an international drivers license.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q15">How old do I need to be to drive a campervan or motorhome?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a15">
-                    Drivers must hold a current and valid drivers license (non-probationary) for the duration of the hire period. Foreigners should use a foreign license, with the Spanish translation of its text. No minimum age restriction applies for 2wd vehicles and for the 4WD rentals which require minimum 22 years old.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q16">Is there a minimum hire period?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a16">
-                    We have a minimum hire period of 7 days when collecting and returning the campervan. Please note however that this can change during peak seasons depending on availability.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q17">What is the safe travel speed for driving the campervans?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a17">
-                    The open road speed limit is 120km/hour but we suggest a comfortable speed for driving your campervan is 90-100km/hour, especially if you have never driven one before. Should you choose to travel below the speed limit, please show courtesy to other road users by allowing them to pass.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q18">How much fuel am I likely to use on my holiday?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a18">
-                    This all depends on how far you travel! Most of our campervans have an average fuel consumption of 10-14 ltrs per 100kms.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q19">Do I have to pre-book camping parks?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a19">
-                    It is rare for powered sites to be full at camping parks. The only time it may be a problem is over the Christmas/New Year period continuing to the end of the second week of January and also the first two weeks of February.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q20">Where are your offices located?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a20">
-                    The office of Monkey Adventures is located at Camino Central 2470 of A41, Lo Barnechea, Santiago de Chile.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q21">Can you deliver a vehicle to our hotel/motel?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a21">
-                    Yes, we can do it. But we recommend to come to our office to collect your vehicle so we can complete the necessary documentation and show you how to use your campervan. The whole process takes about 45 minutes.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q22">Can I pick up after hours?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a22">
-                    Unfortunately Monkey Adventures does not offer an after hours service.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q23">Do you allow one-way hires?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a23">
-                    One-Way rentals are available only with pick-up in Santiago and in coordination with the Monkey Adventure before of pick-up de car. (applies extra cost depending of the city).
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q24">What happens if I break down or need assistance during my holiday?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a24">
-                    Our campervans are supported 24-hour emergency breakdown service who are a nationwide network of reputable service agents who will deal with any problems that may arise. We can also authorize you to spend up to CLP$50.000 in emergency repairs so that you can deal with minor matters speedily or when convenient to you, but please produce the receipt when you return from your hire for a refund.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q25">What does the rental insurance cover?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a25">
-                    The rental insurance cover restricts the maximum you are liable for in the event of an accident as long as you do not break the rental agreement terms and conditions. It does not cover you for any personal loss or injury. We suggest taking your own personal travel insurance.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q26">If I have an accident and I am at fault, will I lose my entire excess?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a26">
-                    You will be liable for up to the amount of your excess towards the repair cost. If the damage is minor, you will only be charged the repair costs and not the entire excess.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q27">I have Travel Insurance, which covers damage to the vehicle. Do I need to pay the vehicle insurance as well?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a27">
-                    If you are covered by travel insurance you will not need to pay for any additional insurance excess reduction, however you will be liable to pay the excess at the time of the incident and then you would need to reclaim this excess from your travel insurer.
-                </div>
-            </div>
-        </div>
-        
-        <div class="faq-item reveal">
-            <button class="faq-question" onclick="toggleFaq(this)">
-                <span data-i18n="faq.q28">What happens if I have an accident and it's not my fault?</span>
-                <span class="faq-icon">▼</span>
-            </button>
-            <div class="faq-answer">
-                <div class="faq-answer-content" data-i18n="faq.a28">
-                    In the event that something happens to the campervan and you are not at fault, (either a vehicle accident where someone strikes the vehicle or damage occurs while the vehicle is parked) you are liable for the damage caused to the vehicle until we are able to receive payment for those damages from the third party.
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CHATBOT WIDGET -->
-<div class="chatbot-toggle" onclick="toggleChatbot()">
-    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-</div>
-
-<div class="chatbot-window" id="chatbotWindow">
-    <div class="chatbot-header">
-        <div class="chatbot-title">🐒 MonkeyBot</div>
-        <button class="chatbot-close" onclick="toggleChatbot()">×</button>
-    </div>
-    <div class="chatbot-messages" id="chatbotMessages">
-        <div class="chatbot-message bot">
-            <div class="chatbot-bubble">
-                <span data-i18n="chat.greeting">Hi! I'm MonkeyBot 🐒. Ask me anything about our campervan rentals!</span>
-            </div>
-        </div>
-        <div class="chatbot-quick-questions">
-            <button class="chatbot-quick-btn" onclick="askQuickQuestion('equipment')" data-i18n="chat.q1">Equipment</button>
-            <button class="chatbot-quick-btn" onclick="askQuickQuestion('booking')" data-i18n="chat.q2">Booking</button>
-            <button class="chatbot-quick-btn" onclick="askQuickQuestion('insurance')" data-i18n="chat.q3">Insurance</button>
-            <button class="chatbot-quick-btn" onclick="askQuickQuestion('license')" data-i18n="chat.q4">License</button>
-        </div>
-    </div>
-    <div class="chatbot-input-area">
-        <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your question..." onkeypress="handleChatKeypress(event)">
-        <button class="chatbot-send" onclick="sendChatMessage()">➤</button>
-    </div>
-</div>
-
+<!-- FLEET SECTION - Updated with correct models -->
 <section class="fleet-section" id="fleet">
     <div class="section-header reveal">
         <span class="section-tag" data-i18n="fleet.tag">🚐 Our Fleet</span>
         <h2 class="section-title" data-i18n="fleet.title">Choose Your <span class="hl">Adventure Van</span></h2>
-        <p class="section-desc" data-i18n="fleet.desc">From budget-friendly options to premium 4WD campers, we have the perfect vehicle for your journey.</p>
+        <p class="section-desc" data-i18n="fleet.desc">Two reliable 2WD campervan models perfect for your South American adventure. Minimum 7-day rental.</p>
     </div>
     <div class="fleet-grid">
         <div class="fleet-card reveal">
-            <div class="fleet-card-image f-budget">🚐<span class="fleet-badge" data-i18n="fleet.b1">Best Value</span></div>
+            <div class="fleet-card-image f-budget">🚐<span class="fleet-badge" data-i18n="fleet.b1">Most Popular</span></div>
             <div class="fleet-card-content">
-                <h3 data-i18n="fleet.n1">Budget Explorer</h3>
-                <p class="subtitle" data-i18n="fleet.s1">Perfect for solo travelers and couples</p>
+                <h3 data-i18n="fleet.n1">Chimpanzee Camper Van</h3>
+                <p class="subtitle" data-i18n="fleet.s1">Comfortable 2WD campervan for couples and small groups</p>
                 <div class="fleet-features">
                     <span class="fleet-feature">👥 2-3</span>
                     <span class="fleet-feature" data-i18n="fleet.f.bed">🛏️ Bed</span>
                     <span class="fleet-feature" data-i18n="fleet.f.fridge">🧊 Fridge</span>
                     <span class="fleet-feature" data-i18n="fleet.f.gas">⛽ Gas</span>
+                    <span class="fleet-feature"> 2WD</span>
                 </div>
                 <div class="fleet-card-footer">
-                    <div class="fleet-price">$59<span data-i18n="fleet.perday">/day</span></div>
+                    <div class="fleet-price" data-i18n="fleet.min7">Min 7 Days</div>
                     <button class="fleet-book-btn" onclick="openWhatsApp()" data-i18n="fleet.booknow">Book Now</button>
                 </div>
             </div>
         </div>
         <div class="fleet-card reveal">
-            <div class="fleet-card-image f-standard">💨<span class="fleet-badge" data-i18n="fleet.b2">Popular</span></div>
+            <div class="fleet-card-image f-standard">🚐<span class="fleet-badge" data-i18n="fleet.b2">Spacious</span></div>
             <div class="fleet-card-content">
-                <h3 data-i18n="fleet.n2">Standard 4WD</h3>
-                <p class="subtitle" data-i18n="fleet.s2">4WD camper for off-road adventures</p>
+                <h3 data-i18n="fleet.n2">Gorilla Camper Van</h3>
+                <p class="subtitle" data-i18n="fleet.s2">Larger 2WD campervan for families and groups</p>
                 <div class="fleet-features">
-                    <span class="fleet-feature">👥 4</span>
+                    <span class="fleet-feature">👥 4-5</span>
                     <span class="fleet-feature" data-i18n="fleet.f.2beds">🛏️ 2 Beds</span>
                     <span class="fleet-feature" data-i18n="fleet.f.kitchen">🧊 Kitchen</span>
                     <span class="fleet-feature" data-i18n="fleet.f.solar">🔌 Solar</span>
+                    <span class="fleet-feature">🚗 2WD</span>
                 </div>
                 <div class="fleet-card-footer">
-                    <div class="fleet-price">$89<span data-i18n="fleet.perday">/day</span></div>
-                    <button class="fleet-book-btn" onclick="openWhatsApp()" data-i18n="fleet.booknow">Book Now</button>
-                </div>
-            </div>
-        </div>
-        <div class="fleet-card reveal">
-            <div class="fleet-card-image f-premium">🏔️<span class="fleet-badge" data-i18n="fleet.b3">Premium</span></div>
-            <div class="fleet-card-content">
-                <h3 data-i18n="fleet.n3">Premium Camper</h3>
-                <p class="subtitle" data-i18n="fleet.s3">Full-equipped 4WD for families</p>
-                <div class="fleet-features">
-                    <span class="fleet-feature">👥 6</span>
-                    <span class="fleet-feature" data-i18n="fleet.f.3beds">🛏️ 3 Beds</span>
-                    <span class="fleet-feature" data-i18n="fleet.f.shower">🚿 Shower</span>
-                    <span class="fleet-feature" data-i18n="fleet.f.wifi">📶 WiFi</span>
-                </div>
-                <div class="fleet-card-footer">
-                    <div class="fleet-price">$139<span data-i18n="fleet.perday">/day</span></div>
+                    <div class="fleet-price" data-i18n="fleet.min7">Min 7 Days</div>
                     <button class="fleet-book-btn" onclick="openWhatsApp()" data-i18n="fleet.booknow">Book Now</button>
                 </div>
             </div>
@@ -912,8 +529,8 @@
 
 <section class="destinations-section" id="destinations">
     <div class="section-header reveal">
-        <span class="section-tag" data-i18n="dest.tag">🌎 Top Routes</span>
-        <h2 class="section-title" data-i18n="dest.title">Explore Iconic <span class="hl">Destinations</span></h2>
+        <span class="section-tag">🌎 Top Routes</span>
+        <h2 class="section-title" data-i18n="dest.title">Explore Iconic Destinations</h2>
         <p class="section-desc" data-i18n="dest.desc">Drive through some of the most stunning landscapes on Earth with our campervans.</p>
     </div>
     <div class="destinations-grid">
@@ -987,7 +604,6 @@
             <a href="#fleet" data-i18n="nav.fleet">Our Vans</a>
             <a href="#features" data-i18n="nav.features">Why Us</a>
             <a href="#destinations" data-i18n="nav.destinations">Destinations</a>
-            <a href="#faq" data-i18n="nav.faq">FAQ</a>
             <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
         </div>
         <div class="footer-col">
@@ -1021,57 +637,37 @@
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
 </a>
 
-<script>
-// FAQ DATABASE FOR CHATBOT
-const faqDatabase = {
-    en: {
-        "equipment": "The Monkey campervans are equipped with basic cooking equipment which includes cutlery, crockery, pots and pans, gas kettle, cooler box, sink, manual water pump and a little more. A Linen Pack can be purchased for $xxxx and includes a queen duvet, queen sheet, 2 towels, 2 pillow cases and a tea towel. If no Linen Pack is selected, the vehicle comes with a duvet inner (or sleeping bag) and 2 pillows complementary.",
-        "booking": "We suggest booking as soon as you know your dates. To confirm, we need a 50% deposit and the balance is due on pickup. The best way is through our secure booking page. Your request will be processed within 24 hours.",
-        "insurance": "The rental insurance restricts the maximum you are liable for in case of an accident. It doesn't cover personal loss or injury - we suggest taking your own travel insurance. If you have travel insurance covering vehicle damage, you won't need additional excess reduction but you'll need to pay the excess at incident time and reclaim from your insurer.",
-        "license": "No special license needed - a standard full car license works. We recommend a Spanish translation or international driver's license. For 4WD rentals, minimum age is 22 years. No minimum for 2WD vehicles.",
-        "automatic": "The Chimpanzee campervan has automatic transmission. The Gorilla 4X4 campervan has manual transmission.",
-        "water": "The campervans have a 5-liter water tank. You can refill at holiday parks, service stations when refueling, or any tap.",
-        "freedom camping": "In Chile you can camp for free almost everywhere as there are no strict rules (except a couple of beaches). Many beaches, mountains, lakes, and deserts allow camping!",
-        "calendar days": "We charge by calendar day, not per 24-hour period. You're charged for both the collection day and return day, regardless of pickup/dropoff time.",
-        "payment": "We accept Visa, MasterCard, and American Express (3% fee applies). No extra charge for cash payments. All transactions are in Chilean pesos (CLP).",
-        "cancel": "Contact us ASAP to amend or cancel. Email info@monkey-adventures.com with your confirmation number. No refund if you shorten your hire early, but travel insurance may cover it.",
-        "minimum hire": "Minimum 7 days hire period, though this can change during peak seasons.",
-        "speed": "Open road limit is 120km/h but we suggest 90-100km/h for campervans, especially if you're new to driving one.",
-        "fuel": "Most campervans consume 10-14 liters per 100km, depending on distance traveled.",
-        "camping parks": "Rarely full except Christmas/New Year through mid-January and first two weeks of February.",
-        "office location": "Camino Central 2470 of A41, Lo Barnechea, Santiago de Chile.",
-        "delivery": "Yes, we can deliver to your hotel/motel but we recommend coming to our office for the 45-minute orientation and documentation process.",
-        "after hours": "Unfortunately, we don't offer after-hours service.",
-        "one way": "One-way rentals available only from Santiago with coordination before pickup (extra cost applies depending on city).",
-        "breakdown": "24-hour emergency breakdown service nationwide. We can authorize up to CLP$50,000 for emergency repairs - just keep the receipt for refund.",
-        "accident fault": "You're liable up to your excess amount. For minor damage, you only pay repair costs, not the entire excess.",
-        "accident not fault": "If not your fault, you're liable for damage until we receive payment from the third party."
-    },
-    es: {
-        "equipment": "Las campervans Monkey están equipadas con utensilios de cocina básicos que incluyen cubiertos, vajilla, ollas y sartenes, tetera a gas, caja térmica, lavamanos, bomba de agua manual y más. Se puede comprar un Pack de Ropa de Cama por $xxxx que incluye edredón queen, sábana queen, 2 toallas, 2 fundas de almohada y un paño de cocina. Si no se selecciona, el vehículo viene con edredón (o bolsa de dormir) y 2 almohadas complimentary.",
-        "booking": "Sugerimos reservar tan pronto conozcas tus fechas. Para confirmar, necesitamos 50% de depósito y el saldo al recoger. La mejor forma es por nuestra página segura. Tu solicitud se procesa en 24 horas.",
-        "insurance": "El seguro de arriendo limita lo máximo que pagas en caso de accidente. No cubre pérdida o lesión personal - sugerimos seguro de viaje. Si tienes seguro que cubre daño al vehículo, no necesitas exceso adicional pero debes pagar el exceso al momento y reclamar a tu aseguradora.",
-        "license": "No se necesita licencia especial - sirve licencia de auto estándar. Recomendamos traducción al español o licencia internacional. Para 4WD, edad mínima 22 años. Sin mínimo para 2WD.",
-        "automatic": "La campervan Chimpanzee tiene transmisión automática. La Gorilla 4X4 tiene transmisión mecánica.",
-        "water": "Las campervans tienen estanque de 5 litros. Puedes recargar en parques de vacaciones, estaciones de servicio al cargar combustible, o cualquier grifo.",
-        "freedom camping": "En Chile puedes acampar gratis en casi todas partes ya que no hay reglas estrictas (excepto un par de playas). ¡Muchas playas, montañas, lagos y desiertos permiten acampar!",
-        "calendar days": "Cobramos por día calendario, no por período de 24 horas. Se cobra tanto el día de recogida como el de devolución, sin importar la hora.",
-        "payment": "Aceptamos Visa, MasterCard y American Express (3% de comisión). Sin cargo extra por efectivo. Todas las transacciones en pesos chilenos (CLP).",
-        "cancel": "Contáctanos lo antes posible para modificar o cancelar. Email info@monkey-adventures.com con tu número de confirmación. Sin reembolso si acortas el arriendo, pero el seguro de viaje podría cubrirlo.",
-        "minimum hire": "Mínimo 7 días de arriendo, aunque puede cambiar en temporadas altas.",
-        "speed": "Límite en ruta es 120km/h pero sugerimos 90-100km/h para campervans, especialmente si es tu primera vez.",
-        "fuel": "La mayoría consume 10-14 litros cada 100km, dependiendo de la distancia recorrida.",
-        "camping parks": "Raramente llenos excepto Navidad/Año Nuevo hasta mediados de enero y las primeras dos semanas de febrero.",
-        "office location": "Camino Central 2470 of A41, Lo Barnechea, Santiago de Chile.",
-        "delivery": "Sí, podemos entregar en tu hotel pero recomendamos venir a nuestra oficina para la orientación de 45 minutos y documentación.",
-        "after hours": "Desafortunadamente, no ofrecemos servicio fuera de horario.",
-        "one way": "Arriendos solo ida disponibles solo desde Santiago con coordinación antes de recoger (costo extra según ciudad).",
-        "breakdown": "Servicio de emergencia 24 horas a nivel nacional. Podemos autorizar hasta CLP$50.000 para reparaciones de emergencia - guarda el comprobante para reembolso.",
-        "accident fault": "Eres responsable hasta el monto de tu exceso. Para daño menor, solo pagas el costo de reparación, no todo el exceso.",
-        "accident not fault": "Si no es tu culpa, eres responsable del daño hasta que recibamos el pago del tercero."
-    }
-};
+<!-- CHATBOT WIDGET -->
+<div class="chatbot-toggle" onclick="toggleChatbot()">
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+</div>
 
+<div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">
+        <div class="chatbot-title">🐒 MonkeyBot</div>
+        <button class="chatbot-close" onclick="toggleChatbot()">×</button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chatbot-message bot">
+            <div class="chatbot-bubble">
+                <span data-i18n="chat.greeting">Hi! I'm MonkeyBot 🐒. Ask me anything about our campervan rentals, pricing, or terms!</span>
+            </div>
+        </div>
+        <div class="chatbot-quick-questions">
+            <button class="chatbot-quick-btn" onclick="askQuickQuestion('models')" data-i18n="chat.q1">Models</button>
+            <button class="chatbot-quick-btn" onclick="askQuickQuestion('booking')" data-i18n="chat.q2">Booking</button>
+            <button class="chatbot-quick-btn" onclick="askQuickQuestion('insurance')" data-i18n="chat.q3">Insurance</button>
+            <button class="chatbot-quick-btn" onclick="askQuickQuestion('faq')" data-i18n="chat.q4">FAQ</button>
+        </div>
+        <a class="chatbot-tc-link" onclick="openTCModal()" data-i18n="chat.tc_link">📄 View Full Terms & Conditions</a>
+    </div>
+    <div class="chatbot-input-area">
+        <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your question..." onkeypress="handleChatKeypress(event)">
+        <button class="chatbot-send" onclick="sendChatMessage()">➤</button>
+    </div>
+</div>
+
+<script>
 // PHONE AUTO-FORMAT
 function formatPhone(input) {
     let val = input.value.replace(/\D/g, '');
@@ -1083,21 +679,21 @@ function formatPhone(input) {
     input.value = formatted;
 }
 
-// FAQ TOGGLE
-function toggleFaq(button) {
-    const item = button.parentElement;
-    const isActive = item.classList.contains('active');
-    
-    // Close all FAQ items
-    document.querySelectorAll('.faq-item').forEach(faq => {
-        faq.classList.remove('active');
-    });
-    
-    // Open clicked item if it wasn't active
-    if (!isActive) {
-        item.classList.add('active');
-    }
+// TERMS & CONDITIONS MODAL
+function openTCModal() {
+    document.getElementById('tcModal').classList.add('active');
+    toggleChatbot();
 }
+
+function closeTCModal() {
+    document.getElementById('tcModal').classList.remove('active');
+}
+
+document.getElementById('tcModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeTCModal();
+    }
+});
 
 // CHATBOT FUNCTIONS
 function toggleChatbot() {
@@ -1115,7 +711,7 @@ function addChatMessage(text, isBot = true) {
 
 function askQuickQuestion(topic) {
     const lang = currentLang;
-    const answer = faqDatabase[lang][topic] || "I'm not sure about that. Let me connect you with our team!";
+    const answer = faqDatabase[lang][topic] || (lang === 'en' ? "I'm not sure about that. Let me connect you with our team!" : "No estoy seguro sobre eso. ¡Déjame conectarte con nuestro equipo!");
     addChatMessage(answer, true);
 }
 
@@ -1128,59 +724,34 @@ function sendChatMessage() {
     addChatMessage(input.value, false);
     input.value = '';
     
-    // Simple keyword matching
     const lang = currentLang;
     let answer = null;
     
-    if (question.includes('equipment') || question.includes('cooking') || question.includes('kitchen') || question.includes('linen')) {
-        answer = faqDatabase[lang].equipment;
+    // FAQ keywords
+    if (question.includes('model') || question.includes('van type') || question.includes('chimpanzee') || question.includes('gorilla')) {
+        answer = faqDatabase[lang].models;
     } else if (question.includes('book') || question.includes('booking') || question.includes('reservation') || question.includes('deposit')) {
         answer = faqDatabase[lang].booking;
-    } else if (question.includes('insurance') || question.includes('coverage') || question.includes('excess')) {
+    } else if (question.includes('insurance') || question.includes('coverage') || question.includes('excess') || question.includes('deductible')) {
         answer = faqDatabase[lang].insurance;
-    } else if (question.includes('license') || question.includes('permit') || question.includes('age') || question.includes('driver')) {
-        answer = faqDatabase[lang].license;
-    } else if (question.includes('automatic') || question.includes('manual') || question.includes('transmission')) {
-        answer = faqDatabase[lang].automatic;
-    } else if (question.includes('water') || question.includes('tank')) {
-        answer = faqDatabase[lang].water;
-    } else if (question.includes('camp') || question.includes('freedom') || question.includes('free')) {
-        answer = faqDatabase[lang]['freedom camping'];
-    } else if (question.includes('calendar') || question.includes('day') || question.includes('charge')) {
-        answer = faqDatabase[lang]['calendar days'];
-    } else if (question.includes('payment') || question.includes('card') || question.includes('visa') || question.includes('mastercard') || question.includes('currency') || question.includes('peso')) {
-        answer = faqDatabase[lang].payment;
-    } else if (question.includes('cancel') || question.includes('amend') || question.includes('change') || question.includes('refund')) {
-        answer = faqDatabase[lang].cancel;
-    } else if (question.includes('minimum') || question.includes('days') || question.includes('period')) {
-        answer = faqDatabase[lang]['minimum hire'];
-    } else if (question.includes('speed') || question.includes('km') || question.includes('drive')) {
-        answer = faqDatabase[lang].speed;
-    } else if (question.includes('fuel') || question.includes('gas') || question.includes('consumption') || question.includes('liter')) {
-        answer = faqDatabase[lang].fuel;
-    } else if (question.includes('park') || question.includes('camping park') || question.includes('powered')) {
-        answer = faqDatabase[lang]['camping parks'];
-    } else if (question.includes('office') || question.includes('location') || question.includes('address') || question.includes('where')) {
-        answer = faqDatabase[lang]['office location'];
-    } else if (question.includes('deliver') || question.includes('hotel') || question.includes('motel')) {
-        answer = faqDatabase[lang].delivery;
-    } else if (question.includes('after hour') || question.includes('late') || question.includes('time')) {
-        answer = faqDatabase[lang]['after hours'];
-    } else if (question.includes('one way') || question.includes('one-way') || question.includes('drop')) {
-        answer = faqDatabase[lang]['one way'];
-    } else if (question.includes('breakdown') || question.includes('emergency') || question.includes('repair')) {
-        answer = faqDatabase[lang].breakdown;
-    } else if (question.includes('accident') && question.includes('fault')) {
-        answer = faqDatabase[lang]['accident fault'];
-    } else if (question.includes('accident') && !question.includes('fault')) {
-        answer = faqDatabase[lang]['accident not fault'];
+    } else if (question.includes('faq') || question.includes('question') || question.includes('help')) {
+        answer = faqDatabase[lang].faq;
+    } else if (question.includes('minimum') || question.includes('days') || question.includes('rental period')) {
+        answer = faqDatabase[lang].minimum;
+    } else if (question.includes('price') || question.includes('cost') || question.includes('rate')) {
+        answer = faqDatabase[lang].price;
+    } else if (question.includes('2wd') || question.includes('four wheel drive') || question.includes('transmission')) {
+        answer = faqDatabase[lang].transmission;
     }
     
     if (answer) {
         setTimeout(() => addChatMessage(answer, true), 500);
     } else {
         setTimeout(() => {
-            addChatMessage(lang === 'en' ? "I'm not sure about that. Would you like to chat with our team on WhatsApp?" : "No estoy seguro sobre eso. ¿Te gustaría chatear con nuestro equipo por WhatsApp?", true);
+            const fallback = lang === 'en' 
+                ? "I'm not sure about that. Would you like to:\n1️⃣ Chat with our team on WhatsApp?\n2️⃣ View our full Terms & Conditions?\n3️⃣ Ask about something else?" 
+                : "No estoy seguro sobre eso. ¿Te gustaría:\n1️⃣ Chatear con nuestro equipo por WhatsApp?\n2️⃣ Ver nuestros Términos y Condiciones completos?\n3️⃣ Preguntar sobre algo más?";
+            addChatMessage(fallback, true);
         }, 500);
     }
 }
@@ -1191,6 +762,29 @@ function handleChatKeypress(event) {
     }
 }
 
+// FAQ Database for Chatbot
+const faqDatabase = {
+    en: {
+        "models": "We have two 2WD campervan models:\n\n🚐 **Chimpanzee Camper Van** - Perfect for 2-3 people, comfortable and efficient\n\n🚐 **Gorilla Camper Van** - Spacious option for 4-5 people with extra storage\n\nBoth are 2WD vehicles ideal for main roads and popular routes. Minimum 7-day rental applies.",
+        "booking": "To book, simply fill out our form or contact us via WhatsApp. We require a 50% deposit to confirm your reservation, with the balance due on pickup. Minimum rental period is 7 days.",
+        "insurance": "All rentals include basic insurance coverage. We also offer optional excess reduction packages. Full details are in our Terms & Conditions. We recommend travel insurance for personal coverage.",
+        "faq": "I can help with questions about:\n• Our van models (Chimpanzee & Gorilla)\n• Booking process & minimum rental (7 days)\n• Pricing & insurance\n• Pickup locations\n• Equipment included\n\nWhat would you like to know?",
+        "minimum": "We have a minimum rental period of 7 days for all our campervans. This applies year-round, though it may vary during peak seasons.",
+        "price": "Our pricing is competitive and transparent, with all taxes (IVA) included. Contact us via WhatsApp for current rates and any seasonal promotions. We offer the best value in South America!",
+        "transmission": "Both our Chimpanzee and Gorilla campervans are 2WD (two-wheel drive) vehicles. They're perfect for main highways and popular tourist routes throughout Chile and Argentina."
+    },
+    es: {
+        "models": "Tenemos dos modelos de campervan 2WD:\n\n🚐 **Chimpanzee Camper Van** - Perfecto para 2-3 personas, cómodo y eficiente\n\n🚐 **Gorilla Camper Van** - Opción espaciosa para 4-5 personas con almacenamiento extra\n\nAmbos son vehículos 2WD ideales para carreteras principales y rutas populares. Aplica alquiler mínimo de 7 días.",
+        "booking": "Para reservar, completa nuestro formulario o contáctanos por WhatsApp. Requerimos 50% de depósito para confirmar tu reserva, con el saldo al recoger. Período mínimo de alquiler es 7 días.",
+        "insurance": "Todos los alquileres incluyen seguro básico. También ofrecemos paquetes opcionales de reducción de exceso. Los detalles completos están en nuestros Términos y Condiciones. Recomendamos seguro de viaje para cobertura personal.",
+        "faq": "Puedo ayudarte con preguntas sobre:\n• Nuestros modelos de vans (Chimpanzee y Gorilla)\n• Proceso de reserva y alquiler mínimo (7 días)\n• Precios y seguros\n• Lugares de recogida\n• Equipo incluido\n\n¿Qué te gustaría saber?",
+        "minimum": "Tenemos un período mínimo de alquiler de 7 días para todas nuestras campervans. Esto aplica todo el año, aunque puede variar en temporadas altas.",
+        "price": "Nuestros precios son competitivos y transparentes, con todos los impuestos (IVA) incluidos. ¡Contáctanos por WhatsApp para tarifas actuales y promociones de temporada! Ofrecemos el mejor valor en Sudamérica.",
+        "transmission": "Tanto nuestra Chimpanzee como Gorilla campervans son vehículos 2WD (tracción en dos ruedas). Son perfectos para carreteras principales y rutas turísticas populares en Chile y Argentina."
+    }
+};
+
+// Rest of the JavaScript (translations, setLang, etc.) remains the same
 var translations={
 en:{
 "nav.home":"Home","nav.fleet":"Our Vans","nav.features":"Why Us","nav.destinations":"Destinations","nav.faq":"FAQ","nav.reviews":"Reviews","nav.contact":"Contact","nav.book":"Book Now",
@@ -1201,76 +795,16 @@ en:{
 "stats.travelers":"Happy Travelers","stats.vans":"Vans Available","stats.locations":"Locations","stats.rating":"Google Rating",
 "form.name":"Full Name","form.phone":"Phone Number","form.pickup":"Pickup Location","form.select":"Select...","form.pdate":"Pickup Date","form.rdate":"Return Date","form.travelers":"Travelers",
 "form.t1":"1-2 Travelers","form.t2":"3-4 Travelers","form.t3":"5-6 Travelers",
-"form.type":"Van Type","form.all":"All Types","form.budget":"Budget Van","form.standard":"Standard 4WD","form.premium":"Premium Camper",
+"form.type":"Van Type","form.all":"All Types","form.budget":"Chimpanzee 2WD","form.standard":"Gorilla 2WD","form.premium":"Premium Camper",
 "form.search":"Submit Request 🔍",
-"faq.title":"Frequently Asked <span class=\"hl\">Questions</span>",
-"faq.desc":"Find answers to common questions about our campervan rentals. Can't find what you're looking for? Chat with us!",
-"faq.q1":"What living and cooking equipment is included with the vehicles?",
-"faq.a1":"The Monkey campervans are equipped with basic cooking equipment which includes cutlery, crockery, pots and pans, gas kettle, cooler box, sink, manual water pump and a little more. A Linen Pack can be purchased for $xxxx and includes a queen duvet, queen sheet, 2 towels, 2 pillow cases and a tea towel. Please note that if no Linen Pack is selected the vehicle comes with a duvet inner (or a sleeping bag) and 2 pillows complementary. If the sleeping bag is used it must be returned clean.",
-"faq.q2":"Are the campervans automatic or manual?",
-"faq.a2":"The Chimpanzee campervan have automatic transmissions making it easier to drive around Chile and the Gorilla 4X4 campervan are mechanic transmission.",
-"faq.q3":"How much water do I have on board?",
-"faq.a3":"The Monkey campervans has a 5 liters water tank. The fresh water tank can be easily refilled whenever you want at holiday parks and often a service station when you refuel the vehicle or any other tap.",
-"faq.q4":"Can I Freedom Camp in Chile?",
-"faq.a4":"In Chile you can camp for free in almost everywhere, because till there is not rule about it (just in a couple of beaches). Even camping in a Caravan Park is usually not that expensive (except for a few of the very remote communities!). Many of the beaches, mountains, lakes, desert in Chile allow camping, meaning you can follow the geography around Chile whilst saving your money and waking up each morning to the best view in the world!",
-"faq.q5":"How and when should I make my bookings?",
-"faq.a5":"We always suggest as soon as you know the dates you wish to have your holiday – go online and book. To confirm we need 50% deposit and then the balance is due on pick up of your campervan. Very easy. The best way to submit your credit card details are though the secure server bookings page on our website",
-"faq.q6":"What do you mean by calendar days when we book?",
-"faq.a6":"The campervan operators charge by the day, not per 24 hour period. So regardless of the time of collection and return, you will be charged for the day you collect and the day you drop your vehicle off. This is somewhat like a hotel and a rental car company all in one as you can drive and sleep in your vehicle.",
-"faq.q7":"Is additional equipment available?",
-"faq.a7":"Book your car, all you need is a credit or debit card. When you pick the car up, you'll need Different car hire companies have different requirements, so please make sure you check the car's terms and conditions as well.<br>Your rentalcars.com voucher / eVoucher, to show that you've paid for the car.<br>The main driver's credit / debit card, with enough available funds for the car's security deposit.<br>Each driver's full, valid driving licence, which they've held for at least 12 months (often 24).<br>Your passport and any other ID the car hire company needs to see",
-"faq.q8":"I have submitted my booking form and credit card – what happens now?",
-"faq.a8":"Your request will be processed within 24 hours of receiving your booking or we will get in contact with you. If a vehicle is available for the dates you specified, your booking will be finalised and your credit card will be charged a 50% deposit. If a vehicle is not available, we will contact you with a suitable alternative and no payment will be incurred.",
-"faq.q9":"Why do I have to include my credit card number?",
-"faq.a9":"We require a credit card for the 50% deposit to secure you booking. Your credit card information is strictly confidential and this is a faster method for securing your booking compared with Cash or Cheque",
-"faq.q10":"Which credit card types do you accept?",
-"faq.a10":"We accept Visa, Master Card, and American Express. Please note that have an additional fee of3%. There is no extra charge for paying in cash",
-"faq.q11":"What currency will my Credit Card be charged?",
-"faq.a11":"All credit card transactions will be processed in Chilean pesos (CLP). This applies to all bookings made through our website.",
-"faq.q12":"How can I amend or cancel my booking?",
-"faq.a12":"If you wish to amend or cancel your existing booking, please contact us as soon as possible. This is so we can make sure any extensions are available for you and to reduce the cost to you for cancellations. Simply go to the contact page and make an enquiry, or email info@monkey-adventures.com. Please ensure you quote your confirmation number.",
-"faq.q13":"Is there a refund if I shorten my hire while on holiday?",
-"faq.a13":"No, there is no refund if you return your campervan earlier than the reserved period. However your travel insurance may in some circumstances cover the unused portion.",
-"faq.q14":"Do I need a special drivers license to drive a campervan in Chile?",
-"faq.a14":"No, our campervans can be driven with a standard full car license. We recommend a Spanish translation or an international drivers license",
-"faq.q15":"How old do I need to be to drive a campervan or motorhome?",
-"faq.a15":"Drivers must hold a current and valid drivers license (non-probationary) for the duration of the hire period. Foreigners should use a foreign license, with the Spanish translation of its text. No minimum age restriction applies for 2wd vehicles and for the 4WD rentals which require minimum 22 years old.",
-"faq.q16":"Is there a minimum hire period?",
-"faq.a16":"We have a minimum hire period of 7 days when collecting and returning the campervan. Please note however that this can change during peak seasons depending on availability.",
-"faq.q17":"What is the safe travel speed for driving the campervans?",
-"faq.a17":"The open road speed limit is 120km/hour but we suggest a comfortable speed for driving your campervan is 90-100km/hour, especially if you have never driven one before. Should you choose to travel below the speed limit, please show courtesy to other road users by allowing them to pass.",
-"faq.q18":"How much fuel am I likely to use on my holiday?",
-"faq.a18":"This all depends on how far you travel! Most of our campervans have an average fuel consumption of 10-14 ltrs per 100kms.",
-"faq.q19":"Do I have to pre-book camping parks?",
-"faq.a19":"It is rare for powered sites to be full at camping parks. The only time it may be a problem is over the Christmas/New Year period continuing to the end of the second week of January and also the first two weeks of February.",
-"faq.q20":"Where are your offices located?",
-"faq.a20":"The office of Monkey Adventures is located at Camino Central 2470 of A41, Lo Barnechea, Santiago de Chile.",
-"faq.q21":"Can you deliver a vehicle to our hotel/motel?",
-"faq.a21":"Yes, we can do it. But we recommend to come to our office to collect your vehicle so we can complete the necessary documentation and show you how to use your campervan. The whole process takes about 45 minutes.",
-"faq.q22":"Can I pick up after hours?",
-"faq.a22":"Unfortunately Monkey Adventures does not offer an after hours service.",
-"faq.q23":"Do you allow one-way hires?",
-"faq.a23":"-One-Way rentals are available only with pick-up in Santiago and in coordination with the Monkey Adventure before of pick-up de car. (applies extra cost depending of the city).",
-"faq.q24":"What happens if I break down or need assistance during my holiday?",
-"faq.a24":"Our campervans are supported 24-hour emergency breakdown service who are a nationwide network of reputable service agents who will deal with any problems that may arise. We can also authorize you to spend up to CLP$50.000 in emergency repairs so that you can deal with minor matters speedily or when convenient to you, but please produce the receipt when you return from your hire for a refund.",
-"faq.q25":"What does the rental insurance cover?",
-"faq.a25":"The rental insurance cover restricts the maximum you are liable for in the event of an accident as long as you do not break the rental agreement terms and conditions. It does not cover you for any personal loss or injury. We suggest taking your own personal travel insurance.",
-"faq.q26":"If I have an accident and I am at fault, will I lose my entire excess?",
-"faq.a26":"You will be liable for up to the amount of your excess towards the repair cost. If the damage is minor, you will only be charged the repair costs and not the entire excess.",
-"faq.q27":"I have Travel Insurance, which covers damage to the vehicle. Do I need to pay the vehicle insurance as well?",
-"faq.a27":"If you are covered by travel insurance you will not need to pay for any additional insurance excess reduction, however you will be liable to pay the excess at the time of the incident and then you would need to reclaim this excess from your travel insurer.",
-"faq.q28":"What happens if I have an accident and it's not my fault?",
-"faq.a28":"In the event that something happens to the campervan and you are not at fault, (either a vehicle accident where someone strikes the vehicle or damage occurs while the vehicle is parked) you are liable for the damage caused to the vehicle until we are able to receive payment for those damages from the third party.",
-"chat.greeting":"Hi! I'm MonkeyBot 🐒. Ask me anything about our campervan rentals!",
-"chat.q1":"Equipment","chat.q2":"Booking","chat.q3":"Insurance","chat.q4":"License",
-"fleet.tag":"🚐 Our Fleet","fleet.title":"Choose Your <span class=\"hl\">Adventure Van</span>","fleet.desc":"From budget-friendly options to premium 4WD campers, we have the perfect vehicle for your journey.",
-"fleet.b1":"Best Value","fleet.b2":"Popular","fleet.b3":"Premium",
-"fleet.n1":"Budget Explorer","fleet.n2":"Standard 4WD","fleet.n3":"Premium Camper",
-"fleet.s1":"Perfect for solo travelers and couples","fleet.s2":"4WD camper for off-road adventures","fleet.s3":"Full-equipped 4WD for families",
+"fleet.tag":"🚐 Our Fleet","fleet.title":"Choose Your <span class=\"hl\">Adventure Van</span>","fleet.desc":"Two reliable 2WD campervan models perfect for your South American adventure. Minimum 7-day rental.",
+"fleet.b1":"Most Popular","fleet.b2":"Spacious","fleet.b3":"Premium",
+"fleet.n1":"Chimpanzee Camper Van","fleet.n2":"Gorilla Camper Van","fleet.n3":"Premium Camper",
+"fleet.s1":"Comfortable 2WD campervan for couples and small groups","fleet.s2":"Larger 2WD campervan for families and groups","fleet.s3":"Full-equipped 4WD for families",
 "fleet.f.bed":"🛏️ Bed","fleet.f.fridge":"🧊 Fridge","fleet.f.gas":"⛽ Gas",
 "fleet.f.2beds":"🛏️ 2 Beds","fleet.f.kitchen":"🧊 Kitchen","fleet.f.solar":"🔌 Solar",
 "fleet.f.3beds":"🛏️ 3 Beds","fleet.f.shower":"🚿 Shower","fleet.f.wifi":"📶 WiFi",
-"fleet.perday":"/day","fleet.booknow":"Book Now",
+"fleet.min7":"Min 7 Days","fleet.perday":"/day","fleet.booknow":"Book Now",
 "features.tag":"✨ Why Choose Us","features.title":"The <span class=\"hl\">Monkey Difference</span>","features.desc":"We make campervan travel simple, safe, and unforgettable across Chile and Argentina.",
 "features.f1t":"Budget Friendly","features.f1d":"Transparent pricing with no hidden fees. IVA included. Best value in South America.",
 "features.f2t":"Full Insurance","features.f2d":"Comprehensive coverage included. 24/7 roadside assistance for peace of mind.",
@@ -1278,7 +812,7 @@ en:{
 "features.f4t":"Multiple Locations","features.f4d":"Pickup and drop-off at Santiago, Atacama, Puerto Montt, Bariloche, and Ushuaia.",
 "features.f5t":"Well-Maintained","features.f5d":"All vans regularly serviced and fully equipped for Patagonian and desert conditions.",
 "features.f6t":"24/7 Support","features.f6d":"Available around the clock via WhatsApp for any assistance during your trip.",
-"dest.tag":"🌎 Top Routes","dest.title":"Explore Iconic <span class=\"hl\">Destinations</span>","dest.desc":"Drive through some of the most stunning landscapes on Earth with our campervans.",
+"dest.tag":"🌎 Top Routes","dest.title":"Explore Iconic Destinations","dest.desc":"Drive through some of the most stunning landscapes on Earth with our campervans.",
 "dest.d1t":"Patagonia","dest.d1d":"Torres del Paine • Glaciers • Wildlife",
 "dest.d2t":"Atacama Desert","dest.d2d":"Geysers • Salt Flats • Stargazing",
 "dest.d3t":"Lake District","dest.d3d":"Volcanoes • Lakes • Hot Springs",
@@ -1297,7 +831,38 @@ en:{
 "footer.brand":"Budget campervan and 4WD camper rentals across Chile and Argentina.",
 "footer.qh":"Quick Links","footer.ih":"Rental Info","footer.ch":"Contact Us",
 "footer.l1":"Van Specifications","footer.l2":"Terms & Conditions","footer.l3":"Insurance Details","footer.l4":"FAQ",
-"footer.addr":"Santiago, Chile","footer.copy":"© 2026 MonkeyAdventure. All rights reserved.","wa.tooltip":"Chat with us on WhatsApp"
+"footer.addr":"Santiago, Chile","footer.copy":"© 2026 MonkeyAdventure. All rights reserved.","wa.tooltip":"Chat with us on WhatsApp",
+"chat.greeting":"Hi! I'm MonkeyBot 🐒. Ask me anything about our campervan rentals, pricing, or terms!",
+"chat.q1":"Models","chat.q2":"Booking","chat.q3":"Insurance","chat.q4":"FAQ",
+"chat.tc_link":"📄 View Full Terms & Conditions",
+"tc.title":"Monkey Adventures SpA. Campervan Rental Terms and Conditions",
+"tc.rates":"Rates",
+"tc.rates_content":"All tariffs are in Chilean Pesos (CLP) and inclusive of Services Tax (IVA). The price is calculated on a daily basis based on 2 passengers. Extra passenger recharges CLP $15,000 (up to 1 extra). Daily hire charges are calculated per calendar day and cannot be altered once confirmed.",
+"tc.hire_periods":"Hire Periods & One-Way",
+"tc.hire_periods_content":"Minimum rental periods apply. The day of pick-up is day one regardless of time. Return day is final day regardless of drop-off time. Changes must be notified 48h in advance. One-way rentals available from Santiago with extra cost: Iquique $390k, San Pedro $360k, Pucón $280k, Puerto Varas $320k, Coyhaique $360k, Punta Arenas $390k.",
+"tc.pickup":"Pick Up & Drop Off",
+"tc.pickup_content":"Hours: Mon-Fri 9am-5:30pm, Sat 9am-1pm. Closed Sundays & holidays. Set pickup/dropoff times required. Vehicle released 24h after scheduled pickup if no notice. Late pickup/early return = no refund. Location changes after confirmation require authorization + $290k fee. Argentina crossing requires permit/insurance (extra cost).",
+"tc.drivers":"Driver Requirements",
+"tc.drivers_content":"Valid non-probationary license required. Foreign licenses need Spanish translation. 4WD: min age 22. 2WD: min age 18 (+$5k/day for drivers 18-21).",
+"tc.deposit":"Deposit & Payments",
+"tc.deposit_content":"Booking deposit: USD$300 (non-refundable). Balance due on collection. Transfers in USD/EUR converted to CLP at bank rate. Cash payments: exact amount required. Credit/debit cards: 5% non-refundable surcharge. Credit card required as bond (main hirer's card). All transactions in CLP.",
+"tc.cancellations":"Cancellations & Modifications",
+"tc.cancellations_content":"60+ days: no charge. 45-60 days: 25% of gross rent. 30-45 days: 35%. 15-30 days: 50%. <15 days or No Show: 100%. Early return: no refund. Date changes subject to availability + fees. Non-delivery: $50k/day delay fee.",
+"tc.responsibility":"Hirer's Responsibility",
+"tc.responsibility_content":"Install child seats correctly. Turn off gas while driving. Return vehicle washed/vacuumed. Avoid damaging undercarriage on unsealed roads. Don't overheat engine. Check water/oil daily. Don't roll vehicle. Keep distance, avoid night driving. Check tire pressure. Drive carefully on Ruta 40/Carretera Austral. Obey speed limits/parking rules (fines charged to card). Don't destroy tires. Don't drive in sand/salt flats/mud/water with 2WD. Protect roof rack. All fines charged to card + $25k processing fee.",
+"tc.refunds":"Refunds Policy",
+"tc.refunds_content":"No refund for: unsuitable fuel, bad weather, border closures, early delivery, theft of belongings, excess fuel consumption. Refund only for: mechanical faults attributable to us (if not resolved in <6h, refund 1 day's rent). All refunds in CLP.",
+"tc.extra_fees":"Extra Fees",
+"tc.extra_fees_content":"Not washed/vacuumed: $30k. Portable toilet not empty: $30k. Smoking inside: $30k. Not full fuel tank on return: fuel cost + $15k fee.",
+"tc.insurance":"Insurance & Excess",
+"tc.insurance_content":"Basic insurance included (non-waivable). Deductible: $1.6M for 2WD. Option Plus: reduce to $1.1M for $5k/day. NOT covered: windscreens, tires, intoxicated driving, races, malicious damage, theft without original keys. Hirer liable for all damage regardless of fault (limited to deductible). Third-party claims: refund after we're indemnified.",
+"tc.exclusions":"Exclusions (No Coverage)",
+"tc.exclusions_content":"No coverage if: terms breached, negligence, wrong fuel, illegal use, beach/sand driving, roof damage from height restrictions, single-vehicle rollover, gravel road damage (voids liability limits), failure to stop for warning lights, continuing to drive after overheating/breakdown, night driving accidents with animals, reversing accidents, ignoring traffic signs, speeding, fatigue, alcohol/drugs, leaving keys in unattended vehicle, removing radio panel, water/salt/creek/flood damage, underbody/roof/interior/tire damage, illegal use, towing, carrying passengers for hire, carrying hazardous materials, carrying animals (except registered dogs), unfit roads, driving damaged vehicle without permission, theft/fire/break-in losses, inappropriate snow chains, wrong fuel type.",
+"tc.accidents":"Accidents & Exchange Vehicles",
+"tc.accidents_content":"Hirer responsible for all retrieval/storage/recovery costs (not covered by insurance). If liability unclear at dropoff, full excess charged (refunded after confirmation). If we can't supply booked vehicle, we'll try to provide similar quality. Exchange vehicle: hirer's cost to collect, daily rate still applies, no liability for lost travel days. Exchange may take up to 3 days, may not be identical. Insurance excess not transferable to exchange vehicle. No refund for unused hire if exchange not needed.",
+"tc.accident_steps":"What to Do in Case of Accident",
+"tc.accident_steps_content":"1. Turn on hazard lights and use warning triangles. 2. Call Monkey Adventures immediately for assistance.",
+"tc.last_updated":"Last updated: 2026 | For full legal document, contact info@monkey-adventures.com"
 },
 es:{
 "nav.home":"Inicio","nav.fleet":"Nuestras Vans","nav.features":"Por Qué Elegirnos","nav.destinations":"Destinos","nav.faq":"FAQ","nav.reviews":"Reseñas","nav.contact":"Contacto","nav.book":"Reservar",
@@ -1308,76 +873,16 @@ es:{
 "stats.travelers":"Viajeros Felices","stats.vans":"Vans Disponibles","stats.locations":"Ubicaciones","stats.rating":"Calificación Google",
 "form.name":"Nombre Completo","form.phone":"Número de Teléfono","form.pickup":"Lugar de Recogida","form.select":"Seleccionar...","form.pdate":"Fecha de Recogida","form.rdate":"Fecha de Devolución","form.travelers":"Viajeros",
 "form.t1":"1-2 Viajeros","form.t2":"3-4 Viajeros","form.t3":"5-6 Viajeros",
-"form.type":"Tipo de Van","form.all":"Todos los Tipos","form.budget":"Van Económica","form.standard":"Estándar 4WD","form.premium":"Camper Premium",
+"form.type":"Tipo de Van","form.all":"Todos los Tipos","form.budget":"Chimpanzee 2WD","form.standard":"Gorilla 2WD","form.premium":"Camper Premium",
 "form.search":"Enviar Solicitud 🔍",
-"faq.title":"Preguntas <span class=\"hl\">Frecuentes</span>",
-"faq.desc":"Encuentra respuestas a preguntas comunes sobre nuestros alquileres de campervans. ¿No encuentras lo que buscas? ¡Chatea con nosotros!",
-"faq.q1":"¿Qué equipo de cocina y vida está incluido con los vehículos?",
-"faq.a1":"Las campervans Monkey están equipadas con utensilios de cocina básicos que incluyen cubiertos, vajilla, ollas y sartenes, tetera a gas, caja térmica, lavamanos, bomba de agua manual y más. Se puede comprar un Pack de Ropa de Cama por $xxxx que incluye edredón queen, sábana queen, 2 toallas, 2 fundas de almohada y un paño de cocina. Si no se selecciona, el vehículo viene con edredón (o bolsa de dormir) y 2 almohadas complimentary.",
-"faq.q2":"¿Las campervans son automáticas o mecánicas?",
-"faq.a2":"La campervan Chimpanzee tiene transmisión automática. La Gorilla 4X4 tiene transmisión mecánica.",
-"faq.q3":"¿Cuánta agua tengo a bordo?",
-"faq.a3":"Las campervans tienen estanque de 5 litros. Puedes recargar en parques de vacaciones, estaciones de servicio al cargar combustible, o cualquier grifo.",
-"faq.q4":"¿Puedo acampar libremente en Chile?",
-"faq.a4":"En Chile puedes acampar gratis en casi todas partes ya que no hay reglas estrictas (excepto un par de playas). ¡Muchas playas, montañas, lagos y desiertos permiten acampar!",
-"faq.q5":"¿Cómo y cuándo debo hacer mis reservas?",
-"faq.a5":"Sugerimos reservar tan pronto conozcas tus fechas. Para confirmar, necesitamos 50% de depósito y el saldo al recoger. La mejor forma es por nuestra página segura. Tu solicitud se procesa en 24 horas.",
-"faq.q6":"¿Qué significa días calendario cuando reservamos?",
-"faq.a6":"Cobramos por día calendario, no por período de 24 horas. Se cobra tanto el día de recogida como el de devolución, sin importar la hora.",
-"faq.q7":"¿Hay equipo adicional disponible?",
-"faq.a7":"Reserva tu auto, todo lo que necesitas es una tarjeta de crédito o débito. Cuando recojas el auto, necesitarás: Tu voucher de rentalcars.com, la tarjeta del conductor principal con fondos suficientes, licencia de conducir válida de cada conductor (mínimo 12 meses), tu pasaporte y cualquier otro ID que necesite la compañía.",
-"faq.q8":"Envié mi formulario de reserva y tarjeta de crédito – ¿qué pasa ahora?",
-"faq.a8":"Tu solicitud se procesará dentro de 24 horas de recibir tu reserva o nos pondremos en contacto contigo. Si hay un vehículo disponible para las fechas especificadas, tu reserva se finalizará y se cobrará 50% de depósito. Si no hay vehículo disponible, te contactaremos con una alternativa adecuada y no se incurrirá en ningún pago.",
-"faq.q9":"¿Por qué tengo que incluir mi número de tarjeta de crédito?",
-"faq.a9":"Requerimos una tarjeta de crédito para el depósito del 50% para asegurar tu reserva. Tu información de tarjeta de crédito es estrictamente confidencial y este es un método más rápido para asegurar tu reserva comparado con efectivo o cheque.",
-"faq.q10":"¿Qué tipos de tarjeta de crédito aceptan?",
-"faq.a10":"Aceptamos Visa, MasterCard y American Express (3% de comisión). Sin cargo extra por efectivo. Todas las transacciones en pesos chilenos (CLP).",
-"faq.q11":"¿En qué moneda se cobrará mi tarjeta de crédito?",
-"faq.a11":"Todas las transacciones con tarjeta de crédito se procesarán en pesos chilenos (CLP). Esto aplica a todas las reservas hechas a través de nuestro sitio web.",
-"faq.q12":"¿Cómo puedo modificar o cancelar mi reserva?",
-"faq.a12":"Si deseas modificar o cancelar tu reserva existente, contáctanos lo antes posible. Esto es para asegurarnos de que las extensiones estén disponibles para ti y reducir el costo por cancelaciones. Simplemente ve a la página de contacto y haz una consulta, o envía un email a info@monkey-adventures.com. Asegúrate de citar tu número de confirmación.",
-"faq.q13":"¿Hay reembolso si acorto mi arriendo mientras estoy de vacaciones?",
-"faq.a13":"No, no hay reembolso si devuelves tu campervan antes del período reservado. Sin embargo, tu seguro de viaje puede en algunas circunstancias cubrir la porción no utilizada.",
-"faq.q14":"¿Necesito una licencia de conducir especial para manejar una campervan en Chile?",
-"faq.a14":"No, nuestras campervans se pueden manejar con una licencia de auto estándar completa. Recomendamos una traducción al español o licencia internacional.",
-"faq.q15":"¿Qué edad necesito tener para manejar una campervan o motorhome?",
-"faq.a15":"Los conductores deben tener una licencia de conducir vigente y válida (no probatoria) por la duración del período de arriendo. Los extranjeros deben usar una licencia extranjera, con la traducción al español de su texto. No aplica restricción de edad mínima para vehículos 2wd y para los arriendos 4WD que requieren mínimo 22 años.",
-"faq.q16":"¿Hay un período mínimo de arriendo?",
-"faq.a16":"Tenemos un período mínimo de arriendo de 7 días al recoger y devolver la campervan. Ten en cuenta sin embargo que esto puede cambiar durante temporadas altas dependiendo de la disponibilidad.",
-"faq.q17":"¿Cuál es la velocidad segura de viaje para manejar las campervans?",
-"faq.a17":"El límite de velocidad en ruta abierta es 120km/h pero sugerimos una velocidad cómoda para manejar tu campervan es 90-100km/h, especialmente si nunca has manejado una antes. Si eliges viajar por debajo del límite de velocidad, por favor muestra cortesía a otros usuarios de la carretera permitiéndoles pasar.",
-"faq.q18":"¿Cuánto combustible es probable que use en mis vacaciones?",
-"faq.a18":"¡Todo depende de qué tan lejos viajes! La mayoría de nuestras campervans tienen un consumo promedio de combustible de 10-14 litros cada 100km.",
-"faq.q19":"¿Tengo que reservar parques de camping con anticipación?",
-"faq.a19":"Es raro que los sitios con electricidad estén llenos en los parques de camping. El único momento en que puede ser un problema es durante el período de Navidad/Año Nuevo continuando hasta el final de la segunda semana de enero y también las primeras dos semanas de febrero.",
-"faq.q20":"¿Dónde están ubicadas sus oficinas?",
-"faq.a20":"La oficina de Monkey Adventures está ubicada en Camino Central 2470 of A41, Lo Barnechea, Santiago de Chile.",
-"faq.q21":"¿Pueden entregar un vehículo en nuestro hotel/motel?",
-"faq.a21":"Sí, podemos hacerlo. Pero recomendamos venir a nuestra oficina a recoger tu vehículo para que podamos completar la documentación necesaria y mostrarte cómo usar tu campervan. Todo el proceso toma aproximadamente 45 minutos.",
-"faq.q22":"¿Puedo recoger después de horas?",
-"faq.a22":"Desafortunadamente, Monkey Adventures no ofrece servicio fuera de horario.",
-"faq.q23":"¿Permiten arriendos solo ida?",
-"faq.a23":"Los arriendos solo ida están disponibles solo con recogida en Santiago y en coordinación con Monkey Adventure antes de recoger el auto. (aplica costo extra dependiendo de la ciudad).",
-"faq.q24":"¿Qué pasa si me quedo botado o necesito asistencia durante mis vacaciones?",
-"faq.a24":"Nuestras campervans cuentan con servicio de emergencia de avería 24 horas que son una red nacional de agentes de servicio reputados que se ocuparán de cualquier problema que pueda surgir. También podemos autorizarte a gastar hasta CLP$50.000 en reparaciones de emergencia para que puedas tratar asuntos menores rápidamente o cuando te sea conveniente, pero por favor presenta el recibo cuando regreses de tu arriendo para un reembolso.",
-"faq.q25":"¿Qué cubre el seguro de arriendo?",
-"faq.a25":"La cobertura del seguro de arriendo restringe el máximo por el que eres responsable en caso de un accidente siempre y cuando no rompas los términos y condiciones del acuerdo de arriendo. No te cubre por ninguna pérdida o lesión personal. Sugerimos tomar tu propio seguro de viaje personal.",
-"faq.q26":"Si tengo un accidente y es mi culpa, ¿perderé todo mi exceso?",
-"faq.a26":"Serás responsable hasta el monto de tu exceso hacia el costo de reparación. Si el daño es menor, solo se te cobrará el costo de reparación y no todo el exceso.",
-"faq.q27":"Tengo Seguro de Viaje, que cubre daño al vehículo. ¿Necesito pagar el seguro del vehículo también?",
-"faq.a27":"Si estás cubierto por seguro de viaje no necesitarás pagar por ninguna reducción de exceso de seguro adicional, sin embargo serás responsable de pagar el exceso en el momento del incidente y luego necesitarías reclamar este exceso a tu aseguradora de viaje.",
-"faq.q28":"¿Qué pasa si tengo un accidente y no es mi culpa?",
-"faq.a28":"En el caso de que algo le pase a la campervan y no seas culpable, (ya sea un accidente de vehículo donde alguien golpea el vehículo o ocurre daño mientras el vehículo está estacionado) eres responsable del daño causado al vehículo hasta que podamos recibir el pago por esos daños del tercero.",
-"chat.greeting":"¡Hola! Soy MonkeyBot 🐒. ¡Pregúntame lo que quieras sobre nuestros alquileres de campervans!",
-"chat.q1":"Equipo","chat.q2":"Reserva","chat.q3":"Seguro","chat.q4":"Licencia",
-"fleet.tag":"🚐 Nuestra Flota","fleet.title":"Elige tu <span class=\"hl\">Van de Aventura</span>","fleet.desc":"Desde opciones económicas hasta campers 4WD premium, tenemos el vehículo perfecto para tu viaje.",
-"fleet.b1":"Mejor Valor","fleet.b2":"Popular","fleet.b3":"Premium",
-"fleet.n1":"Explorador Económico","fleet.n2":"Estándar 4WD","fleet.n3":"Camper Premium",
-"fleet.s1":"Perfecto para viajeros solitarios y parejas","fleet.s2":"Camper 4WD para aventuras fuera de carretera","fleet.s3":"4WD totalmente equipada para familias",
+"fleet.tag":"🚐 Nuestra Flota","fleet.title":"Elige tu <span class=\"hl\">Van de Aventura</span>","fleet.desc":"Dos modelos confiables de campervan 2WD perfectos para tu aventura sudamericana. Alquiler mínimo de 7 días.",
+"fleet.b1":"Más Popular","fleet.b2":"Espacioso","fleet.b3":"Premium",
+"fleet.n1":"Chimpanzee Camper Van","fleet.n2":"Gorilla Camper Van","fleet.n3":"Camper Premium",
+"fleet.s1":"Cómodo campervan 2WD para parejas y grupos pequeños","fleet.s2":"Campervan 2WD más grande para familias y grupos","fleet.s3":"4WD totalmente equipada para familias",
 "fleet.f.bed":"🛏️ Cama","fleet.f.fridge":"🧊 Nevera","fleet.f.gas":"⛽ Gas",
 "fleet.f.2beds":"🛏️ 2 Camas","fleet.f.kitchen":"🧊 Cocina","fleet.f.solar":"🔌 Solar",
 "fleet.f.3beds":"🛏️ 3 Camas","fleet.f.shower":"🚿 Ducha","fleet.f.wifi":"📶 WiFi",
-"fleet.perday":"/día","fleet.booknow":"Reservar",
+"fleet.min7":"Mín 7 Días","fleet.perday":"/día","fleet.booknow":"Reservar",
 "features.tag":"✨ Por Qué Elegirnos","features.title":"La <span class=\"hl\">Diferencia Monkey</span>","features.desc":"Hacemos que viajar en campervan sea simple, seguro e inolvidable por Chile y Argentina.",
 "features.f1t":"Precio Económico","features.f1d":"Precios transparentes sin cargos ocultos. IVA incluido. El mejor valor en Sudamérica.",
 "features.f2t":"Seguro Completo","features.f2d":"Cobertura completa incluida. Asistencia en carretera 24/7 para tu tranquilidad.",
@@ -1385,7 +890,7 @@ es:{
 "features.f4t":"Múltiples Ubicaciones","features.f4d":"Recogida y devolución en Santiago, Atacama, Puerto Montt, Bariloche y Ushuaia.",
 "features.f5t":"Bien Mantenidas","features.f5d":"Todas las vans con mantenimiento regular y completamente equipadas para Patagonia y desierto.",
 "features.f6t":"Soporte 24/7","features.f6d":"Disponibles las 24 horas por WhatsApp para cualquier asistencia durante tu viaje.",
-"dest.tag":"🌎 Mejores Rutas","dest.title":"Explora <span class=\"hl\">Destinos Icónicos</span>","dest.desc":"Conduce por algunos de los paisajes más impresionantes del mundo con nuestras campervans.",
+"dest.tag":"🌎 Mejores Rutas","dest.title":"Explora Destinos Icónicos","dest.desc":"Conduce por algunos de los paisajes más impresionantes del mundo con nuestras campervans.",
 "dest.d1t":"Patagonia","dest.d1d":"Torres del Paine • Glaciares • Vida Silvestre",
 "dest.d2t":"Desierto de Atacama","dest.d2d":"Geisers • Salares • Observación de Estrellas",
 "dest.d3t":"Región de los Lagos","dest.d3d":"Volcanes • Lagos • Aguas Termales",
@@ -1404,7 +909,38 @@ es:{
 "footer.brand":"Alquiler de campervans y campers 4WD económicos en Chile y Argentina.",
 "footer.qh":"Enlaces Rápidos","footer.ih":"Info de Alquiler","footer.ch":"Contáctanos",
 "footer.l1":"Especificaciones de Vans","footer.l2":"Términos y Condiciones","footer.l3":"Detalles del Seguro","footer.l4":"Preguntas Frecuentes",
-"footer.addr":"Santiago, Chile","footer.copy":"© 2026 MonkeyAdventure. Todos los derechos reservados.","wa.tooltip":"Chatea con nosotros por WhatsApp"
+"footer.addr":"Santiago, Chile","footer.copy":"© 2026 MonkeyAdventure. Todos los derechos reservados.","wa.tooltip":"Chatea con nosotros por WhatsApp",
+"chat.greeting":"¡Hola! Soy MonkeyBot 🐒. ¡Pregúntame lo que quieras sobre nuestros alquileres de campervans, precios o términos!",
+"chat.q1":"Modelos","chat.q2":"Reserva","chat.q3":"Seguro","chat.q4":"FAQ",
+"chat.tc_link":"📄 Ver Términos y Condiciones Completos",
+"tc.title":"Monkey Adventures SpA. Términos y Condiciones de Arriendo de Campervans",
+"tc.rates":"Tarifas",
+"tc.rates_content":"Todas las tarifas en Pesos Chilenos (CLP) incluyendo IVA. Precio diario basado en 2 pasajeros. Pasajero extra: CLP $15.000 (máx 1 extra). Tarifas diarias calculadas por día calendario y no se pueden alterar tras confirmación.",
+"tc.hire_periods":"Períodos de Arriendo y Solo Ida",
+"tc.hire_periods_content":"Aplican períodos mínimos de arriendo. El día de recogida es día uno sin importar la hora. El día de devolución es día final sin importar la hora. Cambios deben notificarse con 48h de anticipación. Arriendos solo ida disponibles desde Santiago con costo extra: Iquique $390k, San Pedro $360k, Pucón $280k, Puerto Varas $320k, Coyhaique $360k, Punta Arenas $390k.",
+"tc.pickup":"Recogida y Devolución",
+"tc.pickup_content":"Horario: Lun-Vie 9am-5:30pm, Sáb 9am-1pm. Cerrado domingos y festivos. Se requieren horas fijas de recogida/devolución. Vehículo liberado 24h después de la recogida programada si no se avisa. Recogida tarde/devolución temprana = sin reembolso. Cambios de ubicación tras confirmación requieren autorización + cargo de $290k. Cruce a Argentina requiere permiso/seguro (costo extra).",
+"tc.drivers":"Requisitos del Conductor",
+"tc.drivers_content":"Licencia vigente y válida (no probatoria) requerida. Licencias extranjeras necesitan traducción al español. 4WD: edad mínima 22. 2WD: edad mínima 18 (+$5k/día para conductores 18-21).",
+"tc.deposit":"Depósito y Pagos",
+"tc.deposit_content":"Depósito de reserva: USD$300 (no reembolsable). Saldo al recoger. Transferencias en USD/EUR convertidas a CLP a tasa del banco. Pagos en efectivo: monto exacto requerido. Tarjetas crédito/débito: 5% de cargo no reembolsable. Tarjeta de crédito requerida como fianza (del arrendatario principal). Todas las transacciones en CLP.",
+"tc.cancellations":"Cancelaciones y Modificaciones",
+"tc.cancellations_content":"60+ días: sin cargo. 45-60 días: 25% del arriendo bruto. 30-45 días: 35%. 15-30 días: 50%. <15 días o No Show: 100%. Devolución temprana: sin reembolso. Cambios de fecha sujetos a disponibilidad + cargos. No entrega: cargo de $50k/día de retraso.",
+"tc.responsibility":"Responsabilidad del Arrendatario",
+"tc.responsibility_content":"Instalar sillas infantiles correctamente. Apagar gas mientras se conduce. Devolver vehículo lavado/aspirado/ordenado. Evitar daño en bajo en caminos no pavimentados. No sobrecalentar motor. Revisar agua/aceite diario. No voltear vehículo. Mantener distancia, evitar conducción nocturna. Revisar presión de neumáticos. Conducir con cuidado en Ruta 40/Carretera Austral. Obedecer límites de velocidad/reglas de estacionamiento (multas cargadas a tarjeta). No destruir neumáticos. No conducir en arena/salares/lodo/agua con 2WD. Proteger portaequipajes. Todas las multas cargadas a tarjeta + cargo de procesamiento de $25k por infracción.",
+"tc.refunds":"Política de Reembolsos",
+"tc.refunds_content":"Sin reembolso por: combustible inadecuado, mal clima, cierres fronterizos, entrega temprana, robo de pertenencias, consumo excesivo de combustible. Reembolso solo por: fallas mecánicas atribuibles a nosotros (si no se resuelven en <6h, reembolso de 1 día de arriendo). Todos los reembolsos en CLP.",
+"tc.extra_fees":"Cargos Extra",
+"tc.extra_fees_content":"No lavado/aspirado: $30k. Inodoro portátil no vacío: $30k. Fumar dentro: $30k. Tanque no lleno al devolver: costo de combustible + cargo de $15k.",
+"tc.insurance":"Seguro y Exceso",
+"tc.insurance_content":"Seguro básico incluido (no renunciable). Deducible: $1.6M para 2WD. Opción Plus: reducir a $1.1M por $5k/día extra. NO cubre: parabrisas, neumáticos, conducción bajo influencia, carreras, daño malicioso, robo sin llaves originales. Arrendatario responsable de todo daño sin importar culpa (limitado al deducible). Reclamos de terceros: reembolso después de ser indemnizados.",
+"tc.exclusions":"Exclusiones (Sin Cobertura)",
+"tc.exclusions_content":"Sin cobertura si: se incumplen términos, negligencia, combustible incorrecto, uso ilegal, conducción en playa/arena, daño en techo por límites de altura, vuelco de vehículo único, daño en caminos de grava (anula límites de responsabilidad), no detenerse por luces de advertencia, continuar conduciendo tras sobrecalentamiento/falla, accidentes nocturnos con animales, accidentes al reversar, ignorar señales de tránsito, exceso de velocidad, fatiga, alcohol/drogas, dejar llaves en vehículo desatendido, quitar panel de radio, daño por agua/sal/arroyo/inundación, daño en bajo/techo/interior/neumáticos, uso ilegal, remolcar, transportar pasajeros por pago, materiales peligrosos, transportar animales (excepto perros registrados), caminos inapropiados, conducir vehículo dañado sin permiso, pérdidas por robo/incendio, cadenas para nieve inapropiadas, tipo de combustible incorrecto.",
+"tc.accidents":"Accidentes y Vehículos de Reemplazo",
+"tc.accidents_content":"Arrendatario responsable de todos los costos de recuperación/almacenamiento/recuperación tras accidente (no cubiertos por seguro). Si la responsabilidad no está clara al devolver, se cobra exceso completo (reembolsado tras confirmación). Si no podemos suministrar el vehículo reservado, intentaremos proporcionar uno de calidad similar. Vehículo de reemplazo: costo del arrendatario para recoger, tarifa diaria aún aplica, sin responsabilidad por días de viaje perdidos. El reemplazo puede tomar hasta 3 días, puede no ser idéntico. El exceso de seguro no es transferible al vehículo de reemplazo. Sin reembolso por arriendo no utilizado si no se necesita reemplazo.",
+"tc.accident_steps":"Qué Hacer en Caso de Accidente",
+"tc.accident_steps_content":"1. Encender luces de emergencia y usar triángulos de advertencia. 2. Llamar a Monkey Adventures inmediatamente para asistencia.",
+"tc.last_updated":"Última actualización: 2026 | Para documento legal completo, contactar info@monkey-adventures.com"
 }
 };
 
