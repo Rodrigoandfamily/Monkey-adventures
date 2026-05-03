@@ -10,8 +10,9 @@
         html{scroll-behavior:smooth}
         body{font-family:'Poppins',sans-serif;color:#1C1C1E;background:#fff;overflow-x:hidden}
 
+        /* FIXED LOADER - Will hide automatically */
         .loader-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#004E89;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000;transition:opacity .6s,visibility .6s}
-        .loader-screen.hidden{opacity:0;visibility:hidden}
+        .loader-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
         .loader-van{font-size:60px;animation:bounceL 1s ease-in-out infinite}
         @keyframes bounceL{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
         .loader-text{color:#fff;margin-top:16px;font-size:20px;font-weight:700;letter-spacing:4px}
@@ -308,6 +309,7 @@
 </head>
 <body>
 
+<!-- FIXED LOADER - Will hide after 2 seconds max -->
 <div class="loader-screen" id="loader">
     <div class="loader-van">🚐</div>
     <div class="loader-text">MONKEY ADVENTURE</div>
@@ -464,7 +466,7 @@
     </form>
 </div>
 
-<!-- FLEET SECTION - Updated with correct models -->
+<!-- FLEET SECTION -->
 <section class="fleet-section" id="fleet">
     <div class="section-header reveal">
         <span class="section-tag" data-i18n="fleet.tag">🚐 Our Fleet</span>
@@ -482,7 +484,7 @@
                     <span class="fleet-feature" data-i18n="fleet.f.bed">🛏️ Bed</span>
                     <span class="fleet-feature" data-i18n="fleet.f.fridge">🧊 Fridge</span>
                     <span class="fleet-feature" data-i18n="fleet.f.gas">⛽ Gas</span>
-                    <span class="fleet-feature"> 2WD</span>
+                    <span class="fleet-feature">🚗 2WD</span>
                 </div>
                 <div class="fleet-card-footer">
                     <div class="fleet-price" data-i18n="fleet.min7">Min 7 Days</div>
@@ -668,7 +670,24 @@
 </div>
 
 <script>
-// PHONE AUTO-FORMAT
+// ====== FIXED LOADER ======
+// Hide loader after 2 seconds (guaranteed)
+setTimeout(function(){
+    var loader = document.getElementById('loader');
+    if(loader){
+        loader.classList.add('hidden');
+    }
+}, 2000);
+
+// Also hide when page actually loads
+if(document.readyState === 'complete'){
+    document.getElementById('loader').classList.add('hidden');
+}
+window.addEventListener('load', function(){
+    document.getElementById('loader').classList.add('hidden');
+});
+
+// ====== PHONE AUTO-FORMAT ======
 function formatPhone(input) {
     let val = input.value.replace(/\D/g, '');
     if (val.length > 12) val = val.slice(0, 12);
@@ -679,7 +698,7 @@ function formatPhone(input) {
     input.value = formatted;
 }
 
-// TERMS & CONDITIONS MODAL
+// ====== TERMS & CONDITIONS MODAL ======
 function openTCModal() {
     document.getElementById('tcModal').classList.add('active');
     toggleChatbot();
@@ -695,16 +714,16 @@ document.getElementById('tcModal').addEventListener('click', function(e) {
     }
 });
 
-// CHATBOT FUNCTIONS
+// ====== CHATBOT FUNCTIONS ======
 function toggleChatbot() {
     document.getElementById('chatbotWindow').classList.toggle('active');
 }
 
-function addChatMessage(text, isBot = true) {
+function addChatMessage(text, isBot) {
     const messagesDiv = document.getElementById('chatbotMessages');
     const messageDiv = document.createElement('div');
-    messageDiv.className = `chatbot-message ${isBot ? 'bot' : 'user'}`;
-    messageDiv.innerHTML = `<div class="chatbot-bubble">${text}</div>`;
+    messageDiv.className = 'chatbot-message ' + (isBot ? 'bot' : 'user');
+    messageDiv.innerHTML = '<div class="chatbot-bubble">' + text + '</div>';
     messagesDiv.appendChild(messageDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
@@ -727,7 +746,6 @@ function sendChatMessage() {
     const lang = currentLang;
     let answer = null;
     
-    // FAQ keywords
     if (question.includes('model') || question.includes('van type') || question.includes('chimpanzee') || question.includes('gorilla')) {
         answer = faqDatabase[lang].models;
     } else if (question.includes('book') || question.includes('booking') || question.includes('reservation') || question.includes('deposit')) {
@@ -762,7 +780,7 @@ function handleChatKeypress(event) {
     }
 }
 
-// FAQ Database for Chatbot
+// ====== FAQ DATABASE ======
 const faqDatabase = {
     en: {
         "models": "We have two 2WD campervan models:\n\n🚐 **Chimpanzee Camper Van** - Perfect for 2-3 people, comfortable and efficient\n\n🚐 **Gorilla Camper Van** - Spacious option for 4-5 people with extra storage\n\nBoth are 2WD vehicles ideal for main roads and popular routes. Minimum 7-day rental applies.",
@@ -784,7 +802,7 @@ const faqDatabase = {
     }
 };
 
-// Rest of the JavaScript (translations, setLang, etc.) remains the same
+// ====== TRANSLATIONS ======
 var translations={
 en:{
 "nav.home":"Home","nav.fleet":"Our Vans","nav.features":"Why Us","nav.destinations":"Destinations","nav.faq":"FAQ","nav.reviews":"Reviews","nav.contact":"Contact","nav.book":"Book Now",
@@ -967,10 +985,6 @@ function setLang(lang){
     document.documentElement.lang=lang==='es'?'es':'en';
 }
 
-window.addEventListener('load',function(){
-    setTimeout(function(){document.getElementById('loader').classList.add('hidden');},1200);
-});
-
 var navEl=document.getElementById('navbar');
 window.addEventListener('scroll',function(){
     navEl.classList.toggle('scrolled',window.scrollY>50);
@@ -992,7 +1006,6 @@ function openWhatsApp(){
     window.open('https://wa.me/56990423560?text='+msg,'_blank');
 }
 
-// WHATSAPP PRICE & CALLBACK REQUEST
 function sendToWhatsApp(){
     var name = document.querySelector('[name="customer-name"]').value || "Not provided";
     var phone = document.querySelector('[name="customer-phone"]').value || "Not provided";
@@ -1100,3 +1113,4 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
 </script>
 </body>
 </html>
+
