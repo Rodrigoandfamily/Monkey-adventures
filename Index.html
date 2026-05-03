@@ -1,1115 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MonkeyAdventure - Campervan Rentals Chile & Argentina</title>
-    <link href="https://cdn.jsdelivr.net/npm/fontsource-poppins@5.0.18/index.css" rel="stylesheet">
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        html{scroll-behavior:smooth}
-        body{font-family:'Poppins',sans-serif;color:#1C1C1E;background:#fff;overflow-x:hidden}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MonkeyAdventure</title>
+<link href="https://cdn.jsdelivr.net/npm/fontsource-poppins@5.0.18/index.css" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;color:#1C1C1E;background:#f5f7fa;overflow-x:hidden}
 
-        /* FIXED LOADER - Will hide automatically */
-        .loader-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#004E89;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000;transition:opacity .6s,visibility .6s}
-        .loader-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
-        .loader-van{font-size:60px;animation:bounceL 1s ease-in-out infinite}
-        @keyframes bounceL{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
-        .loader-text{color:#fff;margin-top:16px;font-size:20px;font-weight:700;letter-spacing:4px}
+.navbar{position:fixed;top:0;left:0;width:100%;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:1000;transition:all .4s;background:transparent}
+.navbar.scrolled{background:rgba(0,78,137,0.98);backdrop-filter:blur(10px);padding:10px 16px;box-shadow:0 2px 12px rgba(0,0,0,0.2)}
+.logo{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:800;color:#fff;text-decoration:none;flex-shrink:0}
+.logo-icon{font-size:22px}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-links{display:none;gap:16px;list-style:none;align-items:center}
+.nav-links a{color:#fff;text-decoration:none;font-size:13px;font-weight:500}
+.nav-cta{padding:6px 12px;background:linear-gradient(135deg,#FF6B35,#FCBF49);border:none;border-radius:50px;color:#fff;font-weight:600;font-size:11px;cursor:pointer}
+.lang-switch{display:flex;background:rgba(255,255,255,0.15);border-radius:30px;padding:2px}
+.lang-btn{padding:3px 8px;font-size:10px;font-weight:700;border-radius:30px;color:rgba(255,255,255,0.7);cursor:pointer;border:none;background:none;font-family:'Poppins',sans-serif}
+.lang-btn.active{background:#fff;color:#004E89}
+.menu-toggle{display:flex;flex-direction:column;gap:4px;cursor:pointer;padding:4px}
+.menu-toggle span{width:20px;height:2.5px;background:#fff;border-radius:3px;transition:all .3s}
+.menu-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.menu-toggle.active span:nth-child(2){opacity:0}
+.menu-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
-        .navbar{position:fixed;top:0;left:0;width:100%;padding:14px 30px;display:flex;justify-content:space-between;align-items:center;z-index:1000;transition:all .4s;background:transparent}
-        .navbar.scrolled{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);padding:10px 30px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-        .logo{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800;color:#fff;text-decoration:none;flex-shrink:0}
-        .navbar.scrolled .logo{color:#004E89}
-        .logo-icon{font-size:24px;flex-shrink:0}
-        .logo-text{white-space:nowrap}
-        .logo-text-mobile{display:none}
+.mobile-nav{position:fixed;top:0;left:0;width:100%;height:100%;background:#004E89;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;opacity:0;visibility:hidden;transition:all .4s}
+.mobile-nav.active{opacity:1;visibility:visible}
+.mobile-nav a{color:#fff;text-decoration:none;font-size:20px;font-weight:600}
+.mobile-lang{display:flex;gap:10px;margin-top:16px}
+.mob-lang-btn{padding:8px 20px;border:2px solid rgba(255,255,255,0.3);border-radius:30px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;background:none;font-family:'Poppins',sans-serif}
+.mob-lang-btn.active{background:#fff;color:#004E89}
 
-        .nav-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
-        .nav-links{display:flex;gap:20px;list-style:none;align-items:center}
-        .nav-links a{color:#fff;text-decoration:none;font-size:14px;font-weight:500;transition:color .3s;white-space:nowrap}
-        .navbar.scrolled .nav-links a{color:#1C1C1E}
-        .nav-links a:hover{color:#FF6B35}
-        .nav-cta{padding:8px 20px;background:linear-gradient(135deg,#FF6B35,#FCBF49);border:none;border-radius:50px;color:#fff;font-weight:600;font-size:13px;cursor:pointer;transition:all .3s;white-space:nowrap;flex-shrink:0}
-        .nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,107,53,.4)}
+.hero{min-height:auto;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#002B5C 0%,#004E89 50%,#0066B3 100%);padding:80px 16px 40px}
+.hero-content{position:relative;z-index:10;max-width:700px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(252,191,73,0.15);border:2px solid #FCBF49;border-radius:50px;font-size:10px;font-weight:600;color:#FCBF49;margin-bottom:12px}
+.hero-title{font-size:26px;font-weight:900;line-height:1.1;margin-bottom:12px;color:#fff}
+.hl{background:linear-gradient(135deg,#FF6B35,#FCBF49);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:14px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:20px;max-width:450px}
+.hero-actions{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:20px;width:100%}
+.btn{padding:11px 20px;border-radius:60px;font-size:13px;font-weight:700;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:none;font-family:'Poppins',sans-serif;width:100%}
+.btn-primary{background:linear-gradient(135deg,#FF6B35,#FCBF49);color:#fff}
+.btn-outline{background:transparent;border:2px solid rgba(255,255,255,0.3);color:#fff}
+.hero-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;max-width:280px}
+.stat-item{text-align:center;padding:10px 8px;background:rgba(255,255,255,0.1);border-radius:12px;border:1px solid rgba(255,255,255,0.15)}
+.stat-number{font-size:20px;font-weight:800;color:#FCBF49}
+.stat-label{font-size:9px;color:rgba(255,255,255,0.6);margin-top:2px}
 
-        .lang-switch{display:flex;background:rgba(255,255,255,.15);border-radius:30px;padding:3px;flex-shrink:0}
-        .navbar.scrolled .lang-switch{background:#F2F2F7}
-        .lang-btn{padding:5px 10px;font-size:11px;font-weight:700;border-radius:30px;color:rgba(255,255,255,.7);cursor:pointer;border:none;background:none;font-family:'Poppins',sans-serif;transition:all .3s;flex-shrink:0}
-        .navbar.scrolled .lang-btn{color:#8E8E93}
-        .lang-btn.active{background:#fff;color:#004E89;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-        .navbar.scrolled .lang-btn.active{background:#004E89;color:#fff}
+.booking-section{padding:30px 16px;position:relative;z-index:20}
+.booking-form{max-width:1000px;margin:0 auto;background:#fff;border-radius:18px;padding:20px;box-shadow:0 15px 40px rgba(0,0,0,0.12);display:grid;grid-template-columns:1fr;gap:12px;border:2px solid #e0e0e0}
+.fg label{display:block;font-size:10px;font-weight:600;color:#666;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
+.fg input,.fg select{width:100%;padding:9px 10px;border:2px solid #e0e0e0;border-radius:12px;font-size:12px;font-family:'Poppins',sans-serif;background:#f5f7fa}
+.fg input:focus,.fg select:focus{outline:none;border-color:#FF6B35;background:#fff}
+.btn-group{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.booking-btn{padding:10px 18px;background:linear-gradient(135deg,#FF6B35,#FCBF49);border:none;border-radius:12px;color:#fff;font-weight:700;font-size:12px;cursor:pointer;font-family:'Poppins',sans-serif;flex:1}
+.booking-btn.whatsapp{background:#25D366}
 
-        .menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001;padding:4px}
-        .menu-toggle span{width:24px;height:3px;background:#fff;border-radius:3px;transition:all .3s}
-        .navbar.scrolled .menu-toggle span{background:#1C1C1E}
-        .menu-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,6px)}
-        .menu-toggle.active span:nth-child(2){opacity:0}
-        .menu-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px)}
+section{padding:40px 16px}
+.section-header{text-align:center;max-width:600px;margin:0 auto 30px}
+.section-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(0,78,137,0.08);border-radius:50px;font-size:10px;font-weight:700;color:#004E89;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
+.section-title{font-size:24px;font-weight:800;line-height:1.2;margin-bottom:10px}
+.section-title .hl{color:#FF6B35}
+.section-desc{font-size:13px;color:#666;line-height:1.6}
 
-        .mobile-nav{position:fixed;top:0;left:0;width:100%;height:100%;background:#004E89;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;opacity:0;visibility:hidden;transition:all .4s}
-        .mobile-nav.active{opacity:1;visibility:visible}
-        .mobile-nav a{color:#fff;text-decoration:none;font-size:22px;font-weight:600}
-        .mobile-nav .nav-cta{padding:12px 32px;font-size:16px}
-        .mobile-lang{display:flex;gap:10px;margin-top:20px}
-        .mob-lang-btn{padding:10px 24px;border:2px solid rgba(255,255,255,.3);border-radius:30px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;background:none;font-family:'Poppins',sans-serif;transition:all .3s}
-        .mob-lang-btn.active{background:#fff;color:#004E89;border-color:#fff}
+.fleet-section{background:#fff}
+.fleet-grid{display:grid;grid-template-columns:1fr;gap:14px;max-width:1000px;margin:0 auto}
+.fleet-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.08);border:1px solid #eee}
+.fleet-card-image{height:140px;display:flex;align-items:center;justify-content:center;font-size:60px;position:relative}
+.f-budget{background:linear-gradient(135deg,#E8F5E9,#C8E6C9)}
+.f-standard{background:linear-gradient(135deg,#E3F2FD,#BBDEFB)}
+.fleet-badge{position:absolute;top:8px;right:8px;padding:3px 8px;background:#FF6B35;color:#fff;border-radius:20px;font-size:9px;font-weight:700}
+.fleet-card-content{padding:16px}
+.fleet-card-content h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.fleet-card-content .subtitle{font-size:11px;color:#666;margin-bottom:8px}
+.fleet-features{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.fleet-feature{font-size:9px;color:#1C1C1E;background:#f0f0f0;padding:3px 6px;border-radius:15px}
+.fleet-card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid #f0f0f0}
+.fleet-price{font-size:15px;font-weight:700;color:#FF6B35}
+.fleet-book-btn{padding:6px 16px;background:linear-gradient(135deg,#004E89,#0066B3);border:none;border-radius:25px;color:#fff;font-weight:600;font-size:10px;cursor:pointer;font-family:'Poppins',sans-serif}
 
-        /* HERO */
-        .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#002B5C 0%,#004E89 50%,#0066B3 100%);overflow:hidden}
-        .hero-bg-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 50% 30%,rgba(255,107,53,.08) 0%,transparent 60%);z-index:1}
-        .hero-mountains{position:absolute;bottom:0;left:0;width:100%;z-index:3;pointer-events:none}
-        .hero-pines{position:absolute;bottom:0;left:0;width:100%;z-index:4;pointer-events:none}
+.features-section{background:#f5f7fa}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:1000px;margin:0 auto}
+.feature-card{padding:18px 14px;background:#fff;border-radius:16px;border:1px solid #eee;text-align:center}
+.feature-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 8px;background:linear-gradient(135deg,#FF6B35,#FCBF49)}
+.feature-card h3{font-size:12px;font-weight:700;margin-bottom:4px}
+.feature-card p{font-size:10px;color:#666;line-height:1.4}
 
-        .hero-content{position:relative;z-index:10;max-width:750px;width:100%;padding:100px 24px 80px;display:flex;flex-direction:column;align-items:center;text-align:center}
-        .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:rgba(252,191,73,.12);border:2px solid #FCBF49;border-radius:50px;font-size:12px;font-weight:600;color:#FCBF49;margin-bottom:18px;animation:fadeUp .7s ease forwards}
-        .hero-title{font-size:clamp(28px,7vw,56px);font-weight:900;line-height:1.1;margin-bottom:16px;color:#fff;animation:fadeUp .7s ease .1s forwards;opacity:0}
-        .hl{background:linear-gradient(135deg,#FF6B35,#FCBF49);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .hero-desc{font-size:clamp(14px,2.5vw,17px);color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:30px;max-width:550px;animation:fadeUp .7s ease .2s forwards;opacity:0}
-        .hero-actions{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:30px;animation:fadeUp .7s ease .3s forwards;opacity:0;width:100%;max-width:400px}
-        .btn{padding:14px 30px;border-radius:60px;font-size:15px;font-weight:700;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;font-family:'Poppins',sans-serif;width:100%}
-        .btn-primary{background:linear-gradient(135deg,#FF6B35,#FCBF49);color:#fff}
-        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,107,53,.4)}
-        .btn-outline{background:transparent;border:2px solid rgba(255,255,255,.3);color:#fff}
-        .btn-outline:hover{background:rgba(255,255,255,.1);border-color:#FCBF49;color:#FCBF49}
+.destinations-section{background:#1C1C1E;color:#fff}
+.destinations-section .section-title{color:#fff}
+.destinations-section .section-desc{color:rgba(255,255,255,0.6)}
+.destinations-grid{display:grid;grid-template-columns:1fr;gap:12px;max-width:1000px;margin:0 auto}
+.destination-card{border-radius:16px;overflow:hidden;position:relative;height:180px}
+.destination-card-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:45px}
+.d-patagonia{background:linear-gradient(135deg,#1565C0,#1E88E5)}
+.d-atacama{background:linear-gradient(135deg,#E65100,#FB8C00)}
+.d-lakes{background:linear-gradient(135deg,#2E7D32,#43A047)}
+.destination-card-overlay{position:absolute;bottom:0;left:0;width:100%;padding:16px;background:linear-gradient(to top,rgba(0,0,0,0.85),transparent)}
+.destination-card h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:2px}
+.destination-card p{font-size:10px;color:rgba(255,255,255,0.8)}
 
-        .hero-stats{display:flex;gap:30px;align-items:center;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s ease .4s forwards;opacity:0}
-        .stat-item{text-align:center}
-        .stat-number{font-size:24px;font-weight:800;color:#fff}
-        .stat-accent{color:#FCBF49}
-        .stat-label{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
-        .stat-divider{width:1px;height:30px;background:rgba(255,255,255,.2)}
+.testimonials-section{background:#fff}
+.testimonial-slider{max-width:700px;margin:0 auto;overflow:hidden}
+.testimonial-track{display:flex;transition:transform .6s}
+.testimonial-item{min-width:100%;padding:20px;background:#f5f7fa;border-radius:18px;text-align:center;border:1px solid #eee}
+.testimonial-stars{font-size:16px;margin-bottom:10px}
+.testimonial-text{font-size:13px;line-height:1.6;color:#1C1C1E;margin-bottom:14px;font-style:italic}
+.testimonial-author{display:flex;align-items:center;justify-content:center;gap:8px}
+.author-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:linear-gradient(135deg,#FF6B35,#FCBF49)}
+.author-info h4{font-size:12px;font-weight:700}
+.author-info p{font-size:9px;color:#666}
+.testimonial-dots{display:flex;justify-content:center;gap:6px;margin-top:14px}
+.t-dot{width:6px;height:6px;border-radius:50%;background:#ddd;cursor:pointer}
+.t-dot.active{background:#FF6B35;transform:scale(1.3)}
 
-        @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.cta-section{background:#f5f7fa;text-align:center}
+.cta-box{max-width:800px;margin:0 auto;padding:30px 18px;background:linear-gradient(135deg,#004E89,#0066B3);border-radius:18px}
+.cta-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:8px}
+.cta-desc{font-size:12px;color:rgba(255,255,255,0.85);margin-bottom:16px}
+.cta-btn{padding:11px 28px;background:linear-gradient(135deg,#FF6B35,#FCBF49);border:none;border-radius:60px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:'Poppins',sans-serif}
 
-        /* BOOKING FORM */
-        .booking-section{padding:0 20px;margin-top:-50px;position:relative;z-index:20}
-        .booking-form{max-width:1100px;margin:0 auto;background:#fff;border-radius:24px;padding:28px;box-shadow:0 15px 50px rgba(0,0,0,.15);display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;align-items:end}
-        .fg label{display:block;font-size:11px;font-weight:600;color:#8E8E93;margin-bottom:5px;text-transform:uppercase;letter-spacing:1px}
-        .fg input,.fg select{width:100%;padding:11px 12px;border:2px solid #F2F2F7;border-radius:16px;font-size:13px;font-family:'Poppins',sans-serif;transition:border-color .3s;background:#F2F2F7}
-        .fg input:focus,.fg select:focus{outline:none;border-color:#FF6B35;background:#fff}
-        .btn-group{grid-column:1/-1;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
-        .booking-btn{padding:12px 24px;background:linear-gradient(135deg,#FF6B35,#FCBF49);border:none;border-radius:16px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;transition:all .3s;white-space:nowrap;font-family:'Poppins',sans-serif;flex:1;min-width:160px}
-        .booking-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,107,53,.4)}
-        .booking-btn.whatsapp{background:#25D366}
-        .booking-btn.whatsapp:hover{box-shadow:0 10px 30px rgba(37,211,102,.4)}
+.footer{background:#1C1C1E;color:#fff;padding:30px 16px 16px}
+.footer-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:1000px;margin:0 auto;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.footer-brand .logo{margin-bottom:8px;display:inline-flex;color:#fff;font-size:16px}
+.footer-brand p{color:rgba(255,255,255,0.6);font-size:11px;line-height:1.6}
+.footer-col h4{font-size:11px;font-weight:700;margin-bottom:10px;color:#fff}
+.footer-col a{display:block;color:rgba(255,255,255,0.5);text-decoration:none;font-size:10px;padding:2px 0}
+.footer-col a:hover{color:#FF6B35}
+.footer-contact-item{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px}
+.footer-contact-item .icon{font-size:13px}
+.footer-contact-item p{color:rgba(255,255,255,0.6);font-size:10px}
+.footer-bottom{max-width:1000px;margin:0 auto;padding-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.footer-bottom p{color:rgba(255,255,255,0.4);font-size:9px}
+.social-links{display:flex;gap:5px}
+.social-link{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:12px}
 
-        section{padding:80px 40px}
-        .section-header{text-align:center;max-width:700px;margin:0 auto 50px}
-        .section-tag{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:rgba(0,78,137,.08);border-radius:50px;font-size:12px;font-weight:700;color:#004E89;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px}
-        .section-title{font-size:clamp(26px,4vw,40px);font-weight:800;line-height:1.2;margin-bottom:14px}
-        .section-title .hl{color:#FF6B35}
-        .section-desc{font-size:15px;color:#8E8E93;line-height:1.7}
+.wa-float{position:fixed;bottom:14px;right:14px;width:44px;height:44px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:999;box-shadow:0 8px 20px rgba(37,211,102,0.4);text-decoration:none}
+.wa-float svg{width:20px;height:20px;fill:#fff}
+.wa-pulse{position:absolute;width:100%;height:100%;border-radius:50%;background:#25D366;animation:waPulse 2s ease-in-out infinite;z-index:-1}
+@keyframes waPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.8);opacity:0}}
 
-        .fleet-section{background:#FFF9F0}
-        .fleet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1200px;margin:0 auto}
-        .fleet-card{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .4s;cursor:pointer}
-        .fleet-card:hover{transform:translateY(-8px);box-shadow:0 15px 50px rgba(0,0,0,.15)}
-        .fleet-card-image{height:180px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative}
-        .f-budget{background:linear-gradient(135deg,#E8F5E9,#C8E6C9)}
-        .f-standard{background:linear-gradient(135deg,#E3F2FD,#BBDEFB)}
-        .f-premium{background:linear-gradient(135deg,#FFF3E0,#FFE0B2)}
-        .fleet-badge{position:absolute;top:12px;right:12px;padding:4px 10px;background:#FF6B35;color:#fff;border-radius:30px;font-size:10px;font-weight:700}
-        .fleet-card-content{padding:20px}
-        .fleet-card-content h3{font-size:18px;font-weight:700;margin-bottom:5px}
-        .fleet-card-content .subtitle{font-size:12px;color:#8E8E93;margin-bottom:12px}
-        .fleet-features{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-        .fleet-feature{font-size:11px;color:#1C1C1E;background:#F2F2F7;padding:4px 8px;border-radius:20px}
-        .fleet-card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid #F2F2F7}
-        .fleet-price{font-size:24px;font-weight:800;color:#FF6B35}
-        .fleet-price span{font-size:12px;color:#8E8E93;font-weight:400}
-        .fleet-book-btn{padding:8px 20px;background:linear-gradient(135deg,#004E89,#0066B3);border:none;border-radius:30px;color:#fff;font-weight:600;font-size:12px;cursor:pointer;transition:all .3s;font-family:'Poppins',sans-serif}
-        .fleet-book-btn:hover{transform:scale(1.05)}
+.chatbot-toggle{position:fixed;bottom:70px;right:14px;width:42px;height:42px;background:#FF6B35;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(255,107,53,0.4);z-index:998}
+.chatbot-toggle svg{width:20px;height:20px;fill:#fff}
+.chatbot-window{position:fixed;bottom:120px;right:14px;width:calc(100% - 28px);max-width:340px;height:360px;background:#fff;border-radius:18px;box-shadow:0 15px 40px rgba(0,0,0,0.2);display:none;flex-direction:column;z-index:998;overflow:hidden}
+.chatbot-window.active{display:flex}
+.chatbot-header{background:linear-gradient(135deg,#004E89,#0066B3);color:#fff;padding:12px;display:flex;justify-content:space-between;align-items:center}
+.chatbot-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer}
+.chatbot-messages{flex:1;overflow-y:auto;padding:12px;background:#f5f7fa}
+.chatbot-message{margin-bottom:8px}
+.chatbot-message.bot{text-align:left}
+.chatbot-message.user{text-align:right}
+.chatbot-bubble{display:inline-block;max-width:80%;padding:8px 11px;border-radius:12px;font-size:12px;line-height:1.4}
+.chatbot-message.bot .chatbot-bubble{background:#fff;color:#1C1C1E}
+.chatbot-message.user .chatbot-bubble{background:#FF6B35;color:#fff}
+.chatbot-input-area{padding:8px;background:#fff;border-top:1px solid #eee;display:flex;gap:6px}
+.chatbot-input{flex:1;padding:8px 10px;border:2px solid #e0e0e0;border-radius:30px;font-size:12px;outline:none;font-family:'Poppins',sans-serif}
+.chatbot-send{width:36px;height:36px;background:#FF6B35;border:none;border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.chatbot-quick-questions{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chatbot-quick-btn{padding:4px 10px;background:#fff;border:2px solid #e0e0e0;border-radius:18px;font-size:10px;cursor:pointer;font-family:'Poppins',sans-serif}
 
-        .features-section{background:#fff}
-        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:1200px;margin:0 auto}
-        .feature-card{padding:28px;background:#F2F2F7;border-radius:24px;transition:all .4s;cursor:pointer}
-        .feature-card:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(0,0,0,.12);background:#fff}
-        .feature-icon{width:50px;height:50px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;background:linear-gradient(135deg,#FF6B35,#FCBF49)}
-        .feature-card h3{font-size:16px;font-weight:700;margin-bottom:6px}
-        .feature-card p{font-size:13px;color:#8E8E93;line-height:1.6}
+.reveal{opacity:0;transform:translateY(25px);transition:all .7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
 
-        .destinations-section{background:#1C1C1E;color:#fff}
-        .destinations-section .section-title{color:#fff}
-        .destinations-section .section-desc{color:rgba(255,255,255,.6)}
-        .destinations-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:1200px;margin:0 auto}
-        .destination-card{border-radius:24px;overflow:hidden;position:relative;height:280px;cursor:pointer;transition:all .4s}
-        .destination-card:hover{transform:scale(1.03)}
-        .destination-card-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:60px}
-        .d-patagonia{background:linear-gradient(135deg,#1565C0,#1E88E5)}
-        .d-atacama{background:linear-gradient(135deg,#E65100,#FB8C00)}
-        .d-lakes{background:linear-gradient(135deg,#2E7D32,#43A047)}
-        .destination-card-overlay{position:absolute;bottom:0;left:0;width:100%;padding:24px;background:linear-gradient(to top,rgba(0,0,0,.85),transparent)}
-        .destination-card h3{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
-        .destination-card p{font-size:12px;color:rgba(255,255,255,.8)}
-        .dest-info{max-width:1200px;margin:24px auto 0;background:rgba(255,255,255,.05);border:2px solid rgba(255,107,53,.3);padding:20px;border-radius:24px;text-align:center;opacity:0;transform:translateY(10px);transition:all .4s}
-        .dest-info.visible{opacity:1;transform:translateY(0)}
-        .dest-info h3{font-size:18px;font-weight:700;color:#FF6B35;margin-bottom:6px}
-        .dest-info p{color:rgba(255,255,255,.7);font-size:13px;line-height:1.7}
-
-        .testimonials-section{background:#F2F2F7}
-        .testimonial-slider{max-width:800px;margin:0 auto;overflow:hidden}
-        .testimonial-track{display:flex;transition:transform .6s cubic-bezier(.25,.8,.25,1)}
-        .testimonial-item{min-width:100%;padding:30px;background:#fff;border-radius:24px;box-shadow:0 2px 8px rgba(0,0,0,.08);text-align:center}
-        .testimonial-stars{font-size:20px;margin-bottom:14px}
-        .testimonial-text{font-size:15px;line-height:1.7;color:#1C1C1E;margin-bottom:20px;font-style:italic}
-        .testimonial-author{display:flex;align-items:center;justify-content:center;gap:12px}
-        .author-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;background:linear-gradient(135deg,#FF6B35,#FCBF49)}
-        .author-info h4{font-size:14px;font-weight:700;text-align:left}
-        .author-info p{font-size:11px;color:#8E8E93;text-align:left}
-        .testimonial-dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
-        .t-dot{width:8px;height:8px;border-radius:50%;background:#ccc;cursor:pointer;transition:all .3s}
-        .t-dot.active{background:#FF6B35;transform:scale(1.3)}
-
-        .cta-section{background:#FFF9F0;text-align:center}
-        .cta-box{max-width:900px;margin:0 auto;padding:50px 30px;background:linear-gradient(135deg,#004E89,#0066B3);border-radius:24px;position:relative;overflow:hidden}
-        .cta-box::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:rgba(255,255,255,.05);border-radius:50%}
-        .cta-box>*{position:relative;z-index:1}
-        .cta-title{font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;margin-bottom:12px}
-        .cta-desc{font-size:15px;color:rgba(255,255,255,.85);margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto}
-        .cta-btn{padding:14px 36px;background:linear-gradient(135deg,#FF6B35,#FCBF49);border:none;border-radius:60px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:8px;font-family:'Poppins',sans-serif}
-        .cta-btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(255,107,53,.5)}
-
-        /* FAQ SECTION - Hidden by default, accessible via chatbot */
-        .faq-section{background:#fff;display:none}
-        .faq-container{max-width:900px;margin:0 auto}
-        .faq-item{margin-bottom:16px;border:2px solid #F2F2F7;border-radius:16px;overflow:hidden;transition:all .3s}
-        .faq-item:hover{border-color:#FF6B35;box-shadow:0 4px 12px rgba(255,107,53,.1)}
-        .faq-question{width:100%;padding:20px 24px;background:#fff;border:none;text-align:left;font-size:16px;font-weight:600;color:#1C1C1E;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:'Poppins',sans-serif}
-        .faq-question:hover{background:#FFF9F0}
-        .faq-icon{font-size:20px;transition:transform .3s}
-        .faq-item.active .faq-icon{transform:rotate(180deg)}
-        .faq-answer{max-height:0;overflow:hidden;transition:all .3s ease;background:#FFF9F0}
-        .faq-item.active .faq-answer{max-height:500px}
-        .faq-answer-content{padding:20px 24px;color:#555;line-height:1.7;font-size:15px}
-        .faq-answer-content ul{margin-left:20px;margin-top:10px}
-        .faq-answer-content li{margin-bottom:8px}
-
-        /* TERMS & CONDITIONS MODAL */
-        .tc-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
-        .tc-modal.active{display:flex}
-        .tc-content{background:#fff;border-radius:24px;max-width:800px;width:100%;max-height:90vh;overflow-y:auto;padding:30px;position:relative}
-        .tc-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:28px;cursor:pointer;color:#1C1C1E}
-        .tc-title{font-size:24px;font-weight:800;margin-bottom:20px;color:#004E89}
-        .tc-section{margin-bottom:24px}
-        .tc-section h3{font-size:18px;font-weight:700;margin-bottom:12px;color:#FF6B35}
-        .tc-section p{color:#555;line-height:1.7;margin-bottom:10px}
-        .tc-section ul{margin-left:20px;margin-bottom:10px}
-        .tc-section li{margin-bottom:6px;color:#555}
-
-        /* CHATBOT */
-        .chatbot-toggle{position:fixed;bottom:100px;right:24px;width:56px;height:56px;background:#FF6B35;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 25px rgba(255,107,53,.4);transition:all .3s;z-index:998}
-        .chatbot-toggle:hover{transform:scale(1.1);box-shadow:0 12px 35px rgba(255,107,53,.6)}
-        .chatbot-toggle svg{width:28px;height:28px;fill:#fff}
-        .chatbot-window{position:fixed;bottom:170px;right:24px;width:380px;max-width:calc(100vw - 48px);height:500px;background:#fff;border-radius:24px;box-shadow:0 15px 50px rgba(0,0,0,.2);display:none;flex-direction:column;z-index:998;overflow:hidden}
-        .chatbot-window.active{display:flex}
-        .chatbot-header{background:linear-gradient(135deg,#004E89,#0066B3);color:#fff;padding:20px;display:flex;justify-content:space-between;align-items:center}
-        .chatbot-title{font-size:16px;font-weight:700}
-        .chatbot-close{background:none;border:none;color:#fff;font-size:24px;cursor:pointer}
-        .chatbot-messages{flex:1;overflow-y:auto;padding:20px;background:#F2F2F7}
-        .chatbot-message{margin-bottom:16px;display:flex;flex-direction:column}
-        .chatbot-message.bot{align-items:flex-start}
-        .chatbot-message.user{align-items:flex-end}
-        .chatbot-bubble{max-width:80%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.5}
-        .chatbot-message.bot .chatbot-bubble{background:#fff;color:#1C1C1E;border-bottom-left-radius:4px}
-        .chatbot-message.user .chatbot-bubble{background:#FF6B35;color:#fff;border-bottom-right-radius:4px}
-        .chatbot-input-area{padding:16px;background:#fff;border-top:1px solid #F2F2F7;display:flex;gap:10px}
-        .chatbot-input{flex:1;padding:12px 16px;border:2px solid #F2F2F7;border-radius:30px;font-size:14px;outline:none;font-family:'Poppins',sans-serif}
-        .chatbot-input:focus{border-color:#FF6B35}
-        .chatbot-send{width:44px;height:44px;background:#FF6B35;border:none;border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
-        .chatbot-send:hover{transform:scale(1.1);background:#E5551A}
-        .chatbot-quick-questions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-        .chatbot-quick-btn{padding:8px 16px;background:#fff;border:2px solid #F2F2F7;border-radius:20px;font-size:12px;cursor:pointer;transition:all .3s;font-family:'Poppins',sans-serif}
-        .chatbot-quick-btn:hover{border-color:#FF6B35;color:#FF6B35}
-        .chatbot-tc-link{display:block;text-align:center;margin-top:12px;font-size:12px;color:#FF6B35;text-decoration:none;cursor:pointer}
-        .chatbot-tc-link:hover{text-decoration:underline}
-
-        .footer{background:#1C1C1E;color:#fff;padding:50px 40px 24px}
-        .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:30px;max-width:1200px;margin:0 auto;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,.1)}
-        .footer-brand .logo{margin-bottom:12px;display:inline-flex;color:#fff}
-        .footer-brand p{color:rgba(255,255,255,.6);font-size:13px;line-height:1.7}
-        .footer-col h4{font-size:13px;font-weight:700;margin-bottom:14px;color:#fff}
-        .footer-col a{display:block;color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;padding:4px 0;transition:color .3s}
-        .footer-col a:hover{color:#FF6B35}
-        .footer-contact-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px}
-        .footer-contact-item .icon{font-size:16px;min-width:20px}
-        .footer-contact-item p{color:rgba(255,255,255,.6);font-size:12px;line-height:1.5}
-        .footer-bottom{max-width:1200px;margin:0 auto;padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-        .footer-bottom p{color:rgba(255,255,255,.4);font-size:11px}
-        .social-links{display:flex;gap:8px}
-        .social-link{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;transition:all .3s;cursor:pointer;font-size:14px}
-        .social-link:hover{background:#FF6B35;transform:translateY(-2px)}
-
-        .wa-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:999;cursor:pointer;box-shadow:0 8px 25px rgba(37,211,102,.4);transition:all .3s;text-decoration:none}
-        .wa-float:hover{transform:scale(1.15);box-shadow:0 12px 35px rgba(37,211,102,.6)}
-        .wa-float svg{width:28px;height:28px;fill:#fff}
-        .wa-tooltip{position:absolute;right:70px;background:#fff;color:#1C1C1E;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.12);opacity:0;transform:translateX(10px);transition:all .3s;pointer-events:none}
-        .wa-tooltip::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left:5px solid #fff}
-        .wa-float:hover .wa-tooltip{opacity:1;transform:translateX(0)}
-        .wa-pulse{position:absolute;width:100%;height:100%;border-radius:50%;background:#25D366;animation:waPulse 2s ease-in-out infinite;z-index:-1}
-        @keyframes waPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.8);opacity:0}}
-
-        .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.25,.8,.25,1)}
-        .reveal.visible{opacity:1;transform:translateY(0)}
-
-        @media(max-width:1024px){
-            .fleet-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-            .footer-grid{grid-template-columns:repeat(2,1fr)}
-            .chatbot-window{width:340px;height:450px}
-            .tc-content{max-width:95%;padding:24px}
-        }
-        @media(max-width:768px){
-            .navbar{padding:10px 16px}
-            .logo-text{display:none}
-            .logo-text-mobile{display:block}
-            .nav-links{display:none}
-            .nav-cta-desktop{display:none}
-            .nav-right{gap:8px}
-            .lang-switch{padding:2px}
-            .lang-btn{padding:4px 8px;font-size:10px}
-            .menu-toggle{display:flex}
-            .hero-content{padding:80px 18px 60px}
-            .hero-title{font-size:28px}
-            .hero-desc{font-size:14px;margin-bottom:24px}
-            .hero-actions{gap:10px;margin-bottom:24px;max-width:320px}
-            .btn{padding:12px 24px;font-size:14px}
-            .hero-stats{gap:20px}
-            .stat-number{font-size:20px}
-            .stat-divider{display:none}
-            .booking-section{padding:0 12px;margin-top:-40px}
-            .booking-form{grid-template-columns:1fr;gap:10px;padding:20px}
-            .btn-group{flex-direction:column}
-            section{padding:50px 18px}
-            .fleet-grid{grid-template-columns:1fr}
-            .features-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-            .destinations-grid{grid-template-columns:1fr}
-            .testimonial-item{padding:24px 16px}
-            .cta-box{padding:36px 20px}
-            .footer{padding:40px 18px 20px}
-            .footer-grid{grid-template-columns:1fr;gap:24px}
-            .footer-bottom{flex-direction:column;text-align:center}
-            .wa-float{width:50px;height:50px;bottom:16px;right:16px}
-            .wa-float svg{width:24px;height:24px}
-            .wa-tooltip{display:none}
-            .chatbot-toggle{bottom:86px;right:16px;width:50px;height:50px}
-            .chatbot-window{bottom:150px;right:16px;width:calc(100% - 32px);max-width:none;height:400px}
-            .tc-modal{padding:10px}
-            .tc-content{padding:20px}
-        }
-        @media(max-width:480px){
-            .hero-content{padding:75px 14px 50px}
-            .hero-title{font-size:24px}
-            .hero-stats{flex-direction:column;gap:14px}
-            .features-grid{grid-template-columns:1fr}
-        }
-        ::-webkit-scrollbar{width:8px}
-        ::-webkit-scrollbar-track{background:#F2F2F7}
-        ::-webkit-scrollbar-thumb{background:#004E89;border-radius:4px}
-    </style>
+@media(min-width:769px){
+.navbar{padding:14px 30px}
+.navbar.scrolled{padding:10px 30px}
+.logo{font-size:20px}
+.logo-icon{font-size:24px}
+.nav-links{display:flex}
+.menu-toggle{display:none}
+.hero{min-height:100vh;padding:100px 24px 80px}
+.hero-title{font-size:48px}
+.hero-desc{font-size:16px}
+.hero-actions{max-width:380px}
+.btn{width:auto}
+.hero-stats{grid-template-columns:repeat(4,1fr);max-width:560px;gap:12px}
+.stat-item{padding:14px}
+.stat-number{font-size:24px}
+.booking-section{padding:40px 20px;margin-top:-50px}
+.booking-form{padding:24px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+section{padding:70px 40px}
+.fleet-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.features-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.destinations-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.destination-card{height:240px}
+.footer-grid{grid-template-columns:2fr 1fr 1fr 1.5fr;gap:24px}
+.chatbot-toggle{bottom:90px;right:20px;width:50px;height:50px}
+.chatbot-toggle svg{width:24px;height:24px}
+.chatbot-window{bottom:150px;right:20px;width:360px;height:460px}
+.wa-float{width:50px;height:50px;bottom:20px;right:20px}
+.wa-float svg{width:24px;height:24px}
+}
+</style>
 </head>
 <body>
 
-<!-- FIXED LOADER - Will hide after 2 seconds max -->
-<div class="loader-screen" id="loader">
-    <div class="loader-van">🚐</div>
-    <div class="loader-text">MONKEY ADVENTURE</div>
-</div>
-
 <div class="mobile-nav" id="mobileNav">
-    <a href="#home" onclick="closeMenu()" data-i18n="nav.home">Home</a>
-    <a href="#fleet" onclick="closeMenu()" data-i18n="nav.fleet">Our Vans</a>
-    <a href="#features" onclick="closeMenu()" data-i18n="nav.features">Why Us</a>
-    <a href="#destinations" onclick="closeMenu()" data-i18n="nav.destinations">Destinations</a>
-    <a href="#reviews" onclick="closeMenu()" data-i18n="nav.reviews">Reviews</a>
-    <button class="nav-cta" onclick="openWhatsApp();closeMenu()" data-i18n="nav.book">Book Now</button>
-    <div class="mobile-lang">
-        <button class="mob-lang-btn active" onclick="setLang('en')" id="mobEn">English</button>
-        <button class="mob-lang-btn" onclick="setLang('es')" id="mobEs">Español</button>
-    </div>
+<a href="#home" onclick="closeMenu()">Home</a>
+<a href="#fleet" onclick="closeMenu()">Our Vans</a>
+<a href="#features" onclick="closeMenu()">Why Us</a>
+<a href="#destinations" onclick="closeMenu()">Destinations</a>
+<a href="#reviews" onclick="closeMenu()">Reviews</a>
+<button class="nav-cta" onclick="openWhatsApp();closeMenu()">Book Now</button>
+<div class="mobile-lang">
+<button class="mob-lang-btn active" onclick="setLang('en')" id="mobEn">English</button>
+<button class="mob-lang-btn" onclick="setLang('es')" id="mobEs">Español</button>
+</div>
 </div>
 
 <nav class="navbar" id="navbar">
-    <a href="#home" class="logo">
-        <span class="logo-icon">🐒</span>
-        <span class="logo-text">MonkeyAdventure</span>
-        <span class="logo-text-mobile" style="font-size:16px;font-weight:800;color:#fff">Monkey</span>
-    </a>
-    <div class="nav-right">
-        <ul class="nav-links">
-            <li><a href="#home" data-i18n="nav.home">Home</a></li>
-            <li><a href="#fleet" data-i18n="nav.fleet">Our Vans</a></li>
-            <li><a href="#features" data-i18n="nav.features">Why Us</a></li>
-            <li><a href="#destinations" data-i18n="nav.destinations">Destinations</a></li>
-            <li><a href="#reviews" data-i18n="nav.reviews">Reviews</a></li>
-        </ul>
-        <div class="lang-switch">
-            <button class="lang-btn active" id="langEn" onclick="setLang('en')">EN</button>
-            <button class="lang-btn" id="langEs" onclick="setLang('es')">ES</button>
-        </div>
-        <button class="nav-cta nav-cta-desktop" onclick="openWhatsApp()" data-i18n="nav.book">Book Now</button>
-        <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-    </div>
+<a href="#home" class="logo"><span class="logo-icon">🐒</span><span>MonkeyAdventure</span></a>
+<div class="nav-right">
+<ul class="nav-links">
+<li><a href="#home">Home</a></li>
+<li><a href="#fleet">Our Vans</a></li>
+<li><a href="#features">Why Us</a></li>
+<li><a href="#destinations">Destinations</a></li>
+<li><a href="#reviews">Reviews</a></li>
+</ul>
+<div class="lang-switch">
+<button class="lang-btn active" id="langEn" onclick="setLang('en')">EN</button>
+<button class="lang-btn" id="langEs" onclick="setLang('es')">ES</button>
+</div>
+<button class="nav-cta" onclick="openWhatsApp()">Book</button>
+<div class="menu-toggle" id="menuToggle" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</div>
 </nav>
 
 <section class="hero" id="home">
-    <div class="hero-bg-overlay"></div>
-    <svg class="hero-mountains" viewBox="0 0 1440 500" preserveAspectRatio="none">
-        <path fill="rgba(255,255,255,0.06)" d="M0,350L100,280L180,320L280,200L350,250L420,180L500,220L580,150L650,190L720,120L800,170L880,100L950,160L1020,130L1100,180L1180,140L1260,200L1340,160L1440,220L1440,500L0,500Z"/>
-        <path fill="rgba(255,255,255,0.1)" d="M270,200L280,185L310,210L280,220L250,210Z"/>
-        <path fill="rgba(255,255,255,0.1)" d="M570,150L580,135L610,162L580,172L550,162Z"/>
-        <path fill="rgba(255,255,255,0.1)" d="M710,120L720,105L750,132L720,144L690,132Z"/>
-        <path fill="rgba(255,255,255,0.1)" d="M870,100L880,85L910,112L880,124L850,112Z"/>
-        <path fill="rgba(255,255,255,0.1)" d="M1170,140L1180,125L1210,152L1180,164L1150,152Z"/>
-        <path fill="rgba(255,255,255,0.08)" d="M0,380L80,340L160,360L250,300L320,330L400,280L480,310L560,260L640,300L720,250L800,290L880,240L960,280L1040,260L1120,300L1200,270L1280,310L1360,280L1440,320L1440,500L0,500Z"/>
-        <path fill="rgba(0,50,90,0.5)" d="M0,420L60,400L140,410L220,390L300,405L380,390L460,400L540,385L620,395L700,380L780,395L860,385L940,395L1020,385L1100,395L1180,390L1260,400L1340,395L1440,410L1440,500L0,500Z"/>
-    </svg>
-    <svg class="hero-pines" viewBox="0 0 1440 200" preserveAspectRatio="none">
-        <g fill="rgba(0,60,30,0.4)">
-            <polygon points="20,200 35,80 50,200"/>
-            <polygon points="70,200 88,100 106,200"/>
-            <polygon points="130,200 145,70 160,200"/>
-            <polygon points="190,200 205,90 220,200"/>
-            <polygon points="1250,200 1268,80 1286,200"/>
-            <polygon points="1310,200 1325,60 1340,200"/>
-            <polygon points="1360,200 1378,90 1396,200"/>
-            <polygon points="1410,200 1425,70 1440,200"/>
-        </g>
-    </svg>
-
-    <div class="hero-content">
-        <div class="hero-badge" data-i18n="hero.badge">🇨 Chile & Argentina Campervan Rentals</div>
-        <h1 class="hero-title" data-i18n="hero.title">Explore South America with<br><span class="hl">Monkey Adventure</span></h1>
-        <p class="hero-desc" data-i18n="hero.desc">Budget-friendly campervan and 4WD camper rentals. Drive from the Atacama Desert to Patagonia glaciers. Your unforgettable adventure starts here.</p>
-        <div class="hero-actions">
-            <a href="#fleet" class="btn btn-primary" data-i18n="hero.cta1">View Our Fleet 🚐</a>
-            <a href="#destinations" class="btn btn-outline" data-i18n="hero.cta2">Explore Routes 🗺️</a>
-        </div>
-        <div class="hero-stats">
-            <div class="stat-item">
-                <div class="stat-number" id="stat1">0<span class="stat-accent">+</span></div>
-                <div class="stat-label" data-i18n="stats.travelers">Happy Travelers</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-number" id="stat2">0<span class="stat-accent">+</span></div>
-                <div class="stat-label" data-i18n="stats.vans">Vans Available</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-number" id="stat3">0<span class="stat-accent">+</span></div>
-                <div class="stat-label" data-i18n="stats.locations">Locations</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-number" id="stat4">0<span class="stat-accent">/5</span></div>
-                <div class="stat-label" data-i18n="stats.rating">Google Rating</div>
-            </div>
-        </div>
-    </div>
+<div class="hero-content">
+<div class="hero-badge">🇨 Chile & Argentina Campervan Rentals</div>
+<h1 class="hero-title">Explore South America with<br><span class="hl">Monkey Adventure</span></h1>
+<p class="hero-desc">Budget-friendly campervan rentals. Drive from Atacama Desert to Patagonia glaciers.</p>
+<div class="hero-actions">
+<a href="#fleet" class="btn btn-primary">View Fleet 🚐</a>
+<a href="#destinations" class="btn btn-outline">Explore Routes 🗺️</a>
+</div>
+<div class="hero-stats">
+<div class="stat-item"><div class="stat-number" id="stat1">0+</div><div class="stat-label">Happy Travelers</div></div>
+<div class="stat-item"><div class="stat-number" id="stat2">0+</div><div class="stat-label">Vans Available</div></div>
+<div class="stat-item"><div class="stat-number" id="stat3">0+</div><div class="stat-label">Locations</div></div>
+<div class="stat-item"><div class="stat-number" id="stat4">0/5</div><div class="stat-label">Google Rating</div></div>
+</div>
+</div>
 </section>
 
-<!-- BOOKING FORM -->
 <div class="booking-section" id="booking">
-    <form class="booking-form reveal" name="booking-form" method="POST" data-netlify="true" netlify>
-        <input type="hidden" name="form-name" value="booking-form">
-        
-        <div class="fg">
-            <label data-i18n="form.name">Full Name</label>
-            <input type="text" name="customer-name" placeholder="John Doe" required>
-        </div>
-        <div class="fg">
-            <label data-i18n="form.phone">Phone Number</label>
-            <input type="tel" name="customer-phone" placeholder="+56 9 1234 5678" required oninput="formatPhone(this)">
-        </div>
-        <div class="fg">
-            <label data-i18n="form.pickup">Pickup Location</label>
-            <select name="pickup-location" required>
-                <option value="" data-i18n="form.select">Select...</option>
-                <option>Santiago, Chile</option>
-                <option>San Pedro de Atacama</option>
-                <option>Puerto Montt</option>
-                <option>Bariloche, Argentina</option>
-                <option>Ushuaia</option>
-            </select>
-        </div>
-        <div class="fg">
-            <label data-i18n="form.pdate">Pickup Date</label>
-            <input type="date" name="pickup-date" required>
-        </div>
-        <div class="fg">
-            <label data-i18n="form.rdate">Return Date</label>
-            <input type="date" name="return-date" required>
-        </div>
-        <div class="fg">
-            <label data-i18n="form.travelers">Travelers</label>
-            <select name="travelers">
-                <option>1-2 Travelers</option>
-                <option>3-4 Travelers</option>
-                <option>5-6 Travelers</option>
-            </select>
-        </div>
-        <div class="fg">
-            <label data-i18n="form.type">Van Type</label>
-            <select name="van-type">
-                <option>All Types</option>
-                <option>Chimpanzee 2WD</option>
-                <option>Gorilla 2WD</option>
-            </select>
-        </div>
-        
-        <div class="btn-group">
-            <button type="submit" class="booking-btn" data-i18n="form.search">Submit Request 🔍</button>
-            <button type="button" class="booking-btn whatsapp" onclick="sendToWhatsApp()">Request Callback & Price 💬</button>
-        </div>
-    </form>
+<div style="text-align:center;margin-bottom:18px">
+<h2 style="font-size:20px;font-weight:700;margin-bottom:4px">Book Your Adventure</h2>
+<p style="color:#666;font-size:12px">Fill in your details</p>
+</div>
+<form class="booking-form" name="booking-form" method="POST" data-netlify="true" netlify>
+<input type="hidden" name="form-name" value="booking-form">
+<div class="fg"><label>Full Name</label><input type="text" name="customer-name" placeholder="John Doe" required></div>
+<div class="fg"><label>Phone</label><input type="tel" name="customer-phone" placeholder="+56 9 1234 5678" required></div>
+<div class="fg"><label>Pickup Location</label>
+<select name="pickup-location" required><option value="">Select...</option><option>Santiago, Chile</option><option>San Pedro de Atacama</option><option>Puerto Montt</option><option>Bariloche, Argentina</option><option>Ushuaia</option></select></div>
+<div class="fg"><label>Pickup Date</label><input type="date" name="pickup-date" required></div>
+<div class="fg"><label>Return Date</label><input type="date" name="return-date" required></div>
+<div class="fg"><label>Travelers</label>
+<select name="travelers"><option>1-2 Travelers</option><option>3-4 Travelers</option><option>5-6 Travelers</option></select></div>
+<div class="fg"><label>Van Type</label>
+<select name="van-type"><option>All Types</option><option>Chimpanzee 2WD</option><option>Gorilla 2WD</option></select></div>
+<div class="btn-group">
+<button type="submit" class="booking-btn">Submit Request 🔍</button>
+<button type="button" class="booking-btn whatsapp" onclick="sendToWhatsApp()">Request Callback 💬</button>
+</div>
+</form>
 </div>
 
-<!-- FLEET SECTION -->
 <section class="fleet-section" id="fleet">
-    <div class="section-header reveal">
-        <span class="section-tag" data-i18n="fleet.tag">🚐 Our Fleet</span>
-        <h2 class="section-title" data-i18n="fleet.title">Choose Your <span class="hl">Adventure Van</span></h2>
-        <p class="section-desc" data-i18n="fleet.desc">Two reliable 2WD campervan models perfect for your South American adventure. Minimum 7-day rental.</p>
-    </div>
-    <div class="fleet-grid">
-        <div class="fleet-card reveal">
-            <div class="fleet-card-image f-budget">🚐<span class="fleet-badge" data-i18n="fleet.b1">Most Popular</span></div>
-            <div class="fleet-card-content">
-                <h3 data-i18n="fleet.n1">Chimpanzee Camper Van</h3>
-                <p class="subtitle" data-i18n="fleet.s1">Comfortable 2WD campervan for couples and small groups</p>
-                <div class="fleet-features">
-                    <span class="fleet-feature">👥 2-3</span>
-                    <span class="fleet-feature" data-i18n="fleet.f.bed">🛏️ Bed</span>
-                    <span class="fleet-feature" data-i18n="fleet.f.fridge">🧊 Fridge</span>
-                    <span class="fleet-feature" data-i18n="fleet.f.gas">⛽ Gas</span>
-                    <span class="fleet-feature">🚗 2WD</span>
-                </div>
-                <div class="fleet-card-footer">
-                    <div class="fleet-price" data-i18n="fleet.min7">Min 7 Days</div>
-                    <button class="fleet-book-btn" onclick="openWhatsApp()" data-i18n="fleet.booknow">Book Now</button>
-                </div>
-            </div>
-        </div>
-        <div class="fleet-card reveal">
-            <div class="fleet-card-image f-standard">🚐<span class="fleet-badge" data-i18n="fleet.b2">Spacious</span></div>
-            <div class="fleet-card-content">
-                <h3 data-i18n="fleet.n2">Gorilla Camper Van</h3>
-                <p class="subtitle" data-i18n="fleet.s2">Larger 2WD campervan for families and groups</p>
-                <div class="fleet-features">
-                    <span class="fleet-feature">👥 4-5</span>
-                    <span class="fleet-feature" data-i18n="fleet.f.2beds">🛏️ 2 Beds</span>
-                    <span class="fleet-feature" data-i18n="fleet.f.kitchen">🧊 Kitchen</span>
-                    <span class="fleet-feature" data-i18n="fleet.f.solar">🔌 Solar</span>
-                    <span class="fleet-feature">🚗 2WD</span>
-                </div>
-                <div class="fleet-card-footer">
-                    <div class="fleet-price" data-i18n="fleet.min7">Min 7 Days</div>
-                    <button class="fleet-book-btn" onclick="openWhatsApp()" data-i18n="fleet.booknow">Book Now</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="section-header reveal">
+<span class="section-tag">🚐 Our Fleet</span>
+<h2 class="section-title">Choose Your <span class="hl">Adventure Van</span></h2>
+<p class="section-desc">Two reliable 2WD models. Min 7-day rental.</p>
+</div>
+<div class="fleet-grid">
+<div class="fleet-card reveal">
+<div class="fleet-card-image f-budget">🚐<span class="fleet-badge">Most Popular</span></div>
+<div class="fleet-card-content">
+<h3>Chimpanzee Camper Van</h3>
+<p class="subtitle">Comfortable 2WD for couples</p>
+<div class="fleet-features"><span class="fleet-feature">👥 2-3</span><span class="fleet-feature">🛏️ Bed</span><span class="fleet-feature">🧊 Fridge</span><span class="fleet-feature">🚗 2WD</span></div>
+<div class="fleet-card-footer"><div class="fleet-price">Min 7 Days</div><button class="fleet-book-btn" onclick="openWhatsApp()">Book Now</button></div>
+</div>
+</div>
+<div class="fleet-card reveal">
+<div class="fleet-card-image f-standard">🚐<span class="fleet-badge">Spacious</span></div>
+<div class="fleet-card-content">
+<h3>Gorilla Camper Van</h3>
+<p class="subtitle">Larger 2WD for families</p>
+<div class="fleet-features"><span class="fleet-feature">👥 4-5</span><span class="fleet-feature">🛏️ 2 Beds</span><span class="fleet-feature">🧊 Kitchen</span><span class="fleet-feature">🚗 2WD</span></div>
+<div class="fleet-card-footer"><div class="fleet-price">Min 7 Days</div><button class="fleet-book-btn" onclick="openWhatsApp()">Book Now</button></div>
+</div>
+</div>
+</div>
 </section>
 
 <section class="features-section" id="features">
-    <div class="section-header reveal">
-        <span class="section-tag" data-i18n="features.tag">✨ Why Choose Us</span>
-        <h2 class="section-title" data-i18n="features.title">The <span class="hl">Monkey Difference</span></h2>
-        <p class="section-desc" data-i18n="features.desc">We make campervan travel simple, safe, and unforgettable across Chile and Argentina.</p>
-    </div>
-    <div class="features-grid">
-        <div class="feature-card reveal"><div class="feature-icon">💰</div><h3 data-i18n="features.f1t">Budget Friendly</h3><p data-i18n="features.f1d">Transparent pricing with no hidden fees. IVA included. Best value in South America.</p></div>
-        <div class="feature-card reveal"><div class="feature-icon">🛡️</div><h3 data-i18n="features.f2t">Full Insurance</h3><p data-i18n="features.f2d">Comprehensive coverage included. 24/7 roadside assistance for peace of mind.</p></div>
-        <div class="feature-card reveal"><div class="feature-icon">🗺️</div><h3 data-i18n="features.f3t">Route Planning</h3><p data-i18n="features.f3d">Personalized itineraries, camping spots, and local tips from our team.</p></div>
-        <div class="feature-card reveal"><div class="feature-icon">📍</div><h3 data-i18n="features.f4t">Multiple Locations</h3><p data-i18n="features.f4d">Pickup and drop-off at Santiago, Atacama, Puerto Montt, Bariloche, and Ushuaia.</p></div>
-        <div class="feature-card reveal"><div class="feature-icon">⚙️</div><h3 data-i18n="features.f5t">Well-Maintained</h3><p data-i18n="features.f5d">All vans regularly serviced and fully equipped for Patagonian and desert conditions.</p></div>
-        <div class="feature-card reveal"><div class="feature-icon">💬</div><h3 data-i18n="features.f6t">24/7 Support</h3><p data-i18n="features.f6d">Available around the clock via WhatsApp for any assistance during your trip.</p></div>
-    </div>
+<div class="section-header reveal">
+<span class="section-tag">✨ Why Choose Us</span>
+<h2 class="section-title">The <span class="hl">Monkey Difference</span></h2>
+<p class="section-desc">Campervan travel made simple.</p>
+</div>
+<div class="features-grid">
+<div class="feature-card reveal"><div class="feature-icon">🗺️</div><h3>Route Planning</h3><p>Personalized itineraries.</p></div>
+<div class="feature-card reveal"><div class="feature-icon">📍</div><h3>Multiple Locations</h3><p>Pickup at Santiago, Atacama, and more.</p></div>
+<div class="feature-card reveal"><div class="feature-icon">⚙️</div><h3>Well-Maintained</h3><p>Regularly serviced vehicles.</p></div>
+<div class="feature-card reveal"><div class="feature-icon">💬</div><h3>24/7 Support</h3><p>WhatsApp support during your trip.</p></div>
+</div>
 </section>
 
 <section class="destinations-section" id="destinations">
-    <div class="section-header reveal">
-        <span class="section-tag">🌎 Top Routes</span>
-        <h2 class="section-title" data-i18n="dest.title">Explore Iconic Destinations</h2>
-        <p class="section-desc" data-i18n="dest.desc">Drive through some of the most stunning landscapes on Earth with our campervans.</p>
-    </div>
-    <div class="destinations-grid">
-        <div class="destination-card reveal" onclick="showDestination('patagonia')">
-            <div class="destination-card-bg d-patagonia">🏔️</div>
-            <div class="destination-card-overlay"><h3 data-i18n="dest.d1t">Patagonia</h3><p data-i18n="dest.d1d">Torres del Paine • Glaciers • Wildlife</p></div>
-        </div>
-        <div class="destination-card reveal" onclick="showDestination('atacama')">
-            <div class="destination-card-bg d-atacama">🏜️</div>
-            <div class="destination-card-overlay"><h3 data-i18n="dest.d2t">Atacama Desert</h3><p data-i18n="dest.d2d">Geysers • Salt Flats • Stargazing</p></div>
-        </div>
-        <div class="destination-card reveal" onclick="showDestination('lakes')">
-            <div class="destination-card-bg d-lakes">🏞️</div>
-            <div class="destination-card-overlay"><h3 data-i18n="dest.d3t">Lake District</h3><p data-i18n="dest.d3d">Volcanoes • Lakes • Hot Springs</p></div>
-        </div>
-    </div>
-    <div class="dest-info" id="destInfo">
-        <h3 id="destTitle" data-i18n="dest.infoTitle">Select a Destination</h3>
-        <p id="destDesc" data-i18n="dest.infoDesc">Click on any destination above to learn more about the route!</p>
-    </div>
+<div class="section-header reveal">
+<span class="section-tag">🌎 Top Routes</span>
+<h2 class="section-title">Explore Iconic Destinations</h2>
+<p class="section-desc">Drive through stunning landscapes.</p>
+</div>
+<div class="destinations-grid">
+<div class="destination-card reveal"><div class="destination-card-bg d-patagonia">🏔️</div><div class="destination-card-overlay"><h3>Patagonia</h3><p>Torres del Paine • Glaciers</p></div></div>
+<div class="destination-card reveal"><div class="destination-card-bg d-atacama">🏜️</div><div class="destination-card-overlay"><h3>Atacama Desert</h3><p>Geysers • Salt Flats</p></div></div>
+<div class="destination-card reveal"><div class="destination-card-bg d-lakes">🏞️</div><div class="destination-card-overlay"><h3>Lake District</h3><p>Volcanoes • Hot Springs</p></div></div>
+</div>
 </section>
 
 <section class="testimonials-section" id="reviews">
-    <div class="section-header reveal">
-        <span class="section-tag" data-i18n="rev.tag">⭐ Reviews</span>
-        <h2 class="section-title" data-i18n="rev.title">What Our <span class="hl">Travelers Say</span></h2>
-        <p class="section-desc" data-i18n="rev.desc">Real experiences from adventurers who explored South America with Monkey Adventure.</p>
-    </div>
-    <div class="testimonial-slider reveal">
-        <div class="testimonial-track" id="tTrack">
-            <div class="testimonial-item">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text" data-i18n="rev.r1">"The best way to explore Patagonia! The van was in perfect condition, fully equipped, and the team helped us plan an incredible 2-week route."</p>
-                <div class="testimonial-author"><div class="author-avatar">👩</div><div class="author-info"><h4>Emma Wilson</h4><p data-i18n="rev.r1a">Patagonia Route, 14 days</p></div></div>
-            </div>
-            <div class="testimonial-item">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text" data-i18n="rev.r2">"Incredible value for money. We drove from Santiago to Atacama and the van handled everything perfectly. Highly recommend the 4WD option!"</p>
-                <div class="testimonial-author"><div class="author-avatar">👨</div><div class="author-info"><h4>Lucas Müller</h4><p data-i18n="rev.r2a">Atacama Route, 10 days</p></div></div>
-            </div>
-            <div class="testimonial-item">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text" data-i18n="rev.r3">"We crossed from Chile to Argentina in our Monkey Adventure camper. The border crossing was seamless and the Lake District route was magical!"</p>
-                <div class="testimonial-author"><div class="author-avatar">👫</div><div class="author-info"><h4>Sofia & Carlos</h4><p data-i18n="rev.r3a">Chile-Argentina Crossing, 21 days</p></div></div>
-            </div>
-        </div>
-        <div class="testimonial-dots" id="tDots">
-            <div class="t-dot active" onclick="goToSlide(0)"></div>
-            <div class="t-dot" onclick="goToSlide(1)"></div>
-            <div class="t-dot" onclick="goToSlide(2)"></div>
-        </div>
-    </div>
+<div class="section-header reveal">
+<span class="section-tag">⭐ Reviews</span>
+<h2 class="section-title">What Our <span class="hl">Travelers Say</span></h2>
+</div>
+<div class="testimonial-slider reveal">
+<div class="testimonial-track" id="tTrack">
+<div class="testimonial-item">
+<div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+<p class="testimonial-text">"The best way to explore Patagonia!"</p>
+<div class="testimonial-author"><div class="author-avatar">👩</div><div class="author-info"><h4>Emma Wilson</h4><p>14 days</p></div></div>
+</div>
+<div class="testimonial-item">
+<div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+<p class="testimonial-text">"Incredible value for money."</p>
+<div class="testimonial-author"><div class="author-avatar">👨</div><div class="author-info"><h4>Lucas Müller</h4><p>10 days</p></div></div>
+</div>
+<div class="testimonial-item">
+<div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+<p class="testimonial-text">"Seamless border crossing!"</p>
+<div class="testimonial-author"><div class="author-avatar">👫</div><div class="author-info"><h4>Sofia & Carlos</h4><p>21 days</p></div></div>
+</div>
+</div>
+<div class="testimonial-dots" id="tDots">
+<div class="t-dot active" onclick="goToSlide(0)"></div>
+<div class="t-dot" onclick="goToSlide(1)"></div>
+<div class="t-dot" onclick="goToSlide(2)"></div>
+</div>
+</div>
 </section>
 
 <section class="cta-section" id="contact">
-    <div class="cta-box reveal">
-        <h2 class="cta-title" data-i18n="cta.title">Ready for Your South American Adventure? 🚐</h2>
-        <p class="cta-desc" data-i18n="cta.desc">Book your campervan today and explore Chile & Argentina at your own pace. Free itinerary planning included!</p>
-        <button class="cta-btn" onclick="openWhatsApp()" data-i18n="cta.btn">Book via WhatsApp 💬</button>
-    </div>
+<div class="cta-box reveal">
+<h2 class="cta-title">Ready for Your Adventure? 🚐</h2>
+<p class="cta-desc">Book today. Free itinerary planning!</p>
+<button class="cta-btn" onclick="openWhatsApp()">Book via WhatsApp 💬</button>
+</div>
 </section>
 
 <footer class="footer">
-    <div class="footer-grid">
-        <div class="footer-brand">
-            <div class="logo"><span class="logo-icon">🐒</span>MonkeyAdventure</div>
-            <p data-i18n="footer.brand">Budget campervan and 4WD camper rentals across Chile and Argentina.</p>
-        </div>
-        <div class="footer-col">
-            <h4 data-i18n="footer.qh">Quick Links</h4>
-            <a href="#fleet" data-i18n="nav.fleet">Our Vans</a>
-            <a href="#features" data-i18n="nav.features">Why Us</a>
-            <a href="#destinations" data-i18n="nav.destinations">Destinations</a>
-            <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
-        </div>
-        <div class="footer-col">
-            <h4 data-i18n="footer.ih">Rental Info</h4>
-            <a href="#" data-i18n="footer.l1">Van Specifications</a>
-            <a href="#" data-i18n="footer.l2">Terms & Conditions</a>
-            <a href="#" data-i18n="footer.l3">Insurance Details</a>
-            <a href="#" data-i18n="footer.l4">FAQ</a>
-        </div>
-        <div class="footer-col">
-            <h4 data-i18n="footer.ch">Contact Us</h4>
-            <div class="footer-contact-item"><span class="icon">📱</span><p>+56 9 9042 3560</p></div>
-            <div class="footer-contact-item"><span class="icon">📧</span><p>contacto@monkey-adventure.com</p></div>
-            <div class="footer-contact-item"><span class="icon">📍</span><p data-i18n="footer.addr">Santiago, Chile</p></div>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p data-i18n="footer.copy">© 2026 MonkeyAdventure. All rights reserved.</p>
-        <div class="social-links">
-            <div class="social-link">📘</div>
-            <div class="social-link">📸</div>
-            <div class="social-link">🐦</div>
-            <div class="social-link">📺</div>
-        </div>
-    </div>
+<div class="footer-grid">
+<div class="footer-brand">
+<div class="logo"><span class="logo-icon">🐒</span>MonkeyAdventure</div>
+<p>Budget campervan rentals across Chile and Argentina.</p>
+</div>
+<div class="footer-col">
+<h4>Quick Links</h4>
+<a href="#fleet">Our Vans</a>
+<a href="#features">Why Us</a>
+<a href="#destinations">Destinations</a>
+<a href="#reviews">Reviews</a>
+</div>
+<div class="footer-col">
+<h4>Rental Info</h4>
+<a href="#">Van Specifications</a>
+<a href="#">Terms & Conditions</a>
+<a href="#">Insurance</a>
+<a href="#">FAQ</a>
+</div>
+<div class="footer-col">
+<h4>Contact</h4>
+<div class="footer-contact-item"><span class="icon">📱</span><p>+56 9 9042 3560</p></div>
+<div class="footer-contact-item"><span class="icon">📧</span><p>contacto@monkey-adventure.com</p></div>
+<div class="footer-contact-item"><span class="icon">📍</span><p>Santiago, Chile</p></div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2026 MonkeyAdventure. All rights reserved.</p>
+<div class="social-links"><div class="social-link">📘</div><div class="social-link">📸</div><div class="social-link">🐦</div><div class="social-link">📺</div></div>
+</div>
 </footer>
 
-<a href="https://wa.me/56990423560?text=Hello!%20I'm%20interested%20in%20renting%20a%20campervan!" target="_blank" class="wa-float" onclick="openWhatsApp()">
-    <div class="wa-pulse"></div>
-    <span class="wa-tooltip" data-i18n="wa.tooltip">Chat with us on WhatsApp</span>
-    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+<a href="https://wa.me/56990423560?text=Hello!" target="_blank" class="wa-float" onclick="openWhatsApp()">
+<div class="wa-pulse"></div>
+<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
 </a>
 
-<!-- CHATBOT WIDGET -->
-<div class="chatbot-toggle" onclick="toggleChatbot()">
-    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-</div>
-
+<div class="chatbot-toggle" onclick="toggleChatbot()"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
 <div class="chatbot-window" id="chatbotWindow">
-    <div class="chatbot-header">
-        <div class="chatbot-title">🐒 MonkeyBot</div>
-        <button class="chatbot-close" onclick="toggleChatbot()">×</button>
-    </div>
-    <div class="chatbot-messages" id="chatbotMessages">
-        <div class="chatbot-message bot">
-            <div class="chatbot-bubble">
-                <span data-i18n="chat.greeting">Hi! I'm MonkeyBot 🐒. Ask me anything about our campervan rentals, pricing, or terms!</span>
-            </div>
-        </div>
-        <div class="chatbot-quick-questions">
-            <button class="chatbot-quick-btn" onclick="askQuickQuestion('models')" data-i18n="chat.q1">Models</button>
-            <button class="chatbot-quick-btn" onclick="askQuickQuestion('booking')" data-i18n="chat.q2">Booking</button>
-            <button class="chatbot-quick-btn" onclick="askQuickQuestion('insurance')" data-i18n="chat.q3">Insurance</button>
-            <button class="chatbot-quick-btn" onclick="askQuickQuestion('faq')" data-i18n="chat.q4">FAQ</button>
-        </div>
-        <a class="chatbot-tc-link" onclick="openTCModal()" data-i18n="chat.tc_link">📄 View Full Terms & Conditions</a>
-    </div>
-    <div class="chatbot-input-area">
-        <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your question..." onkeypress="handleChatKeypress(event)">
-        <button class="chatbot-send" onclick="sendChatMessage()">➤</button>
-    </div>
+<div class="chatbot-header"><div class="chatbot-title">🐒 MonkeyBot</div><button class="chatbot-close" onclick="toggleChatbot()">×</button></div>
+<div class="chatbot-messages" id="chatbotMessages">
+<div class="chatbot-message bot"><div class="chatbot-bubble">Hi! Ask me anything!</div></div>
+<div class="chatbot-quick-questions">
+<button class="chatbot-quick-btn" onclick="askQuickQuestion('models')">Models</button>
+<button class="chatbot-quick-btn" onclick="askQuickQuestion('booking')">Booking</button>
+<button class="chatbot-quick-btn" onclick="askQuickQuestion('insurance')">Insurance</button>
+</div>
+</div>
+<div class="chatbot-input-area">
+<input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type question..." onkeypress="if(event.key==='Enter')sendChatMessage()">
+<button class="chatbot-send" onclick="sendChatMessage()">➤</button>
+</div>
 </div>
 
 <script>
-// ====== FIXED LOADER ======
-// Hide loader after 2 seconds (guaranteed)
-setTimeout(function(){
-    var loader = document.getElementById('loader');
-    if(loader){
-        loader.classList.add('hidden');
-    }
-}, 2000);
-
-// Also hide when page actually loads
-if(document.readyState === 'complete'){
-    document.getElementById('loader').classList.add('hidden');
-}
-window.addEventListener('load', function(){
-    document.getElementById('loader').classList.add('hidden');
-});
-
-// ====== PHONE AUTO-FORMAT ======
-function formatPhone(input) {
-    let val = input.value.replace(/\D/g, '');
-    if (val.length > 12) val = val.slice(0, 12);
-    let formatted = '+' + val;
-    if (val.length > 2) formatted = '+' + val.slice(0, 2) + ' ' + val.slice(2);
-    if (val.length > 3) formatted = '+' + val.slice(0, 2) + ' ' + val.slice(2, 3) + ' ' + val.slice(3);
-    if (val.length > 7) formatted = '+' + val.slice(0, 2) + ' ' + val.slice(2, 3) + ' ' + val.slice(3, 7) + ' ' + val.slice(7);
-    input.value = formatted;
-}
-
-// ====== TERMS & CONDITIONS MODAL ======
-function openTCModal() {
-    document.getElementById('tcModal').classList.add('active');
-    toggleChatbot();
-}
-
-function closeTCModal() {
-    document.getElementById('tcModal').classList.remove('active');
-}
-
-document.getElementById('tcModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeTCModal();
-    }
-});
-
-// ====== CHATBOT FUNCTIONS ======
-function toggleChatbot() {
-    document.getElementById('chatbotWindow').classList.toggle('active');
-}
-
-function addChatMessage(text, isBot) {
-    const messagesDiv = document.getElementById('chatbotMessages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'chatbot-message ' + (isBot ? 'bot' : 'user');
-    messageDiv.innerHTML = '<div class="chatbot-bubble">' + text + '</div>';
-    messagesDiv.appendChild(messageDiv);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-function askQuickQuestion(topic) {
-    const lang = currentLang;
-    const answer = faqDatabase[lang][topic] || (lang === 'en' ? "I'm not sure about that. Let me connect you with our team!" : "No estoy seguro sobre eso. ¡Déjame conectarte con nuestro equipo!");
-    addChatMessage(answer, true);
-}
-
-function sendChatMessage() {
-    const input = document.getElementById('chatbotInput');
-    const question = input.value.trim().toLowerCase();
-    
-    if (!question) return;
-    
-    addChatMessage(input.value, false);
-    input.value = '';
-    
-    const lang = currentLang;
-    let answer = null;
-    
-    if (question.includes('model') || question.includes('van type') || question.includes('chimpanzee') || question.includes('gorilla')) {
-        answer = faqDatabase[lang].models;
-    } else if (question.includes('book') || question.includes('booking') || question.includes('reservation') || question.includes('deposit')) {
-        answer = faqDatabase[lang].booking;
-    } else if (question.includes('insurance') || question.includes('coverage') || question.includes('excess') || question.includes('deductible')) {
-        answer = faqDatabase[lang].insurance;
-    } else if (question.includes('faq') || question.includes('question') || question.includes('help')) {
-        answer = faqDatabase[lang].faq;
-    } else if (question.includes('minimum') || question.includes('days') || question.includes('rental period')) {
-        answer = faqDatabase[lang].minimum;
-    } else if (question.includes('price') || question.includes('cost') || question.includes('rate')) {
-        answer = faqDatabase[lang].price;
-    } else if (question.includes('2wd') || question.includes('four wheel drive') || question.includes('transmission')) {
-        answer = faqDatabase[lang].transmission;
-    }
-    
-    if (answer) {
-        setTimeout(() => addChatMessage(answer, true), 500);
-    } else {
-        setTimeout(() => {
-            const fallback = lang === 'en' 
-                ? "I'm not sure about that. Would you like to:\n1️⃣ Chat with our team on WhatsApp?\n2️⃣ View our full Terms & Conditions?\n3️⃣ Ask about something else?" 
-                : "No estoy seguro sobre eso. ¿Te gustaría:\n1️⃣ Chatear con nuestro equipo por WhatsApp?\n2️⃣ Ver nuestros Términos y Condiciones completos?\n3️⃣ Preguntar sobre algo más?";
-            addChatMessage(fallback, true);
-        }, 500);
-    }
-}
-
-function handleChatKeypress(event) {
-    if (event.key === 'Enter') {
-        sendChatMessage();
-    }
-}
-
-// ====== FAQ DATABASE ======
-const faqDatabase = {
-    en: {
-        "models": "We have two 2WD campervan models:\n\n🚐 **Chimpanzee Camper Van** - Perfect for 2-3 people, comfortable and efficient\n\n🚐 **Gorilla Camper Van** - Spacious option for 4-5 people with extra storage\n\nBoth are 2WD vehicles ideal for main roads and popular routes. Minimum 7-day rental applies.",
-        "booking": "To book, simply fill out our form or contact us via WhatsApp. We require a 50% deposit to confirm your reservation, with the balance due on pickup. Minimum rental period is 7 days.",
-        "insurance": "All rentals include basic insurance coverage. We also offer optional excess reduction packages. Full details are in our Terms & Conditions. We recommend travel insurance for personal coverage.",
-        "faq": "I can help with questions about:\n• Our van models (Chimpanzee & Gorilla)\n• Booking process & minimum rental (7 days)\n• Pricing & insurance\n• Pickup locations\n• Equipment included\n\nWhat would you like to know?",
-        "minimum": "We have a minimum rental period of 7 days for all our campervans. This applies year-round, though it may vary during peak seasons.",
-        "price": "Our pricing is competitive and transparent, with all taxes (IVA) included. Contact us via WhatsApp for current rates and any seasonal promotions. We offer the best value in South America!",
-        "transmission": "Both our Chimpanzee and Gorilla campervans are 2WD (two-wheel drive) vehicles. They're perfect for main highways and popular tourist routes throughout Chile and Argentina."
-    },
-    es: {
-        "models": "Tenemos dos modelos de campervan 2WD:\n\n🚐 **Chimpanzee Camper Van** - Perfecto para 2-3 personas, cómodo y eficiente\n\n🚐 **Gorilla Camper Van** - Opción espaciosa para 4-5 personas con almacenamiento extra\n\nAmbos son vehículos 2WD ideales para carreteras principales y rutas populares. Aplica alquiler mínimo de 7 días.",
-        "booking": "Para reservar, completa nuestro formulario o contáctanos por WhatsApp. Requerimos 50% de depósito para confirmar tu reserva, con el saldo al recoger. Período mínimo de alquiler es 7 días.",
-        "insurance": "Todos los alquileres incluyen seguro básico. También ofrecemos paquetes opcionales de reducción de exceso. Los detalles completos están en nuestros Términos y Condiciones. Recomendamos seguro de viaje para cobertura personal.",
-        "faq": "Puedo ayudarte con preguntas sobre:\n• Nuestros modelos de vans (Chimpanzee y Gorilla)\n• Proceso de reserva y alquiler mínimo (7 días)\n• Precios y seguros\n• Lugares de recogida\n• Equipo incluido\n\n¿Qué te gustaría saber?",
-        "minimum": "Tenemos un período mínimo de alquiler de 7 días para todas nuestras campervans. Esto aplica todo el año, aunque puede variar en temporadas altas.",
-        "price": "Nuestros precios son competitivos y transparentes, con todos los impuestos (IVA) incluidos. ¡Contáctanos por WhatsApp para tarifas actuales y promociones de temporada! Ofrecemos el mejor valor en Sudamérica.",
-        "transmission": "Tanto nuestra Chimpanzee como Gorilla campervans son vehículos 2WD (tracción en dos ruedas). Son perfectos para carreteras principales y rutas turísticas populares en Chile y Argentina."
-    }
-};
-
-// ====== TRANSLATIONS ======
-var translations={
-en:{
-"nav.home":"Home","nav.fleet":"Our Vans","nav.features":"Why Us","nav.destinations":"Destinations","nav.faq":"FAQ","nav.reviews":"Reviews","nav.contact":"Contact","nav.book":"Book Now",
-"hero.badge":"🇨 Chile & Argentina Campervan Rentals",
-"hero.title":"Explore South America with<br><span class=\"hl\">Monkey Adventure</span>",
-"hero.desc":"Budget-friendly campervan and 4WD camper rentals. Drive from the Atacama Desert to Patagonia glaciers. Your unforgettable adventure starts here.",
-"hero.cta1":"View Our Fleet 🚐","hero.cta2":"Explore Routes 🗺️",
-"stats.travelers":"Happy Travelers","stats.vans":"Vans Available","stats.locations":"Locations","stats.rating":"Google Rating",
-"form.name":"Full Name","form.phone":"Phone Number","form.pickup":"Pickup Location","form.select":"Select...","form.pdate":"Pickup Date","form.rdate":"Return Date","form.travelers":"Travelers",
-"form.t1":"1-2 Travelers","form.t2":"3-4 Travelers","form.t3":"5-6 Travelers",
-"form.type":"Van Type","form.all":"All Types","form.budget":"Chimpanzee 2WD","form.standard":"Gorilla 2WD","form.premium":"Premium Camper",
-"form.search":"Submit Request 🔍",
-"fleet.tag":"🚐 Our Fleet","fleet.title":"Choose Your <span class=\"hl\">Adventure Van</span>","fleet.desc":"Two reliable 2WD campervan models perfect for your South American adventure. Minimum 7-day rental.",
-"fleet.b1":"Most Popular","fleet.b2":"Spacious","fleet.b3":"Premium",
-"fleet.n1":"Chimpanzee Camper Van","fleet.n2":"Gorilla Camper Van","fleet.n3":"Premium Camper",
-"fleet.s1":"Comfortable 2WD campervan for couples and small groups","fleet.s2":"Larger 2WD campervan for families and groups","fleet.s3":"Full-equipped 4WD for families",
-"fleet.f.bed":"🛏️ Bed","fleet.f.fridge":"🧊 Fridge","fleet.f.gas":"⛽ Gas",
-"fleet.f.2beds":"🛏️ 2 Beds","fleet.f.kitchen":"🧊 Kitchen","fleet.f.solar":"🔌 Solar",
-"fleet.f.3beds":"🛏️ 3 Beds","fleet.f.shower":"🚿 Shower","fleet.f.wifi":"📶 WiFi",
-"fleet.min7":"Min 7 Days","fleet.perday":"/day","fleet.booknow":"Book Now",
-"features.tag":"✨ Why Choose Us","features.title":"The <span class=\"hl\">Monkey Difference</span>","features.desc":"We make campervan travel simple, safe, and unforgettable across Chile and Argentina.",
-"features.f1t":"Budget Friendly","features.f1d":"Transparent pricing with no hidden fees. IVA included. Best value in South America.",
-"features.f2t":"Full Insurance","features.f2d":"Comprehensive coverage included. 24/7 roadside assistance for peace of mind.",
-"features.f3t":"Route Planning","features.f3d":"Personalized itineraries, camping spots, and local tips from our team.",
-"features.f4t":"Multiple Locations","features.f4d":"Pickup and drop-off at Santiago, Atacama, Puerto Montt, Bariloche, and Ushuaia.",
-"features.f5t":"Well-Maintained","features.f5d":"All vans regularly serviced and fully equipped for Patagonian and desert conditions.",
-"features.f6t":"24/7 Support","features.f6d":"Available around the clock via WhatsApp for any assistance during your trip.",
-"dest.tag":"🌎 Top Routes","dest.title":"Explore Iconic Destinations","dest.desc":"Drive through some of the most stunning landscapes on Earth with our campervans.",
-"dest.d1t":"Patagonia","dest.d1d":"Torres del Paine • Glaciers • Wildlife",
-"dest.d2t":"Atacama Desert","dest.d2d":"Geysers • Salt Flats • Stargazing",
-"dest.d3t":"Lake District","dest.d3d":"Volcanoes • Lakes • Hot Springs",
-"dest.infoTitle":"Select a Destination","dest.infoDesc":"Click on any destination above to learn more about the route!",
-"dest.patagonia.t":"🏔️ Patagonia Route","dest.patagonia.d":"Drive through Torres del Paine National Park, witness the Perito Moreno Glacier, and spot guanacos, pumas, and condors. Best time: October to April. Recommended: 14-21 days.",
-"dest.atacama.t":"🏜️ Atacama Desert Route","dest.atacama.d":"Visit the driest desert on Earth, explore salt flats, geysers at 4,000m altitude, and experience the clearest night skies for stargazing. Best time: Year-round. Recommended: 7-10 days.",
-"dest.lakes.t":"🏞️ Lake District Route","dest.lakes.d":"Navigate the scenic Carretera Austral, soak in natural hot springs, hike around volcanoes, and explore crystal-clear lakes. Best time: November to March. Recommended: 10-14 days.",
-"rev.tag":"⭐ Reviews","rev.title":"What Our <span class=\"hl\">Travelers Say</span>","rev.desc":"Real experiences from adventurers who explored South America with Monkey Adventure.",
-"rev.r1":"\"The best way to explore Patagonia! The van was in perfect condition, fully equipped, and the team helped us plan an incredible 2-week route.\"",
-"rev.r1a":"Patagonia Route, 14 days",
-"rev.r2":"\"Incredible value for money. We drove from Santiago to Atacama and the van handled everything perfectly. Highly recommend the 4WD option!\"",
-"rev.r2a":"Atacama Route, 10 days",
-"rev.r3":"\"We crossed from Chile to Argentina in our Monkey Adventure camper. The border crossing was seamless and the Lake District route was magical!\"",
-"rev.r3a":"Chile-Argentina Crossing, 21 days",
-"cta.title":"Ready for Your South American Adventure? 🚐","cta.desc":"Book your campervan today and explore Chile & Argentina at your own pace. Free itinerary planning included!","cta.btn":"Book via WhatsApp 💬",
-"footer.brand":"Budget campervan and 4WD camper rentals across Chile and Argentina.",
-"footer.qh":"Quick Links","footer.ih":"Rental Info","footer.ch":"Contact Us",
-"footer.l1":"Van Specifications","footer.l2":"Terms & Conditions","footer.l3":"Insurance Details","footer.l4":"FAQ",
-"footer.addr":"Santiago, Chile","footer.copy":"© 2026 MonkeyAdventure. All rights reserved.","wa.tooltip":"Chat with us on WhatsApp",
-"chat.greeting":"Hi! I'm MonkeyBot 🐒. Ask me anything about our campervan rentals, pricing, or terms!",
-"chat.q1":"Models","chat.q2":"Booking","chat.q3":"Insurance","chat.q4":"FAQ",
-"chat.tc_link":"📄 View Full Terms & Conditions",
-"tc.title":"Monkey Adventures SpA. Campervan Rental Terms and Conditions",
-"tc.rates":"Rates",
-"tc.rates_content":"All tariffs are in Chilean Pesos (CLP) and inclusive of Services Tax (IVA). The price is calculated on a daily basis based on 2 passengers. Extra passenger recharges CLP $15,000 (up to 1 extra). Daily hire charges are calculated per calendar day and cannot be altered once confirmed.",
-"tc.hire_periods":"Hire Periods & One-Way",
-"tc.hire_periods_content":"Minimum rental periods apply. The day of pick-up is day one regardless of time. Return day is final day regardless of drop-off time. Changes must be notified 48h in advance. One-way rentals available from Santiago with extra cost: Iquique $390k, San Pedro $360k, Pucón $280k, Puerto Varas $320k, Coyhaique $360k, Punta Arenas $390k.",
-"tc.pickup":"Pick Up & Drop Off",
-"tc.pickup_content":"Hours: Mon-Fri 9am-5:30pm, Sat 9am-1pm. Closed Sundays & holidays. Set pickup/dropoff times required. Vehicle released 24h after scheduled pickup if no notice. Late pickup/early return = no refund. Location changes after confirmation require authorization + $290k fee. Argentina crossing requires permit/insurance (extra cost).",
-"tc.drivers":"Driver Requirements",
-"tc.drivers_content":"Valid non-probationary license required. Foreign licenses need Spanish translation. 4WD: min age 22. 2WD: min age 18 (+$5k/day for drivers 18-21).",
-"tc.deposit":"Deposit & Payments",
-"tc.deposit_content":"Booking deposit: USD$300 (non-refundable). Balance due on collection. Transfers in USD/EUR converted to CLP at bank rate. Cash payments: exact amount required. Credit/debit cards: 5% non-refundable surcharge. Credit card required as bond (main hirer's card). All transactions in CLP.",
-"tc.cancellations":"Cancellations & Modifications",
-"tc.cancellations_content":"60+ days: no charge. 45-60 days: 25% of gross rent. 30-45 days: 35%. 15-30 days: 50%. <15 days or No Show: 100%. Early return: no refund. Date changes subject to availability + fees. Non-delivery: $50k/day delay fee.",
-"tc.responsibility":"Hirer's Responsibility",
-"tc.responsibility_content":"Install child seats correctly. Turn off gas while driving. Return vehicle washed/vacuumed. Avoid damaging undercarriage on unsealed roads. Don't overheat engine. Check water/oil daily. Don't roll vehicle. Keep distance, avoid night driving. Check tire pressure. Drive carefully on Ruta 40/Carretera Austral. Obey speed limits/parking rules (fines charged to card). Don't destroy tires. Don't drive in sand/salt flats/mud/water with 2WD. Protect roof rack. All fines charged to card + $25k processing fee.",
-"tc.refunds":"Refunds Policy",
-"tc.refunds_content":"No refund for: unsuitable fuel, bad weather, border closures, early delivery, theft of belongings, excess fuel consumption. Refund only for: mechanical faults attributable to us (if not resolved in <6h, refund 1 day's rent). All refunds in CLP.",
-"tc.extra_fees":"Extra Fees",
-"tc.extra_fees_content":"Not washed/vacuumed: $30k. Portable toilet not empty: $30k. Smoking inside: $30k. Not full fuel tank on return: fuel cost + $15k fee.",
-"tc.insurance":"Insurance & Excess",
-"tc.insurance_content":"Basic insurance included (non-waivable). Deductible: $1.6M for 2WD. Option Plus: reduce to $1.1M for $5k/day. NOT covered: windscreens, tires, intoxicated driving, races, malicious damage, theft without original keys. Hirer liable for all damage regardless of fault (limited to deductible). Third-party claims: refund after we're indemnified.",
-"tc.exclusions":"Exclusions (No Coverage)",
-"tc.exclusions_content":"No coverage if: terms breached, negligence, wrong fuel, illegal use, beach/sand driving, roof damage from height restrictions, single-vehicle rollover, gravel road damage (voids liability limits), failure to stop for warning lights, continuing to drive after overheating/breakdown, night driving accidents with animals, reversing accidents, ignoring traffic signs, speeding, fatigue, alcohol/drugs, leaving keys in unattended vehicle, removing radio panel, water/salt/creek/flood damage, underbody/roof/interior/tire damage, illegal use, towing, carrying passengers for hire, carrying hazardous materials, carrying animals (except registered dogs), unfit roads, driving damaged vehicle without permission, theft/fire/break-in losses, inappropriate snow chains, wrong fuel type.",
-"tc.accidents":"Accidents & Exchange Vehicles",
-"tc.accidents_content":"Hirer responsible for all retrieval/storage/recovery costs (not covered by insurance). If liability unclear at dropoff, full excess charged (refunded after confirmation). If we can't supply booked vehicle, we'll try to provide similar quality. Exchange vehicle: hirer's cost to collect, daily rate still applies, no liability for lost travel days. Exchange may take up to 3 days, may not be identical. Insurance excess not transferable to exchange vehicle. No refund for unused hire if exchange not needed.",
-"tc.accident_steps":"What to Do in Case of Accident",
-"tc.accident_steps_content":"1. Turn on hazard lights and use warning triangles. 2. Call Monkey Adventures immediately for assistance.",
-"tc.last_updated":"Last updated: 2026 | For full legal document, contact info@monkey-adventures.com"
-},
-es:{
-"nav.home":"Inicio","nav.fleet":"Nuestras Vans","nav.features":"Por Qué Elegirnos","nav.destinations":"Destinos","nav.faq":"FAQ","nav.reviews":"Reseñas","nav.contact":"Contacto","nav.book":"Reservar",
-"hero.badge":"🇨 Alquiler de Campervans Chile y Argentina",
-"hero.title":"Explora Sudamérica con<br><span class=\"hl\">Monkey Adventure</span>",
-"hero.desc":"Alquiler de campervans y campers 4WD económicos. Viaja desde el Desierto de Atacama hasta los glaciares de la Patagonia. Tu aventura inolvidable comienza aquí.",
-"hero.cta1":"Ver Nuestras Vans 🚐","hero.cta2":"Explorar Rutas 🗺️",
-"stats.travelers":"Viajeros Felices","stats.vans":"Vans Disponibles","stats.locations":"Ubicaciones","stats.rating":"Calificación Google",
-"form.name":"Nombre Completo","form.phone":"Número de Teléfono","form.pickup":"Lugar de Recogida","form.select":"Seleccionar...","form.pdate":"Fecha de Recogida","form.rdate":"Fecha de Devolución","form.travelers":"Viajeros",
-"form.t1":"1-2 Viajeros","form.t2":"3-4 Viajeros","form.t3":"5-6 Viajeros",
-"form.type":"Tipo de Van","form.all":"Todos los Tipos","form.budget":"Chimpanzee 2WD","form.standard":"Gorilla 2WD","form.premium":"Camper Premium",
-"form.search":"Enviar Solicitud 🔍",
-"fleet.tag":"🚐 Nuestra Flota","fleet.title":"Elige tu <span class=\"hl\">Van de Aventura</span>","fleet.desc":"Dos modelos confiables de campervan 2WD perfectos para tu aventura sudamericana. Alquiler mínimo de 7 días.",
-"fleet.b1":"Más Popular","fleet.b2":"Espacioso","fleet.b3":"Premium",
-"fleet.n1":"Chimpanzee Camper Van","fleet.n2":"Gorilla Camper Van","fleet.n3":"Camper Premium",
-"fleet.s1":"Cómodo campervan 2WD para parejas y grupos pequeños","fleet.s2":"Campervan 2WD más grande para familias y grupos","fleet.s3":"4WD totalmente equipada para familias",
-"fleet.f.bed":"🛏️ Cama","fleet.f.fridge":"🧊 Nevera","fleet.f.gas":"⛽ Gas",
-"fleet.f.2beds":"🛏️ 2 Camas","fleet.f.kitchen":"🧊 Cocina","fleet.f.solar":"🔌 Solar",
-"fleet.f.3beds":"🛏️ 3 Camas","fleet.f.shower":"🚿 Ducha","fleet.f.wifi":"📶 WiFi",
-"fleet.min7":"Mín 7 Días","fleet.perday":"/día","fleet.booknow":"Reservar",
-"features.tag":"✨ Por Qué Elegirnos","features.title":"La <span class=\"hl\">Diferencia Monkey</span>","features.desc":"Hacemos que viajar en campervan sea simple, seguro e inolvidable por Chile y Argentina.",
-"features.f1t":"Precio Económico","features.f1d":"Precios transparentes sin cargos ocultos. IVA incluido. El mejor valor en Sudamérica.",
-"features.f2t":"Seguro Completo","features.f2d":"Cobertura completa incluida. Asistencia en carretera 24/7 para tu tranquilidad.",
-"features.f3t":"Planificación de Rutas","features.f3d":"Itinerarios personalizados, puntos de camping y consejos locales de nuestro equipo.",
-"features.f4t":"Múltiples Ubicaciones","features.f4d":"Recogida y devolución en Santiago, Atacama, Puerto Montt, Bariloche y Ushuaia.",
-"features.f5t":"Bien Mantenidas","features.f5d":"Todas las vans con mantenimiento regular y completamente equipadas para Patagonia y desierto.",
-"features.f6t":"Soporte 24/7","features.f6d":"Disponibles las 24 horas por WhatsApp para cualquier asistencia durante tu viaje.",
-"dest.tag":"🌎 Mejores Rutas","dest.title":"Explora Destinos Icónicos","dest.desc":"Conduce por algunos de los paisajes más impresionantes del mundo con nuestras campervans.",
-"dest.d1t":"Patagonia","dest.d1d":"Torres del Paine • Glaciares • Vida Silvestre",
-"dest.d2t":"Desierto de Atacama","dest.d2d":"Geisers • Salares • Observación de Estrellas",
-"dest.d3t":"Región de los Lagos","dest.d3d":"Volcanes • Lagos • Aguas Termales",
-"dest.infoTitle":"Selecciona un Destino","dest.infoDesc":"¡Haz clic en cualquier destino para saber más sobre la ruta!",
-"dest.patagonia.t":"🏔️ Ruta Patagonia","dest.patagonia.d":"Recorre el Parque Nacional Torres del Paine, contempla el Glaciar Perito Moreno y avista guanacos, pumas y cóndores. Mejor época: octubre a abril. Recomendado: 14-21 días.",
-"dest.atacama.t":"🏜️ Ruta Desierto de Atacama","dest.atacama.d":"Visita el desierto más seco del mundo, explora salares, géiseres a 4,000m de altitud. Mejor época: todo el año. Recomendado: 7-10 días.",
-"dest.lakes.t":"🏞️ Ruta Región de los Lagos","dest.lakes.d":"Recorre la escénica Carretera Austral, relájate en aguas termales naturales, haz trekking por volcanes. Mejor época: noviembre a marzo. Recomendado: 10-14 días.",
-"rev.tag":"⭐ Reseñas","rev.title":"Lo que Dicen Nuestros <span class=\"hl\">Viajeros</span>","rev.desc":"Experiencias reales de aventureros que exploraron Sudamérica con Monkey Adventure.",
-"rev.r1":"\"¡La mejor forma de explorar la Patagonia! La van estaba en perfectas condiciones y el equipo nos ayudó a planificar una ruta increíble.\"",
-"rev.r1a":"Ruta Patagonia, 14 días",
-"rev.r2":"\"Increíble relación calidad-precio. Condujimos desde Santiago hasta Atacama y la van se comportó perfectamente. ¡Recomendamos la opción 4WD!\"",
-"rev.r2a":"Ruta Atacama, 10 días",
-"rev.r3":"\"Cruzamos de Chile a Argentina en nuestra camper de Monkey Adventure. El cruce fronterizo fue sin problemas y la ruta fue mágica!\"",
-"rev.r3a":"Cruce Chile-Argentina, 21 días",
-"cta.title":"¿Listo para tu Aventura Sudamericana? 🚐","cta.desc":"¡Reserva tu campervan hoy y explora Chile y Argentina a tu ritmo. ¡Planificación de itinerario incluida sin costo!","cta.btn":"Reservar por WhatsApp 💬",
-"footer.brand":"Alquiler de campervans y campers 4WD económicos en Chile y Argentina.",
-"footer.qh":"Enlaces Rápidos","footer.ih":"Info de Alquiler","footer.ch":"Contáctanos",
-"footer.l1":"Especificaciones de Vans","footer.l2":"Términos y Condiciones","footer.l3":"Detalles del Seguro","footer.l4":"Preguntas Frecuentes",
-"footer.addr":"Santiago, Chile","footer.copy":"© 2026 MonkeyAdventure. Todos los derechos reservados.","wa.tooltip":"Chatea con nosotros por WhatsApp",
-"chat.greeting":"¡Hola! Soy MonkeyBot 🐒. ¡Pregúntame lo que quieras sobre nuestros alquileres de campervans, precios o términos!",
-"chat.q1":"Modelos","chat.q2":"Reserva","chat.q3":"Seguro","chat.q4":"FAQ",
-"chat.tc_link":"📄 Ver Términos y Condiciones Completos",
-"tc.title":"Monkey Adventures SpA. Términos y Condiciones de Arriendo de Campervans",
-"tc.rates":"Tarifas",
-"tc.rates_content":"Todas las tarifas en Pesos Chilenos (CLP) incluyendo IVA. Precio diario basado en 2 pasajeros. Pasajero extra: CLP $15.000 (máx 1 extra). Tarifas diarias calculadas por día calendario y no se pueden alterar tras confirmación.",
-"tc.hire_periods":"Períodos de Arriendo y Solo Ida",
-"tc.hire_periods_content":"Aplican períodos mínimos de arriendo. El día de recogida es día uno sin importar la hora. El día de devolución es día final sin importar la hora. Cambios deben notificarse con 48h de anticipación. Arriendos solo ida disponibles desde Santiago con costo extra: Iquique $390k, San Pedro $360k, Pucón $280k, Puerto Varas $320k, Coyhaique $360k, Punta Arenas $390k.",
-"tc.pickup":"Recogida y Devolución",
-"tc.pickup_content":"Horario: Lun-Vie 9am-5:30pm, Sáb 9am-1pm. Cerrado domingos y festivos. Se requieren horas fijas de recogida/devolución. Vehículo liberado 24h después de la recogida programada si no se avisa. Recogida tarde/devolución temprana = sin reembolso. Cambios de ubicación tras confirmación requieren autorización + cargo de $290k. Cruce a Argentina requiere permiso/seguro (costo extra).",
-"tc.drivers":"Requisitos del Conductor",
-"tc.drivers_content":"Licencia vigente y válida (no probatoria) requerida. Licencias extranjeras necesitan traducción al español. 4WD: edad mínima 22. 2WD: edad mínima 18 (+$5k/día para conductores 18-21).",
-"tc.deposit":"Depósito y Pagos",
-"tc.deposit_content":"Depósito de reserva: USD$300 (no reembolsable). Saldo al recoger. Transferencias en USD/EUR convertidas a CLP a tasa del banco. Pagos en efectivo: monto exacto requerido. Tarjetas crédito/débito: 5% de cargo no reembolsable. Tarjeta de crédito requerida como fianza (del arrendatario principal). Todas las transacciones en CLP.",
-"tc.cancellations":"Cancelaciones y Modificaciones",
-"tc.cancellations_content":"60+ días: sin cargo. 45-60 días: 25% del arriendo bruto. 30-45 días: 35%. 15-30 días: 50%. <15 días o No Show: 100%. Devolución temprana: sin reembolso. Cambios de fecha sujetos a disponibilidad + cargos. No entrega: cargo de $50k/día de retraso.",
-"tc.responsibility":"Responsabilidad del Arrendatario",
-"tc.responsibility_content":"Instalar sillas infantiles correctamente. Apagar gas mientras se conduce. Devolver vehículo lavado/aspirado/ordenado. Evitar daño en bajo en caminos no pavimentados. No sobrecalentar motor. Revisar agua/aceite diario. No voltear vehículo. Mantener distancia, evitar conducción nocturna. Revisar presión de neumáticos. Conducir con cuidado en Ruta 40/Carretera Austral. Obedecer límites de velocidad/reglas de estacionamiento (multas cargadas a tarjeta). No destruir neumáticos. No conducir en arena/salares/lodo/agua con 2WD. Proteger portaequipajes. Todas las multas cargadas a tarjeta + cargo de procesamiento de $25k por infracción.",
-"tc.refunds":"Política de Reembolsos",
-"tc.refunds_content":"Sin reembolso por: combustible inadecuado, mal clima, cierres fronterizos, entrega temprana, robo de pertenencias, consumo excesivo de combustible. Reembolso solo por: fallas mecánicas atribuibles a nosotros (si no se resuelven en <6h, reembolso de 1 día de arriendo). Todos los reembolsos en CLP.",
-"tc.extra_fees":"Cargos Extra",
-"tc.extra_fees_content":"No lavado/aspirado: $30k. Inodoro portátil no vacío: $30k. Fumar dentro: $30k. Tanque no lleno al devolver: costo de combustible + cargo de $15k.",
-"tc.insurance":"Seguro y Exceso",
-"tc.insurance_content":"Seguro básico incluido (no renunciable). Deducible: $1.6M para 2WD. Opción Plus: reducir a $1.1M por $5k/día extra. NO cubre: parabrisas, neumáticos, conducción bajo influencia, carreras, daño malicioso, robo sin llaves originales. Arrendatario responsable de todo daño sin importar culpa (limitado al deducible). Reclamos de terceros: reembolso después de ser indemnizados.",
-"tc.exclusions":"Exclusiones (Sin Cobertura)",
-"tc.exclusions_content":"Sin cobertura si: se incumplen términos, negligencia, combustible incorrecto, uso ilegal, conducción en playa/arena, daño en techo por límites de altura, vuelco de vehículo único, daño en caminos de grava (anula límites de responsabilidad), no detenerse por luces de advertencia, continuar conduciendo tras sobrecalentamiento/falla, accidentes nocturnos con animales, accidentes al reversar, ignorar señales de tránsito, exceso de velocidad, fatiga, alcohol/drogas, dejar llaves en vehículo desatendido, quitar panel de radio, daño por agua/sal/arroyo/inundación, daño en bajo/techo/interior/neumáticos, uso ilegal, remolcar, transportar pasajeros por pago, materiales peligrosos, transportar animales (excepto perros registrados), caminos inapropiados, conducir vehículo dañado sin permiso, pérdidas por robo/incendio, cadenas para nieve inapropiadas, tipo de combustible incorrecto.",
-"tc.accidents":"Accidentes y Vehículos de Reemplazo",
-"tc.accidents_content":"Arrendatario responsable de todos los costos de recuperación/almacenamiento/recuperación tras accidente (no cubiertos por seguro). Si la responsabilidad no está clara al devolver, se cobra exceso completo (reembolsado tras confirmación). Si no podemos suministrar el vehículo reservado, intentaremos proporcionar uno de calidad similar. Vehículo de reemplazo: costo del arrendatario para recoger, tarifa diaria aún aplica, sin responsabilidad por días de viaje perdidos. El reemplazo puede tomar hasta 3 días, puede no ser idéntico. El exceso de seguro no es transferible al vehículo de reemplazo. Sin reembolso por arriendo no utilizado si no se necesita reemplazo.",
-"tc.accident_steps":"Qué Hacer en Caso de Accidente",
-"tc.accident_steps_content":"1. Encender luces de emergencia y usar triángulos de advertencia. 2. Llamar a Monkey Adventures inmediatamente para asistencia.",
-"tc.last_updated":"Última actualización: 2026 | Para documento legal completo, contactar info@monkey-adventures.com"
-}
-};
-
+window.addEventListener('scroll',function(){document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50)});
+function toggleMenu(){document.getElementById('mobileNav').classList.toggle('active');document.getElementById('menuToggle').classList.toggle('active')}
+function closeMenu(){document.getElementById('mobileNav').classList.remove('active');document.getElementById('menuToggle').classList.remove('active')}
 var currentLang='en';
-function setLang(lang){
-    currentLang=lang;
-    var t=translations[lang];
-    document.querySelectorAll('[data-i18n]').forEach(function(el){
-        var key=el.getAttribute('data-i18n');
-        if(t[key]){
-            if(key.indexOf('title')>-1&&key.indexOf('dest.')!==0&&key!=='dest.infoTitle'&&key!=='dest.infoDesc'){
-                el.innerHTML=t[key];
-            }else if(key==='footer.addr'){
-                el.innerHTML=t[key];
-            }else{
-                el.textContent=t[key];
-            }
-        }
-    });
-    document.getElementById('langEn').classList.toggle('active',lang==='en');
-    document.getElementById('langEs').classList.toggle('active',lang==='es');
-    document.getElementById('mobEn').classList.toggle('active',lang==='en');
-    document.getElementById('mobEs').classList.toggle('active',lang==='es');
-    document.documentElement.lang=lang==='es'?'es':'en';
-}
-
-var navEl=document.getElementById('navbar');
-window.addEventListener('scroll',function(){
-    navEl.classList.toggle('scrolled',window.scrollY>50);
-});
-
-function toggleMenu(){
-    document.getElementById('mobileNav').classList.toggle('active');
-    document.getElementById('menuToggle').classList.toggle('active');
-    document.body.style.overflow=document.getElementById('mobileNav').classList.contains('active')?'hidden':'';
-}
-function closeMenu(){
-    document.getElementById('mobileNav').classList.remove('active');
-    document.getElementById('menuToggle').classList.remove('active');
-    document.body.style.overflow='';
-}
-
-function openWhatsApp(){
-    var msg=currentLang==='es'?encodeURIComponent("Hola! Me interesa alquilar una campervan con Monkey Adventure."):encodeURIComponent("Hello! I'm interested in renting a campervan with Monkey Adventure!");
-    window.open('https://wa.me/56990423560?text='+msg,'_blank');
-}
-
-function sendToWhatsApp(){
-    var name = document.querySelector('[name="customer-name"]').value || "Not provided";
-    var phone = document.querySelector('[name="customer-phone"]').value || "Not provided";
-    var location = document.querySelector('[name="pickup-location"]').value || "Not specified";
-    var pickupDate = document.querySelector('[name="pickup-date"]').value || "Not specified";
-    var returnDate = document.querySelector('[name="return-date"]').value || "Not specified";
-    var travelers = document.querySelector('[name="travelers"]').value || "Not specified";
-    var vanType = document.querySelector('[name="van-type"]').value || "Not specified";
-
-    var message;
-    if(currentLang === 'es') {
-        message = `🚐 *Solicitud de Cotización y Llamada - Monkey Adventure*\n\n` +
-                  `👤 Nombre: ${name}\n` +
-                  `📱 Teléfono: ${phone}\n` +
-                  `📍 Lugar de Recogida: ${location}\n` +
-                  `📅 Fecha Inicio: ${pickupDate}\n` +
-                  `📅 Fecha Devolución: ${returnDate}\n` +
-                  `👥 Viajeros: ${travelers}\n` +
-                  `🚐 Tipo de Van: ${vanType}\n\n` +
-                  `Me gustaría recibir una cotización de precio y que me llamen para confirmar disponibilidad. ¡Gracias!`;
-    } else {
-        message = `🚐 *Price Quote & Callback Request - Monkey Adventure*\n\n` +
-                  `👤 Name: ${name}\n` +
-                  `📱 Phone: ${phone}\n` +
-                  `📍 Pickup Location: ${location}\n` +
-                  `📅 Pickup Date: ${pickupDate}\n` +
-                  `📅 Return Date: ${returnDate}\n` +
-                  `👥 Travelers: ${travelers}\n` +
-                  `🚐 Van Type: ${vanType}\n\n` +
-                  `I'd like to receive a price quote and a callback to confirm availability. Thank you!`;
-    }
-    window.open('https://wa.me/56990423560?text=' + encodeURIComponent(message), '_blank');
-}
-
-function animateStats(){
-    var s=[
-        {el:document.getElementById('stat1'),target:5000,suffix:'+',isF:false},
-        {el:document.getElementById('stat2'),target:25,suffix:'+',isF:false},
-        {el:document.getElementById('stat3'),target:5,suffix:'',isF:false},
-        {el:document.getElementById('stat4'),target:4.9,suffix:'/5',isF:true}
-    ];
-    s.forEach(function(st){
-        var dur=2500,step=st.target/(dur/16),cur=0;
-        function upd(){
-            cur+=step;
-            if(cur<st.target){
-                var v=st.isF?cur.toFixed(1):Math.floor(cur);
-                st.el.innerHTML=v+'<span class="stat-accent">'+st.suffix+'</span>';
-                requestAnimationFrame(upd);
-            }else{
-                var v=st.isF?st.target.toFixed(1):st.target;
-                st.el.innerHTML=v+'<span class="stat-accent">'+st.suffix+'</span>';
-            }
-        }
-        setTimeout(upd,1200);
-    });
-}
-animateStats();
-
-var cSlide=0,tSlides=3,slideInt;
-function goToSlide(i){
-    cSlide=i;
-    document.getElementById('tTrack').style.transform='translateX(-'+(i*100)+'%)';
-    var dots=document.querySelectorAll('.t-dot');
-    dots.forEach(function(d,j){d.classList.toggle('active',j===i);});
-    resetSlide();
-}
-function nextSlide(){goToSlide((cSlide+1)%tSlides);}
-function resetSlide(){clearInterval(slideInt);slideInt=setInterval(nextSlide,5000);}
-resetSlide();
-
-function showDestination(key){
-    var info=document.getElementById('destInfo');
-    var tEl=document.getElementById('destTitle');
-    var dEl=document.getElementById('destDesc');
-    var t=translations[currentLang];
-    tEl.textContent=t['dest.'+key+'.t'];
-    dEl.textContent=t['dest.'+key+'.d'];
-    info.classList.remove('visible');
-    setTimeout(function(){info.classList.add('visible');},50);
-}
-
-var revObs=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');}});
-},{threshold:0.1,rootMargin:'0px 0px -30px 0px'});
-document.querySelectorAll('.reveal').forEach(function(el){revObs.observe(el);});
-
-document.querySelectorAll('.fleet-card').forEach(function(card){
-    card.addEventListener('mousemove',function(e){
-        var r=card.getBoundingClientRect();
-        var x=(e.clientX-r.left)/r.width-0.5;
-        var y=(e.clientY-r.top)/r.height-0.5;
-        card.style.transform='translateY(-8px) perspective(1000px) rotateX('+(y*-6)+'deg) rotateY('+(x*6)+'deg)';
-    });
-    card.addEventListener('mouseleave',function(){card.style.transform='';});
-});
-
-document.querySelectorAll('a[href^="#"]').forEach(function(a){
-    a.addEventListener('click',function(e){
-        e.preventDefault();
-        var t=document.querySelector(this.getAttribute('href'));
-        if(t){t.scrollIntoView({behavior:'smooth'});}
-    });
-});
+function setLang(lang){currentLang=lang;document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.textContent.trim()===lang.toUpperCase())});document.querySelectorAll('.mob-lang-btn').forEach(function(b){b.classList.toggle('active',b.id==='mob'+(lang==='en'?'En':'Es'))})}
+function openWhatsApp(){var msg=currentLang==='es'?'Hola! Me interesa alquilar.':'Hello! I am interested.';window.open('https://wa.me/56990423560?text='+encodeURIComponent(msg),'_blank')}
+function sendToWhatsApp(){var n=document.querySelector('[name="customer-name"]')?.value||'';var p=document.querySelector('[name="customer-phone"]')?.value||'';var l=document.querySelector('[name="pickup-location"]')?.value||'';var msg='Name: '+n+'\nPhone: '+p+'\nLocation: '+l;window.open('https://wa.me/56990423560?text='+encodeURIComponent(msg),'_blank')}
+setTimeout(function(){var targets=[{el:document.getElementById('stat1'),val:5000,suffix:'+'},{el:document.getElementById('stat2'),val:25,suffix:'+'},{el:document.getElementById('stat3'),val:5,suffix:'+'},{el:document.getElementById('stat4'),val:4.9,suffix:'/5',dec:true}];targets.forEach(function(t){if(!t.el)return;var step=t.val/100,cur=0;var timer=setInterval(function(){cur+=step;if(cur>=t.val){cur=t.val;clearInterval(timer)}var v=t.dec?cur.toFixed(1):Math.floor(cur);t.el.innerHTML=v+'<span style="color:#FCBF49">'+t.suffix+'</span>'},20)})},500);
+var cSlide=0,slideInt;function goToSlide(i){cSlide=i;document.getElementById('tTrack').style.transform='translateX(-'+(i*100)+'%)';document.querySelectorAll('.t-dot').forEach(function(d,j){d.classList.toggle('active',j===i)});resetSlide()}function nextSlide(){goToSlide((cSlide+1)%3)}function resetSlide(){clearInterval(slideInt);slideInt=setInterval(nextSlide,5000)}resetSlide();
+function toggleChatbot(){document.getElementById('chatbotWindow').classList.toggle('active')}
+function addChatMsg(text,bot){var d=document.getElementById('chatbotMessages');var m=document.createElement('div');m.className='chatbot-message '+(bot?'bot':'user');m.innerHTML='<div class="chatbot-bubble">'+text+'</div>';d.appendChild(m);d.scrollTop=d.scrollHeight}
+function askQuickQuestion(topic){var a={models:'Two 2WD models: Chimpanzee (2-3) and Gorilla (4-5). Min 7 days.',booking:'Fill form or WhatsApp us. 50% deposit. Min 7 days.',insurance:'Basic insurance included. Optional excess reduction.'};if(currentLang==='es')a={models:'Dos modelos 2WD: Chimpanzee y Gorilla. Min 7 dias.',booking:'Formulario o WhatsApp. 50% deposito.',insurance:'Seguro basico incluido.'};addChatMsg(a[topic]||'Contact us!',true)}
+function sendChatMessage(){var input=document.getElementById('chatbotInput');var q=input.value.trim().toLowerCase();if(!q)return;addChatMsg(input.value,false);input.value='';setTimeout(function(){if(q.includes('model')||q.includes('van'))askQuickQuestion('models');else if(q.includes('book')||q.includes('price'))askQuickQuestion('booking');else if(q.includes('insurance'))askQuickQuestion('insurance');else addChatMsg(currentLang==='es'?'Contacta por WhatsApp!':'Contact us on WhatsApp!',true)},500)}
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'})})});
 </script>
 </body>
 </html>
